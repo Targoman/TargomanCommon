@@ -215,10 +215,7 @@ void clsClientThread::slotReadyRead()
                     QVariantMap ReturnVals;
                     ReturnVals.insert("t", Table);
 
-                    return this->
-                        
-                        
-                        (
+                    return this->sendResult(
                                 JSONConversationProtocol::prepareResult(
                                     Request.CallBack,
                                     Request.CallUID,
