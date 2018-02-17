@@ -19,7 +19,7 @@
 #   along with Targoman. If not, see <http://www.gnu.org/licenses/>.
 ################################################################################
 ProjectName="TargomanCommon"
-VERSION=0.1.0
+VERSION=1.0.0
 
 QT+=network
 
