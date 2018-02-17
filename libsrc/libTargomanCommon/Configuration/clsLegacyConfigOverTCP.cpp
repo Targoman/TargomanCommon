@@ -215,7 +215,10 @@ void clsClientThread::slotReadyRead()
                     QVariantMap ReturnVals;
                     ReturnVals.insert("t", Table);
 
-                    return this->sendResult(
+                    return this->
+                        
+                        
+                        (
                                 JSONConversationProtocol::prepareResult(
                                     Request.CallBack,
                                     Request.CallUID,
@@ -352,7 +355,7 @@ void clsClientThread::sendError(enuReturnType::Type _type, const QString& _messa
 
 void clsClientThread::sendResult(const QString &_data)
 {
-    this->Socket->write(_data.toUtf8());
+    this->Socket->write((_data+"\n").toUtf8());
     TargomanDebug(9, "SentTo["<<
                   this->ActorName<<"@"<<
                   this->Socket->peerAddress().toString()<<":"<<
