@@ -26,6 +26,7 @@
 #include <QString>
 #include <link.h>
 #include <iostream>
+#include <dlfcn.h>
 #include "Configuration/tmplConfigurable.h"
 
 #include "Macros.h"
