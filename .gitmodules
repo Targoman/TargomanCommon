@@ -1,0 +1,3 @@
+[submodule "qjsonrpc"]
+	path = qjsonrpc
+	url = https://github.com/Targoman/qjsonrpc.git
