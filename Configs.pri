@@ -32,15 +32,23 @@ ProjectDependencies += z
 LookUps=. .. ../.. ../../.. ../../../.. ../../../../.. ../../../../../.. \
         ../../../../../../.. ../../../../../../../.. ../../../../../../../../..
 
+#for(CurrPath, LookUps) {
+#    exists($$CurrPath/Project.pri) {
+#      ProjectConfig = $$CurrPath/Project.pri
+#      BaseOutput = $$CurrPath
+#    }else{
+#      exists($$ProjectConfig){
+#        break()
+#      }
+#    }
+#}
+
 for(CurrPath, LookUps) {
     exists($$CurrPath/Project.pri) {
       ProjectConfig = $$CurrPath/Project.pri
       BaseOutput = $$CurrPath
-    }else{
-      exists($$ProjectConfig){
-        break()
-      }
-    }
+      break()
+  }
 }
 
 DependencySearchPaths +=$$BaseOutput/out/lib
