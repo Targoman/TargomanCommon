@@ -22,7 +22,7 @@
 
 pushd $(dirname $0)
 
-if [ $1 == "full" ] && [ -z "$3" ]; then
+if [ "$1" == "full" ] && [ -z "$3" ]; then
     echo "third parameter as PREFIX is obligatory when building in full mode"
     exit
 fi
@@ -45,8 +45,8 @@ fi
 echo "Using $QMAKE_COMMAND and $N_CORES_TO_USE processing cores for build ..."
 
 echo "Building SubModules"
-mkdir -p out
 if [ -z "$3" ]; then
+    mkdir -p out
     BaseOutput=$(readlink -f ./out)
 else
     BaseOutput=$3

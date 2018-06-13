@@ -27,6 +27,7 @@
 
 #include <string>
 #include <QString>
+#include <QStringList>
 #include <cstring>
 #include <functional>
 
@@ -251,5 +252,50 @@ inline constexpr _name::Type operator & (const _name::Type _first, const _name::
 #define MACRO_SAFE_COMMA ,
 #define OUTPUT
 #define INOUT
+
+// Unfortunately, some compilers will default to bool/int before it assumes
+// QString.  For these cases we'll resort to this ugly MACRO.
+#ifndef QSTR
+#  ifdef USE_QSTRING_LITERAL
+#    define QSTR(X) QStringLiteral(X)
+#  else
+#    define QSTR(X) X
+#  endif
+#endif
+
+#ifndef QStringPair
+    typedef std::pair<QString, QString> QStringPair;
+#endif
+
+#ifdef TARGOMAN_OMIT_ASSERTIONS
+#  define TARGOMAN_DECLARE_ASSERT_MEMBER(X)
+#  define TARGOMAN_INIT_ASSERT_MEMBER(X)
+#else
+#  define TARGOMAN_DECLARE_ASSERT_MEMBER(X) Assert< X > Assertion;
+#  define TARGOMAN_INIT_ASSERT_MEMBER(X) Assertion( X ),
+#endif
+
+/********************************************************************************************
+ * Library macros
+ ********************************************************************************************/
+//! Turn all private and protected members into PUBLIC members to help with
+//! unit testing.
+#ifdef TARGOMAN_ALL_MEMBERS_PUBLIC
+  #define TARGOMAN_PRIVATE public
+  #define TARGOMAN_PROTECTED public
+#else
+  #define TARGOMAN_PRIVATE private
+  #define TARGOMAN_PROTECTED protected
+#endif
+
+#ifdef TARGOMAN_LIBRARY
+#  if defined(TARGOMAN_EXPORT)
+#    define TARGOMANSHARED_EXPORT Q_DECL_EXPORT
+#  else
+#    define TARGOMANSHARED_EXPORT Q_DECL_IMPORT
+#  endif
+#else
+#  define TARGOMANSHARED_EXPORT
+#endif
 
 #endif /* TARGOMAN_COMMON_MACROS_H_ */

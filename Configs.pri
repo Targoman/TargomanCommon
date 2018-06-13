@@ -36,9 +36,13 @@ for(CurrPath, LookUps) {
     exists($$CurrPath/Project.pri) {
       ProjectConfig = $$CurrPath/Project.pri
       BaseOutput = $$CurrPath
-      break()
-  }
+    }else{
+      exists($$ProjectConfig){
+        break()
+      }
+    }
 }
+
 DependencySearchPaths +=$$BaseOutput/out/lib
 INCLUDEPATH+=$$BaseOutput/out/include
 
