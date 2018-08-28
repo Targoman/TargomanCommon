@@ -116,7 +116,7 @@ QVariantList clsBaseConfigOverNet::bulkQuery(const QString& _parentPath,
     if (ParenPath.endsWith('/') == false)
         ParenPath += _isRegex ? "(\\/|$)" : "/";
 
-    ParenPath.replace(QRegExp("//*"),"/");
+    ParenPath.replace(QRegExp("*"),"/");
 
     QList<intfConfigurable*> ConfigItems =
             this->ConfigManagerPrivate.configItems(ParenPath, _isRegex, false);

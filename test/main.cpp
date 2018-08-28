@@ -39,6 +39,7 @@
 #include "libTargomanCommon/PrefixTree/tmplPrefixTree.h"
 #include "libTargomanCommon/Configuration/tmplConfigurableArray.hpp"
 #include "libTargomanCommon/SimpleAuthentication.h"
+#include "libTargomanCommon/clsCountAndSpeed.h"
 
 #include <iostream>
 #include <unistd.h>
@@ -168,6 +169,9 @@ static Targoman::Common::Configuration::tmplConfigurableArray<stuServers> Server
 int main(int argc, char *argv[])
 {
     try{
+
+        Targoman::Common::clsCountAndSpeed ABCD;
+        QHash<QString, Targoman::Common::clsCountAndSpeed> BCDE;
 
     Targoman::Common::printLoadedLibs();
 

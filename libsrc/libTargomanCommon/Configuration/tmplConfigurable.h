@@ -41,6 +41,7 @@ namespace Configuration {
 /// is no further crossvalidation condition.
 static std::function<bool(const intfConfigurable& _item,
                           QString& _errorMessage)> ReturnTrueCrossValidator(){
+    Q_UNUSED(ReturnTrueCrossValidator)
     static std::function<bool(const intfConfigurable& _item,
                               QString& _errorMessage)> DefaultTrueCrossValidator  =
         [] (const intfConfigurable&, QString& ) {return true;};

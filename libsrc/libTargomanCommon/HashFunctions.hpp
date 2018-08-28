@@ -73,11 +73,29 @@ public:
         switch(_len & 7)
         {
         case 7: Hash ^= (quint64)(Data2[6]) << 48;
+        #if defined(__GNUG__) && (__GNUC__ >= 7)
+        [[fallthrough]];
+        #endif
         case 6: Hash ^= (quint64)(Data2[5]) << 40;
+        #if defined(__GNUG__) && (__GNUC__ >= 7)
+        [[fallthrough]];
+        #endif
         case 5: Hash ^= (quint64)(Data2[4]) << 32;
+        #if defined(__GNUG__) && (__GNUC__ >= 7)
+        [[fallthrough]];
+        #endif
         case 4: Hash ^= (quint64)(Data2[3]) << 24;
+        #if defined(__GNUG__) && (__GNUC__ >= 7)
+        [[fallthrough]];
+        #endif
         case 3: Hash ^= (quint64)(Data2[2]) << 16;
+        #if defined(__GNUG__) && (__GNUC__ >= 7)
+        [[fallthrough]];
+        #endif
         case 2: Hash ^= (quint64)(Data2[1]) << 8;
+        #if defined(__GNUG__) && (__GNUC__ >= 7)
+        [[fallthrough]];
+        #endif
         case 1: Hash ^= (quint64)(Data2[0]);
                 Hash *= Constant1;
         };
@@ -154,8 +172,14 @@ public:
         switch (_len & 3) {
         case 3:
             Buffer ^= Tail[2] << 16;
+            #if defined(__GNUG__) && (__GNUC__ >= 7)
+            [[fallthrough]];
+            #endif
         case 2:
             Buffer ^= Tail[1] << 8;
+            #if defined(__GNUG__) && (__GNUC__ >= 7)
+            [[fallthrough]];
+            #endif
         case 1:
             Buffer ^= Tail[0];
 

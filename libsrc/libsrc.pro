@@ -63,7 +63,9 @@ HEADERS += libTargomanCommon/exTargomanBase.h \
     libTargomanCommon/Private/clsBaseConfigOverNet.h \
     libTargomanCommon/Private/clsLegacyConfigOverTCP.h \
     libTargomanCommon/Configuration/tmplModuleConfig.hpp \
-    libTargomanCommon/Configuration/tmplAddinConfig.hpp
+    libTargomanCommon/Configuration/tmplAddinConfig.hpp \
+    libTargomanCommon/clsCountAndSpeed.h \
+    libTargomanCommon/Private/clsCountAndSpeed_p.h
 
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
 SOURCES += \
@@ -85,7 +87,8 @@ SOURCES += \
     libTargomanCommon/Configuration/ConfigManagerPrivate.cpp \
     libTargomanCommon/Configuration/clsConfigByJsonRPC.cpp \
     libTargomanCommon/Configuration/clsLegacyConfigOverTCP.cpp \
-    libTargomanCommon/Configuration/clsBaseConfigOverNet.cpp
+    libTargomanCommon/Configuration/clsBaseConfigOverNet.cpp \
+    libTargomanCommon/clsCountAndSpeed.cpp
 
 OTHER_FILES += \
     libTargomanCommon/Private/primeGenerator.sh

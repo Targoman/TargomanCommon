@@ -43,9 +43,11 @@ namespace Configuration {
 /**
  * @brief This is the base class for all module classes.
  */
-class intfModule {
+class intfModule : public QObject{
 public:
-    intfModule(){}
+    intfModule(QObject* _parent = NULL):
+      QObject(_parent)
+    {}
 
 protected:
     virtual QString moduleFullName() {

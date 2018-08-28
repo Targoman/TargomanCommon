@@ -37,6 +37,7 @@ namespace Targoman {
 namespace Common {
 
 static QString demangle(const char* name) {
+    Q_UNUSED(demangle)
 
     int Status = -4; // some arbitrary value to eliminate the compiler warning
 

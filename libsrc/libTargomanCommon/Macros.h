@@ -253,6 +253,8 @@ inline constexpr _name::Type operator & (const _name::Type _first, const _name::
 #define OUTPUT
 #define INOUT
 
+#define FORWARD_DECLARE_PRIVATE(_class) namespace Private{class _class##Private;}
+
 // Unfortunately, some compilers will default to bool/int before it assumes
 // QString.  For these cases we'll resort to this ugly MACRO.
 #ifndef QSTR
