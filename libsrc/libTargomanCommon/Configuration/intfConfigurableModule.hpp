@@ -49,7 +49,6 @@ public:
       QObject(_parent)
     {}
 
-protected:
     virtual QString moduleFullName() {
         throw exTargomanMustBeImplemented("Seems that you forgot to use TARGOMAN_DEFINE_MODULE_SCOPE macro");
     }
