@@ -41,6 +41,7 @@ public:
     clsCountAndSpeedPrivate(quint16 _maxSnapshots):
         LastSpeed(0),
         LastIndex(0),
+        MaxSnapshots(_maxSnapshots),
         Snapshots(new quint64[_maxSnapshots]())
     {}
 
