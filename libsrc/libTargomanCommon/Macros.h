@@ -194,9 +194,37 @@
         __VA_ARGS__ \
       }; \
       inline static int getCount(){ return TARGOMAN_MACRO_ARG_COUNT(__VA_ARGS__); } \
+      static const char* Strings[] ={ \
+          TARGOMAN_MACRO_FOREACH(TARGOMAN_M2STR_WITHCOMMA, __VA_ARGS__) \
+      }; \
+     inline static QStringList options(enuEnumPart::Type _part = enuEnumPart::Keys){ \
+       QStringList Options; \
+       int EnumSize = getCount(); \
+       qint64 LastID = 0;\
+       for(int i=0; i< EnumSize; i++) { \
+          QString Option = Strings[i]; \
+          switch(_part){ \
+            case enuEnumPart::Keys: Option = Option.split('=').first();break; \
+            case enuEnumPart::Values:  \
+                 if(Option.contains('=')){ \
+                    Option = Option.split('=').last(); \
+                    bool Ok; LastID = Option.toLongLong(&Ok); \
+                    if(!Ok) LastID = Option.toLatin1().at(0); \
+                 } else {Option = QString("%1").arg(++LastID);};\
+                 break;  \
+            default: break;\
+          }\
+          Options.append( Option.trimmed() ); \
+       }return Options; \
+     } \
     }\
     inline bool testFlag(_name::Type _key, _name::Type _check)  {return (_key & _check) == _check;}
 
+TARGOMAN_DEFINE_ENUM(enuEnumPart,
+                     Full,
+                     Keys,
+                     Values
+                     )
 /*
 inline constexpr _name::Type operator | (const _name::Type _first, const _name::Type _second) {return (_name::Type)(_first | _second);}\
 inline constexpr _name::Type operator & (const _name::Type _first, const _name::Type _second) {return (_name::Type)(_first & _second);}\
