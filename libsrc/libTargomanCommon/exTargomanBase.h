@@ -41,7 +41,7 @@ namespace Common {
     class _name : public _base{\
     public: _name (const QString& _message = "", quint32 _line = 0) : \
             _base (_message, _line){ \
-    this->Message.append(" >;" TARGOMAN_M2STR(_name));\
+    /*this->Message.append(" >;" TARGOMAN_M2STR(_name));*/\
     }}
 
 class exTargomanStdOverrider : public QException {
