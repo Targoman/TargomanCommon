@@ -39,3 +39,4 @@ out
 # Qt
 Makefile
 *.pro.user
+*.stash
