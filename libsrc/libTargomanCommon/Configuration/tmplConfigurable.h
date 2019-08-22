@@ -39,13 +39,22 @@ namespace Configuration {
 
 /// @brief A predefined lambda function used which always returns true used when there
 /// is no further crossvalidation condition.
-static std::function<bool(const intfConfigurable& _item,
+inline std::function<bool(const intfConfigurable& _item,
                           QString& _errorMessage)> ReturnTrueCrossValidator(){
     Q_UNUSED(ReturnTrueCrossValidator)
     static std::function<bool(const intfConfigurable& _item,
                               QString& _errorMessage)> DefaultTrueCrossValidator  =
         [] (const intfConfigurable&, QString& ) {return true;};
     return DefaultTrueCrossValidator;
+}
+
+inline std::function<bool(const intfConfigurable& _item,
+                          QString& _errorMessage)> NonEmptyStringCrossValidator(){
+    Q_UNUSED(NonEmptyStringCrossValidator)
+    static std::function<bool(const intfConfigurable& _item,
+                              QString& _errorMessage)> DefaultNonEmptyStringCrossValidator  =
+        [] (const intfConfigurable& c, QString& ) {return c.toVariant().toString().size() > 0;};
+    return DefaultNonEmptyStringCrossValidator;
 }
 
 
@@ -63,7 +72,7 @@ public:
                      const QString&  _shortSwitch = "",
                      const QString&  _shortHelp = "",
                      const QString&  _LongSwitch = "",
-                     enuConfigSource::Type _configSources = (enuConfigSource::Type)(
+                     enuConfigSource::Type _configSources = static_cast<enuConfigSource::Type>(
                 enuConfigSource::File |
                 enuConfigSource::Net ),
                      bool _remoteView = true,
@@ -124,6 +133,7 @@ public:
      * This function converts input value from QVariant to a specific type based on overloaded implementation.
      */
     virtual inline void setFromVariant(const QVariant& _value){
+        Q_UNUSED (_value);
         throw exTargomanMustBeImplemented("setFromVariant for "+this->ConfigPath+" Not Implemented");
     }
     /**
@@ -137,7 +147,7 @@ public:
      * This function validate value of input value.
      */
     virtual inline bool        validate(const QVariant& _value, QString& _errorMessage) const{
-        return true;
+        Q_UNUSED(_value); Q_UNUSED (_errorMessage) return true;
     }
 
     /**
@@ -174,7 +184,7 @@ public:
                      const QString&  _shortSwitch = "",
                      const QString&  _shortHelp = "",
                      const QString&  _LongSwitch = "",
-                     enuConfigSource::Type _configSources = (enuConfigSource::Type)(
+                     enuConfigSource::Type _configSources = static_cast<enuConfigSource::Type>(
                 enuConfigSource::File |
                 enuConfigSource::Net ),
                      bool _remoteView = true,
@@ -221,11 +231,11 @@ public:
             if (std::is_signed<itmplType_t>::value){
                 if (_value.canConvert(QVariant::LongLong) == false)
                     return false;
-                IsInRange = (_value.value<qint64>() <= (qint64)this->Max && _value.value<qint64>() >= (qint64)this->Min);
+                IsInRange = (_value.value<qint64>() <= static_cast<qint64>(this->Max) && _value.value<qint64>() >= static_cast<qint64>(this->Min));
             }else{
                 if (_value.canConvert(QVariant::ULongLong) == false)
                     return false;
-                IsInRange = (_value.value<quint64>() <= (quint64)this->Max && _value.value<quint64>() >= (quint64)this->Min);
+                IsInRange = (_value.value<quint64>() <= static_cast<quint64>(this->Max) && _value.value<quint64>() >= static_cast<quint64>(this->Min));
             }
         }else if (std::is_floating_point<itmplType_t>::value){
             if (_value.canConvert(QVariant::Double) == false)
