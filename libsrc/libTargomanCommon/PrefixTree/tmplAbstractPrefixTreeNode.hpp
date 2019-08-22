@@ -98,7 +98,7 @@ protected:
 #pragma GCC diagnostic ignored "-Wstrict-aliasing"
         if(Q_UNLIKELY(InvalidInstance.ref == 0))
             InvalidInstance.ref.ref();
-#pragma GCC pop
+#pragma GCC diagnostic pop
         return InvalidInstance;
     }
 
