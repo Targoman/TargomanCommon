@@ -67,8 +67,7 @@ class exTargomanBase: public exTargomanStdOverrider
      * @param _message Message to be shown when calling what()
      * @param _line Line Number where the exception occured Defaults to 0.
      **/
-    exTargomanBase(const QString& _message = "", quint32 _line = 0) throw ();
-    ~exTargomanBase() throw ();
+    exTargomanBase(const QString& _message = "", quint32 _line = 0);
 
     void raise() const;
     QException* clone() const;
@@ -77,7 +76,10 @@ class exTargomanBase: public exTargomanStdOverrider
      * @note this method must be defined as const but it will collide with std::exception
      * @return QString Exception message
      **/
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Woverloaded-virtual"
     QString what();
+#pragma GCC diagnostic pop
 };
 
 /**
@@ -87,7 +89,7 @@ class exTargomanBase: public exTargomanStdOverrider
 class exTargomanInvalidParameter: public exTargomanBase
 {
   public:
-    exTargomanInvalidParameter(const QString& _message = "", int _line = 0);
+    exTargomanInvalidParameter(const QString& _message = "", quint32 _line = 0);
 };
 
 /**
@@ -97,7 +99,7 @@ class exTargomanInvalidParameter: public exTargomanBase
 class exTargomanNotEnoughMemory: public exTargomanBase
 {
   public:
-    exTargomanNotEnoughMemory(const QString& _message, int _line = 0);
+    exTargomanNotEnoughMemory(const QString& _message, quint32 _line = 0);
 };
 
 /**
@@ -107,7 +109,7 @@ class exTargomanNotEnoughMemory: public exTargomanBase
 class exTargomanNotImplemented: public exTargomanBase
 {
   public:
-    exTargomanNotImplemented(const QString& _message = "", int _line = 0);
+    exTargomanNotImplemented(const QString& _message = "", quint32 _line = 0);
 };
 
 /**
@@ -117,7 +119,7 @@ class exTargomanNotImplemented: public exTargomanBase
 class exTargomanMustBeImplemented: public exTargomanNotImplemented
 {
   public:
-    exTargomanMustBeImplemented(const QString& _message = "", int _line = 0);
+    exTargomanMustBeImplemented(const QString& _message = "", quint32 _line = 0);
 };
 
 /**
@@ -127,7 +129,7 @@ class exTargomanMustBeImplemented: public exTargomanNotImplemented
 class exTargomanInitialization: public exTargomanBase
 {
   public:
-    exTargomanInitialization(const QString& _message = "", int _line = 0);
+    exTargomanInitialization(const QString& _message = "", quint32 _line = 0);
 };
 
 }

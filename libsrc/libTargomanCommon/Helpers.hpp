@@ -31,18 +31,21 @@
 #include <QVector>
 #include <QPair>
 #include <memory>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonDocument>
 #include "libTargomanCommon/Types.h"
 
 namespace Targoman {
 namespace Common {
 
-static QString demangle(const char* name) {
+inline QString demangle(const char* name) {
     Q_UNUSED(demangle)
 
     int Status = -4; // some arbitrary value to eliminate the compiler warning
 
     std::unique_ptr<char, void(*)(void*)> Res {
-        abi::__cxa_demangle(name, NULL, NULL, &Status),
+        abi::__cxa_demangle(name, nullptr, nullptr, &Status),
         std::free
     };
 
@@ -62,7 +65,7 @@ inline int minofVec(const QVector<int>& _values)
     return Min;
 }
 
-static QVector<stuPos> getCorrespondence(const QString& _str1, const QString& _str2)
+inline QVector<stuPos> getCorrespondence(const QString& _str1, const QString& _str2)
 {
 #define DELETION     0
 #define INSERTION    1
@@ -141,6 +144,19 @@ static QVector<stuPos> getCorrespondence(const QString& _str1, const QString& _s
     return Correspondence;
 }
 
+inline QJsonObject mergeJsonObjects(QJsonObject _first, const QJsonObject::iterator _second){
+    if(_first.contains(_second.key())){
+        if(_second.value().isObject()){
+            QJsonObject ValueObject = _second.value().toObject();
+            for (auto Iter = ValueObject.begin(); Iter != ValueObject.end(); ++Iter) {
+                _first[_second.key()] = mergeJsonObjects(_first[_second.key()].toObject(), Iter);
+            }
+        }else
+            _first[_second.key()] = _second.value();
+    }else
+        _first.insert (_second.key(), _second.value());
+    return _first;
+}
 }
 }
 #endif // TARGOMAN_COMMON_HELPERS_HPP

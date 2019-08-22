@@ -104,9 +104,9 @@ QString JSONConversationProtocol::preparePong(const stuPong& _pong)
         return "[2]";
     else
         return QString("[3,\"%1\",\"%2\",\"%3\"]").arg(
-                    (char)_pong.Status).arg(
+                    static_cast<char>(_pong.Status)).arg(
                     _pong.SpecialColor == enuStatus::Unknown ?
-                        (char)_pong.Status : (char)_pong.SpecialColor).arg(
+                        static_cast<char>(_pong.Status) : static_cast<char>(_pong.SpecialColor)).arg(
                     _pong.Message);
 }
 
@@ -315,16 +315,13 @@ QString JSONConversationProtocol::variant2Json(const QVariant& _var)
     case QVariant::Int:
     case QVariant::LongLong:
         return QString::number(_var.toLongLong());
-        break;
 
     case QVariant::Double:
         return QString::number(_var.toReal());
-        break;
 
     case QVariant::UInt:
     case QVariant::ULongLong:
         return QString::number(_var.toULongLong());
-        break;
 
     case QVariant::String:
     case QVariant::Char:
@@ -333,15 +330,12 @@ QString JSONConversationProtocol::variant2Json(const QVariant& _var)
     case QVariant::Time:
     case QVariant::Url:
         return "\"" + _var.toString().replace("\"", "\\\"").replace("\n","\\n") + "\"";
-        break;
 
     case QVariant::List:
         return variantList2JSONArray(_var.toList());
-        break;
 
     case QVariant::Map:
         return variantMap2JSONObject(_var.toMap());
-        break;
 
 
     default:

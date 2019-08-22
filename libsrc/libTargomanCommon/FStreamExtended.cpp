@@ -35,7 +35,7 @@ namespace Common {
 template <> void clsOFStreamExtended::write(QString _value){
     QByteArray StringData = _value.toUtf8();
     this->write(StringData.size());
-    this->write(StringData.constData(), StringData.size());
+    this->write(StringData.constData(), static_cast<size_t>(StringData.size()));
 }
 
 
@@ -45,9 +45,12 @@ template <> void clsOFStreamExtended::write(QString _value){
  */
 template <>  QString clsIFStreamExtended::read(){
     QByteArray Data(this->read<int>(),Qt::Uninitialized);
-    this->read(Data.data(), Data.size());
+    this->read(Data.data(), static_cast<size_t>(Data.size()));
     return QString::fromUtf8(Data);
 }
+
+clsIFStreamExtended::~clsIFStreamExtended(){;}
+clsOFStreamExtended::~clsOFStreamExtended(){;}
 
 }
 }

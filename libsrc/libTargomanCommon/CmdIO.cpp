@@ -41,7 +41,7 @@ int targomanLinkedLibrariesCallback(struct dl_phdr_info *_info, size_t _size, vo
 
 using namespace Configuration;
 
-tmplConfigurable<bool> Silent(
+static tmplConfigurable<bool> Silent(
         clsConfigPath(CmdIO::moduleName() + "/" + "Silent"),
         "Set output off",
         false,
@@ -60,7 +60,7 @@ tmplConfigurable<bool> Silent(
         }
         );
 
-tmplConfigurable<bool> Full(
+static tmplConfigurable<bool> Full(
         clsConfigPath(CmdIO::moduleName() + "/" + "Full"),
         "Set output to full mode",
         false,
@@ -77,7 +77,7 @@ tmplConfigurable<bool> Full(
         }
         );
 
-tmplConfigurable<QStringList> DebugDetail(
+static tmplConfigurable<QStringList> DebugDetail(
         clsConfigPath(CmdIO::moduleName() + "/" + "DebugDetail"),
         "Set details to be shown for debug. {SHOW_TIME,SHOW_FUNC,SHOW_LINE,SHOW_FILE}",
         QStringList()<<"true"<<"false"<<"false"<<"false",
@@ -96,27 +96,27 @@ tmplConfigurable<QStringList> DebugDetail(
         "",
         "SHOW_TIME,SHOW_FUNC,SHOW_LINE,SHOW_FILE",
         "out-debug-details",
-        (enuConfigSource::Type)(enuConfigSource::Arg | enuConfigSource::File),
+        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
         false
         );
 
-tmplRangedConfigurable<quint8> DebugLevel(
+static tmplRangedConfigurable<quint8> DebugLevel(
         clsConfigPath(CmdIO::moduleName() + "/" + "DebugLevel"),
         "Set Debug level",
         0,9,
         0,
         [] (const intfConfigurable& _item, QString&){
-            TARGOMAN_IO_SETTINGS.Debug.setLevel(_item.toVariant().toUInt());
+            TARGOMAN_IO_SETTINGS.Debug.setLevel(static_cast<quint8>(_item.toVariant().toUInt()));
             return true;
         },
         "",
         "LEVEL",
         "out-debug-level",
-        (enuConfigSource::Type)(enuConfigSource::Arg | enuConfigSource::File),
+        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
         false
         );
 
-tmplConfigurable<QStringList> InfoDetail(
+static tmplConfigurable<QStringList> InfoDetail(
         clsConfigPath(CmdIO::moduleName() + "/" + "InfoDetail"),
         "Set details to be shown for Info. {SHOW_TIME,SHOW_FUNC,SHOW_LINE,SHOW_FILE}",
         QStringList()<<"true"<<"false"<<"false"<<"false",
@@ -135,27 +135,27 @@ tmplConfigurable<QStringList> InfoDetail(
         "",
         "SHOW_TIME,SHOW_FUNC,SHOW_LINE,SHOW_FILE",
         "out-info-details",
-        (enuConfigSource::Type)(enuConfigSource::Arg | enuConfigSource::File),
+        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
         false
         );
 
-tmplRangedConfigurable<quint8> InfoLevel(
+static tmplRangedConfigurable<quint8> InfoLevel(
         clsConfigPath(CmdIO::moduleName() + "/" + "InfoLevel"),
         "Set Info level",
         0,9,
         5,
         [] (const intfConfigurable& _item, QString&){
-            TARGOMAN_IO_SETTINGS.Info.setLevel(_item.toVariant().toUInt());
+            TARGOMAN_IO_SETTINGS.Info.setLevel(static_cast<quint8>(_item.toVariant().toUInt()));
             return true;
         },
         "",
         "LEVEL",
         "out-info-level",
-        (enuConfigSource::Type)(enuConfigSource::Arg | enuConfigSource::File),
+        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
         false
         );
 
-tmplConfigurable<QStringList> WarningDetail(
+static tmplConfigurable<QStringList> WarningDetail(
         clsConfigPath(CmdIO::moduleName() + "/" + "WarningDetail"),
         "Set details to be shown for Warning. {SHOW_TIME,SHOW_FUNC,SHOW_LINE,SHOW_FILE}",
         QStringList()<<"true"<<"false"<<"false"<<"false",
@@ -174,27 +174,27 @@ tmplConfigurable<QStringList> WarningDetail(
         "",
         "SHOW_TIME,SHOW_FUNC,SHOW_LINE,SHOW_FILE",
         "out-warning-details",
-        (enuConfigSource::Type)(enuConfigSource::Arg | enuConfigSource::File),
+        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
         false
         );
 
-tmplRangedConfigurable<quint8> WarningLevel(
+static tmplRangedConfigurable<quint8> WarningLevel(
         clsConfigPath(CmdIO::moduleName() + "/" + "WarningLevel"),
         "Set Warning level",
         0,9,
         5,
         [] (const intfConfigurable& _item, QString&){
-            TARGOMAN_IO_SETTINGS.Warning.setLevel(_item.toVariant().toUInt());
+            TARGOMAN_IO_SETTINGS.Warning.setLevel(static_cast<quint8>(_item.toVariant().toUInt()));
             return true;
         },
         "",
         "LEVEL",
         "out-warning-level",
-        (enuConfigSource::Type)(enuConfigSource::Arg | enuConfigSource::File),
+        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
         false
         );
 
-tmplConfigurable<QStringList> ErrorDetail(
+static tmplConfigurable<QStringList> ErrorDetail(
         clsConfigPath(CmdIO::moduleName() + "/" + "ErrorDetail"),
         "Set details to be shown for Error. {SHOW_TIME,SHOW_FUNC,SHOW_LINE,SHOW_FILE}",
         QStringList()<<"true"<<"false"<<"false"<<"false",
@@ -213,11 +213,11 @@ tmplConfigurable<QStringList> ErrorDetail(
         "",
         "SHOW_TIME,SHOW_FUNC,SHOW_LINE,SHOW_FILE",
         "out-error-details",
-        (enuConfigSource::Type)(enuConfigSource::Arg | enuConfigSource::File),
+        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
         false
         );
 
-tmplConfigurable<QStringList> HappyDetail(
+static tmplConfigurable<QStringList> HappyDetail(
         clsConfigPath(CmdIO::moduleName() + "/" + "HappyDetail"),
         "Set details to be shown for Happy. {SHOW_TIME,SHOW_FUNC,SHOW_LINE,SHOW_FILE}",
         QStringList()<<"true"<<"false"<<"false"<<"false",
@@ -236,27 +236,27 @@ tmplConfigurable<QStringList> HappyDetail(
         "",
         "SHOW_TIME,SHOW_FUNC,SHOW_LINE,SHOW_FILE",
         "out-happy-details",
-        (enuConfigSource::Type)(enuConfigSource::Arg | enuConfigSource::File),
+        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
         false
         );
 
-tmplRangedConfigurable<quint8> HappyLevel(
+static tmplRangedConfigurable<quint8> HappyLevel(
         clsConfigPath(CmdIO::moduleName() + "/" + "HappyLevel"),
         "Set Happy level",
         0,9,
         5,
         [] (const intfConfigurable& _item, QString&){
-            TARGOMAN_IO_SETTINGS.Happy.setLevel(_item.toVariant().toUInt());
+            TARGOMAN_IO_SETTINGS.Happy.setLevel(static_cast<quint8>(_item.toVariant().toUInt()));
             return true;
         },
         "",
         "LEVEL",
         "out-happy-level",
-        (enuConfigSource::Type)(enuConfigSource::Arg | enuConfigSource::File),
+        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
         false
         );
 
-tmplConfigurable<QStringList> NormalDetail(
+static tmplConfigurable<QStringList> NormalDetail(
         clsConfigPath(CmdIO::moduleName() + "/" + "NormalDetail"),
         "Set details to be shown for Normal. {SHOW_TIME,SHOW_FUNC,SHOW_LINE,SHOW_FILE}",
         QStringList()<<"true"<<"false"<<"false"<<"false",
@@ -275,23 +275,23 @@ tmplConfigurable<QStringList> NormalDetail(
         "",
         "SHOW_TIME,SHOW_FUNC,SHOW_LINE,SHOW_FILE",
         "out-normal-details",
-        (enuConfigSource::Type)(enuConfigSource::Arg | enuConfigSource::File),
+        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
         false
         );
 
-tmplRangedConfigurable<quint8> NormalLevel(
+static tmplRangedConfigurable<quint8> NormalLevel(
         clsConfigPath(CmdIO::moduleName() + "/" + "NormalLevel"),
         "Set Normal level",
         0,9,
         5,
         [] (const intfConfigurable& _item, QString&){
-            TARGOMAN_IO_SETTINGS.Normal.setLevel(_item.toVariant().toUInt());
+            TARGOMAN_IO_SETTINGS.Normal.setLevel(static_cast<quint8>(_item.toVariant().toUInt()));
             return true;
         },
         "",
         "LEVEL",
         "out-normal-level",
-        (enuConfigSource::Type)(enuConfigSource::Arg | enuConfigSource::File),
+        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
         false
         );
 
@@ -309,9 +309,12 @@ int targomanLinkedLibrariesCallback(struct dl_phdr_info *_info, size_t _size, vo
 
     void* Handle = dlopen (_info->dlpi_name, RTLD_LAZY);
     dlerror();    /* Clear any existing error */
-    *(void**) (&getTargomanLibVersion) = dlsym (Handle, "getTargomanLibVersion");
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wold-style-cast"
+    *(void**)(&getTargomanLibVersion) = dlsym (Handle, "getTargomanLibVersion");
+#pragma GCC diagnostic pop
 
-    if (dlerror() != NULL)
+    if (dlerror() != nullptr)
         fprintf(stderr,"System Lib: %s\n",_info->dlpi_name);
     else if (getTargomanLibVersion)
         fprintf(stderr,"  Targoman Lib: %s : %s\n",_info->dlpi_name, getTargomanLibVersion().c_str());
@@ -327,7 +330,7 @@ int targomanLinkedLibrariesCallback(struct dl_phdr_info *_info, size_t _size, vo
  */
 void printLoadedLibs()
 {
-    dl_iterate_phdr(targomanLinkedLibrariesCallback, NULL);
+    dl_iterate_phdr(targomanLinkedLibrariesCallback, nullptr);
 }
 
 clsIOSettings TARGOMAN_IO_SETTINGS;
@@ -359,8 +362,8 @@ void initTermios(int echo)
 {
   tcgetattr(0, &Old); /* grab old terminal i/o settings */
   New = Old; /* make new settings same as old settings */
-  New.c_lflag &= ~ICANON; /* disable buffered i/o */
-  New.c_lflag &= echo ? ECHO : ~ECHO; /* set echo mode */
+  New.c_lflag &= ~static_cast<uint>(ICANON); /* disable buffered i/o */
+  New.c_lflag &= echo ? static_cast<uint>(ECHO) : ~static_cast<uint>(ECHO); /* set echo mode */
   tcsetattr(0, TCSANOW, &New); /* use these new terminal i/o settings now */
 }
 
@@ -375,7 +378,7 @@ char getch_(int echo)
 {
   char ch;
   initTermios(echo);
-  ch = getchar();
+  ch = static_cast<char>(getchar());
   resetTermios();
   return ch;
 }

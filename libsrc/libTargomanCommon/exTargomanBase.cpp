@@ -28,13 +28,10 @@
 namespace Targoman {
 namespace Common {
 
-exTargomanBase::exTargomanBase(const QString& _message, quint32 _line) throw(){
+exTargomanBase::exTargomanBase(const QString& _message, quint32 _line){
     QString Message = _line ? QString::number(_line) + ": " + _message : _message;
     this->Message = Message.toUtf8();
 }
-
-exTargomanBase::~exTargomanBase() throw()
-{}
 
 void exTargomanBase::raise() const
 {
@@ -52,19 +49,19 @@ QString exTargomanBase::what()
     return QString::fromUtf8(this->Message);
 }
 
-exTargomanInvalidParameter::exTargomanInvalidParameter(const QString& _message, int _line):
+exTargomanInvalidParameter::exTargomanInvalidParameter(const QString& _message, quint32 _line):
     exTargomanBase(_message, _line)
 {
     /// Class name not inserted in message to be hidden in subclass messages
 }
 
-exTargomanNotEnoughMemory::exTargomanNotEnoughMemory(const QString& _message, int _line) :
+exTargomanNotEnoughMemory::exTargomanNotEnoughMemory(const QString& _message, quint32 _line) :
     exTargomanBase(_message, _line)
 {
     /// Class name not inserted in message to be hidden in subclass messages
 }
 
-exTargomanNotImplemented::exTargomanNotImplemented(const QString& _message, int _line) :
+exTargomanNotImplemented::exTargomanNotImplemented(const QString& _message, quint32 _line) :
     exTargomanBase(_message, _line)
 {
     this->Message.append(">;exTargomanNotImplemented");
@@ -72,13 +69,13 @@ exTargomanNotImplemented::exTargomanNotImplemented(const QString& _message, int 
     std::cerr<<this->Message.constData()<<std::endl;
 }
 
-exTargomanMustBeImplemented::exTargomanMustBeImplemented(const QString& _message, int _line) :
+exTargomanMustBeImplemented::exTargomanMustBeImplemented(const QString& _message, quint32 _line) :
     exTargomanNotImplemented(_message, _line)
 {
     this->Message.append(">;exTargomanMustBeImplemented");
 }
 
-exTargomanInitialization::exTargomanInitialization(const QString& _message, int _line) :
+exTargomanInitialization::exTargomanInitialization(const QString& _message, quint32 _line) :
     exTargomanBase(_message, _line)
 {
     this->Message.append(">;exTargomanInitialization");

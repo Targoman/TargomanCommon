@@ -51,7 +51,7 @@ Targoman::Common::clsCmdProgressBar::clsCmdProgressBar()
 clsCmdProgressBar::clsCmdProgressBar(const QString &_message, quint64 _maximum)
 {
     this->WasShown = false;
-    this->reset(_message, _maximum);
+    this->reset(_message,static_cast<qint64>(_maximum));
 }
 
 /**
@@ -95,7 +95,7 @@ void clsCmdProgressBar::setValue(quint32 _value)
             ioctl(1, TIOCGWINSZ, &w);
 
             QString ProgressPrefix = this->Message + QString(" [%1][%2][").arg(_value).arg(ProgressIndicator);
-            quint16 ProgressBarMaxWidth = qMin((quint16)w.ws_col, (quint16)200) - ProgressPrefix.size() - 10;
+            quint16 ProgressBarMaxWidth = qMin(static_cast<quint16>(w.ws_col), static_cast<quint16>(200)) - static_cast<quint16>(ProgressPrefix.size()) - 10;
             cerr<<QString("%1%2]\r").arg(ProgressPrefix).arg(
                    QString(this->LastProgressValue % (ProgressBarMaxWidth - 3), ' ')+"###",-ProgressBarMaxWidth).toUtf8().constData()<<flush;
             ++this->LastProgressValue;
@@ -118,17 +118,17 @@ void clsCmdProgressBar::setValue(quint32 _value)
     if (_value >= this->Maximum)
         this->finalize(true);
     else {
-        quint16 ProgressVal = ((double)_value / (double)this->Maximum) * 100;
+        quint16 ProgressVal = static_cast<quint16>((static_cast<double>(_value) / static_cast<double>(this->Maximum)) * 100);
         if (this->LastProgressValue != ProgressVal &&
             this->LastShowTime.elapsed() >= 200
                 ){
             struct winsize w;
             ioctl(1, TIOCGWINSZ, &w);
             QString ProgressPrefix = this->Message + QString(" [%1][%2%][").arg(_value).arg(ProgressVal,3);
-            quint16 ProgressBarMaxWidth = qMin((quint16)w.ws_col, (quint16)200) - ProgressPrefix.size() - 10;
+            quint16 ProgressBarMaxWidth = qMin(static_cast<quint16>(w.ws_col), static_cast<quint16>(200)) - static_cast<quint16>(ProgressPrefix.size()) - 10;
             cerr<<QString("%1%2]\r").arg(ProgressPrefix).arg(
                    QString((ProgressVal*ProgressBarMaxWidth)/100, '#'),-ProgressBarMaxWidth).toUtf8().constData()<<flush;
-            this->LastProgressValue = ProgressVal;
+            this->LastProgressValue = static_cast<quint8>(ProgressVal);
             this->LastShowTime.restart();
         }
         this->WasShown = true;
@@ -165,7 +165,7 @@ void clsCmdProgressBar::finalize(bool _change2full, qint64 _finalValue)
         struct winsize w;
         ioctl(1, TIOCGWINSZ, &w);
         QString ProgressPrefix = this->Message + QString(" [%1][100%][").arg(_finalValue == -1 ? this->Maximum : _finalValue);
-        quint16 ProgressBarMaxWidth = qMin((qint16)w.ws_col, (qint16)200) - ProgressPrefix.size() - 10;
+        quint16 ProgressBarMaxWidth = qMin(static_cast<quint16>(w.ws_col), static_cast<quint16>(200)) - static_cast<quint16>(ProgressPrefix.size()) - 10;
         cerr<<(ProgressPrefix +
                QString(ProgressBarMaxWidth, '#') + "]").toUtf8().constData()<<flush;
     }

@@ -33,12 +33,12 @@ namespace Common {
 
 const quint32 INT32_SIGN_BIT  = 0x80000000;
 
-inline bool isNegativFloat(float _num){
-    return ((FloatEncoded_t*)&_num)->AsUInt32 & INT32_SIGN_BIT;
+inline bool isNegativeFloat(float _num){
+    return (reinterpret_cast<FloatEncoded_t*>(&_num))->AsUInt32 & INT32_SIGN_BIT;
 }
 
 inline bool isPositiveFloat(float _num){
-    return ! isNegativFloat(_num);
+    return ! isNegativeFloat(_num);
 }
 
 inline quint32 rotl32 ( quint32 x, qint8 r ){return (x << r) | (x >> (32 - r));}
@@ -50,7 +50,7 @@ inline quint64 rotl64 ( quint32 x, qint8 r ){ return (x << r) | (x >> (64 - r));
  */
 inline std::string& fastTrimStdString(std::string& _str){
     const char* StrPtr = _str.c_str();
-    char* EndStr = (char*)StrPtr + _str.size();
+    char* EndStr = const_cast<char*>(StrPtr) + _str.size();
 
     while(*StrPtr){
         if(*StrPtr == ' ' ||
@@ -127,18 +127,18 @@ inline float fastASCII2Float (const char *pFloatString, size_t& _lastPos)
         }
         quint16 Exponent = 0;
         for (IntValue = 0; IS_VALID_DIGIT(*pFloatString); ++pFloatString) {
-            Exponent = Exponent * 10 + (*pFloatString - '0');
+            Exponent = Exponent * 10 + static_cast<quint16>(*pFloatString - '0');
         }
         Scale += ExpSign * Exponent;
     }
 
-    _lastPos = pFloatString - StartOfString;
+    _lastPos = static_cast<size_t>(pFloatString - StartOfString);
     // Return signed and scaled floating point result.
 
     char LastChar = *pFloatString;
-    *((char*)pFloatString) = 0;
-    float Ret = atof(StartOfString);
-    *((char*)pFloatString) = LastChar;
+    *(const_cast<char*>(pFloatString)) = 0;
+    float Ret = static_cast<float>(atof(StartOfString));
+    *(const_cast<char*>(pFloatString)) = LastChar;
     return Ret;
 
     //return ((float)(Sign * IntValue))/(float)Scale;
@@ -226,15 +226,12 @@ template<class Class_t, class Container_t, typename Functor_t>
  * @return Returns correct place of insertion.
  */
 size_t findInsertionPos(const Container_t& _sortedConatiner, const Class_t& _element, Functor_t _comparator){
-    for(size_t i = 0; i< (size_t)_sortedConatiner.size(); ++i){
+    for(size_t i = 0; i< reinterpret_cast<size_t>(_sortedConatiner.size()); ++i){
         if (_comparator(_element, _sortedConatiner.at(i)) > 0)
             return i;
     }
     return _sortedConatiner.size();
 }
-
-
-
 
 }
 }

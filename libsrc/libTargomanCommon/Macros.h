@@ -91,74 +91,74 @@
 // Following definition is used in complex templates where a template is instantiating other templates which needs comma
 #define TARGOMAN_VIRTUAL_COMMA() ,
 
-#define _TMFE_1(_do, X) _do(X)
-#define _TMFE_2(_do, X, ...) _do(X)_TMFE_1(_do, __VA_ARGS__)
-#define _TMFE_3(_do, X, ...) _do(X)_TMFE_2(_do, __VA_ARGS__)
-#define _TMFE_4(_do, X, ...) _do(X)_TMFE_3(_do, __VA_ARGS__)
-#define _TMFE_5(_do, X, ...) _do(X)_TMFE_4(_do, __VA_ARGS__)
-#define _TMFE_6(_do, X, ...) _do(X)_TMFE_5(_do, __VA_ARGS__)
-#define _TMFE_7(_do, X, ...) _do(X)_TMFE_6(_do, __VA_ARGS__)
-#define _TMFE_8(_do, X, ...) _do(X)_TMFE_7(_do, __VA_ARGS__)
-#define _TMFE_9(_do, X, ...) _do(X)_TMFE_8(_do, __VA_ARGS__)
-#define _TMFE_10(_do, X, ...) _do(X)_TMFE_9(_do, __VA_ARGS__)
-#define _TMFE_11(_do, X, ...) _do(X)_TMFE_10(_do, __VA_ARGS__)
-#define _TMFE_12(_do, X, ...) _do(X)_TMFE_11(_do, __VA_ARGS__)
-#define _TMFE_13(_do, X, ...) _do(X)_TMFE_12(_do, __VA_ARGS__)
-#define _TMFE_14(_do, X, ...) _do(X)_TMFE_13(_do, __VA_ARGS__)
-#define _TMFE_15(_do, X, ...) _do(X)_TMFE_14(_do, __VA_ARGS__)
-#define _TMFE_16(_do, X, ...) _do(X)_TMFE_15(_do, __VA_ARGS__)
-#define _TMFE_17(_do, X, ...) _do(X)_TMFE_16(_do, __VA_ARGS__)
-#define _TMFE_18(_do, X, ...) _do(X)_TMFE_17(_do, __VA_ARGS__)
-#define _TMFE_19(_do, X, ...) _do(X)_TMFE_18(_do, __VA_ARGS__)
-#define _TMFE_20(_do, X, ...) _do(X)_TMFE_19(_do, __VA_ARGS__)
-#define _TMFE_21(_do, X, ...) _do(X)_TMFE_20(_do, __VA_ARGS__)
-#define _TMFE_22(_do, X, ...) _do(X)_TMFE_21(_do, __VA_ARGS__)
-#define _TMFE_23(_do, X, ...) _do(X)_TMFE_22(_do, __VA_ARGS__)
-#define _TMFE_24(_do, X, ...) _do(X)_TMFE_23(_do, __VA_ARGS__)
-#define _TMFE_25(_do, X, ...) _do(X)_TMFE_24(_do, __VA_ARGS__)
-#define _TMFE_26(_do, X, ...) _do(X)_TMFE_25(_do, __VA_ARGS__)
-#define _TMFE_27(_do, X, ...) _do(X)_TMFE_26(_do, __VA_ARGS__)
-#define _TMFE_28(_do, X, ...) _do(X)_TMFE_27(_do, __VA_ARGS__)
-#define _TMFE_29(_do, X, ...) _do(X)_TMFE_28(_do, __VA_ARGS__)
-#define _TMFE_30(_do, X, ...) _do(X)_TMFE_29(_do, __VA_ARGS__)
-#define _TMFE_31(_do, X, ...) _do(X)_TMFE_30(_do, __VA_ARGS__)
-#define _TMFE_32(_do, X, ...) _do(X)_TMFE_31(_do, __VA_ARGS__)
-#define _TMFE_33(_do, X, ...) _do(X)_TMFE_32(_do, __VA_ARGS__)
-#define _TMFE_34(_do, X, ...) _do(X)_TMFE_33(_do, __VA_ARGS__)
-#define _TMFE_35(_do, X, ...) _do(X)_TMFE_34(_do, __VA_ARGS__)
-#define _TMFE_36(_do, X, ...) _do(X)_TMFE_35(_do, __VA_ARGS__)
-#define _TMFE_37(_do, X, ...) _do(X)_TMFE_36(_do, __VA_ARGS__)
-#define _TMFE_38(_do, X, ...) _do(X)_TMFE_37(_do, __VA_ARGS__)
-#define _TMFE_39(_do, X, ...) _do(X)_TMFE_38(_do, __VA_ARGS__)
-#define _TMFE_40(_do, X, ...) _do(X)_TMFE_39(_do, __VA_ARGS__)
-#define _TMFE_41(_do, X, ...) _do(X)_TMFE_40(_do, __VA_ARGS__)
-#define _TMFE_42(_do, X, ...) _do(X)_TMFE_41(_do, __VA_ARGS__)
-#define _TMFE_43(_do, X, ...) _do(X)_TMFE_42(_do, __VA_ARGS__)
-#define _TMFE_44(_do, X, ...) _do(X)_TMFE_43(_do, __VA_ARGS__)
-#define _TMFE_45(_do, X, ...) _do(X)_TMFE_44(_do, __VA_ARGS__)
-#define _TMFE_46(_do, X, ...) _do(X)_TMFE_45(_do, __VA_ARGS__)
-#define _TMFE_47(_do, X, ...) _do(X)_TMFE_46(_do, __VA_ARGS__)
-#define _TMFE_48(_do, X, ...) _do(X)_TMFE_47(_do, __VA_ARGS__)
-#define _TMFE_49(_do, X, ...) _do(X)_TMFE_48(_do, __VA_ARGS__)
-#define _TMFE_50(_do, X, ...) _do(X)_TMFE_49(_do, __VA_ARGS__)
-#define _TMFE_51(_do, X, ...) _do(X)_TMFE_50(_do, __VA_ARGS__)
-#define _TMFE_52(_do, X, ...) _do(X)_TMFE_51(_do, __VA_ARGS__)
-#define _TMFE_53(_do, X, ...) _do(X)_TMFE_52(_do, __VA_ARGS__)
-#define _TMFE_54(_do, X, ...) _do(X)_TMFE_53(_do, __VA_ARGS__)
-#define _TMFE_55(_do, X, ...) _do(X)_TMFE_54(_do, __VA_ARGS__)
-#define _TMFE_56(_do, X, ...) _do(X)_TMFE_55(_do, __VA_ARGS__)
-#define _TMFE_57(_do, X, ...) _do(X)_TMFE_56(_do, __VA_ARGS__)
-#define _TMFE_58(_do, X, ...) _do(X)_TMFE_57(_do, __VA_ARGS__)
-#define _TMFE_59(_do, X, ...) _do(X)_TMFE_58(_do, __VA_ARGS__)
+#define PRIV_TMFE_1(_do, X) _do(X)
+#define PRIV_TMFE_2(_do, X, ...) _do(X)PRIV_TMFE_1(_do, __VA_ARGS__)
+#define PRIV_TMFE_3(_do, X, ...) _do(X)PRIV_TMFE_2(_do, __VA_ARGS__)
+#define PRIV_TMFE_4(_do, X, ...) _do(X)PRIV_TMFE_3(_do, __VA_ARGS__)
+#define PRIV_TMFE_5(_do, X, ...) _do(X)PRIV_TMFE_4(_do, __VA_ARGS__)
+#define PRIV_TMFE_6(_do, X, ...) _do(X)PRIV_TMFE_5(_do, __VA_ARGS__)
+#define PRIV_TMFE_7(_do, X, ...) _do(X)PRIV_TMFE_6(_do, __VA_ARGS__)
+#define PRIV_TMFE_8(_do, X, ...) _do(X)PRIV_TMFE_7(_do, __VA_ARGS__)
+#define PRIV_TMFE_9(_do, X, ...) _do(X)PRIV_TMFE_8(_do, __VA_ARGS__)
+#define PRIV_TMFE_10(_do, X, ...) _do(X)PRIV_TMFE_9(_do, __VA_ARGS__)
+#define PRIV_TMFE_11(_do, X, ...) _do(X)PRIV_TMFE_10(_do, __VA_ARGS__)
+#define PRIV_TMFE_12(_do, X, ...) _do(X)PRIV_TMFE_11(_do, __VA_ARGS__)
+#define PRIV_TMFE_13(_do, X, ...) _do(X)PRIV_TMFE_12(_do, __VA_ARGS__)
+#define PRIV_TMFE_14(_do, X, ...) _do(X)PRIV_TMFE_13(_do, __VA_ARGS__)
+#define PRIV_TMFE_15(_do, X, ...) _do(X)PRIV_TMFE_14(_do, __VA_ARGS__)
+#define PRIV_TMFE_16(_do, X, ...) _do(X)PRIV_TMFE_15(_do, __VA_ARGS__)
+#define PRIV_TMFE_17(_do, X, ...) _do(X)PRIV_TMFE_16(_do, __VA_ARGS__)
+#define PRIV_TMFE_18(_do, X, ...) _do(X)PRIV_TMFE_17(_do, __VA_ARGS__)
+#define PRIV_TMFE_19(_do, X, ...) _do(X)PRIV_TMFE_18(_do, __VA_ARGS__)
+#define PRIV_TMFE_20(_do, X, ...) _do(X)PRIV_TMFE_19(_do, __VA_ARGS__)
+#define PRIV_TMFE_21(_do, X, ...) _do(X)PRIV_TMFE_20(_do, __VA_ARGS__)
+#define PRIV_TMFE_22(_do, X, ...) _do(X)PRIV_TMFE_21(_do, __VA_ARGS__)
+#define PRIV_TMFE_23(_do, X, ...) _do(X)PRIV_TMFE_22(_do, __VA_ARGS__)
+#define PRIV_TMFE_24(_do, X, ...) _do(X)PRIV_TMFE_23(_do, __VA_ARGS__)
+#define PRIV_TMFE_25(_do, X, ...) _do(X)PRIV_TMFE_24(_do, __VA_ARGS__)
+#define PRIV_TMFE_26(_do, X, ...) _do(X)PRIV_TMFE_25(_do, __VA_ARGS__)
+#define PRIV_TMFE_27(_do, X, ...) _do(X)PRIV_TMFE_26(_do, __VA_ARGS__)
+#define PRIV_TMFE_28(_do, X, ...) _do(X)PRIV_TMFE_27(_do, __VA_ARGS__)
+#define PRIV_TMFE_29(_do, X, ...) _do(X)PRIV_TMFE_28(_do, __VA_ARGS__)
+#define PRIV_TMFE_30(_do, X, ...) _do(X)PRIV_TMFE_29(_do, __VA_ARGS__)
+#define PRIV_TMFE_31(_do, X, ...) _do(X)PRIV_TMFE_30(_do, __VA_ARGS__)
+#define PRIV_TMFE_32(_do, X, ...) _do(X)PRIV_TMFE_31(_do, __VA_ARGS__)
+#define PRIV_TMFE_33(_do, X, ...) _do(X)PRIV_TMFE_32(_do, __VA_ARGS__)
+#define PRIV_TMFE_34(_do, X, ...) _do(X)PRIV_TMFE_33(_do, __VA_ARGS__)
+#define PRIV_TMFE_35(_do, X, ...) _do(X)PRIV_TMFE_34(_do, __VA_ARGS__)
+#define PRIV_TMFE_36(_do, X, ...) _do(X)PRIV_TMFE_35(_do, __VA_ARGS__)
+#define PRIV_TMFE_37(_do, X, ...) _do(X)PRIV_TMFE_36(_do, __VA_ARGS__)
+#define PRIV_TMFE_38(_do, X, ...) _do(X)PRIV_TMFE_37(_do, __VA_ARGS__)
+#define PRIV_TMFE_39(_do, X, ...) _do(X)PRIV_TMFE_38(_do, __VA_ARGS__)
+#define PRIV_TMFE_40(_do, X, ...) _do(X)PRIV_TMFE_39(_do, __VA_ARGS__)
+#define PRIV_TMFE_41(_do, X, ...) _do(X)PRIV_TMFE_40(_do, __VA_ARGS__)
+#define PRIV_TMFE_42(_do, X, ...) _do(X)PRIV_TMFE_41(_do, __VA_ARGS__)
+#define PRIV_TMFE_43(_do, X, ...) _do(X)PRIV_TMFE_42(_do, __VA_ARGS__)
+#define PRIV_TMFE_44(_do, X, ...) _do(X)PRIV_TMFE_43(_do, __VA_ARGS__)
+#define PRIV_TMFE_45(_do, X, ...) _do(X)PRIV_TMFE_44(_do, __VA_ARGS__)
+#define PRIV_TMFE_46(_do, X, ...) _do(X)PRIV_TMFE_45(_do, __VA_ARGS__)
+#define PRIV_TMFE_47(_do, X, ...) _do(X)PRIV_TMFE_46(_do, __VA_ARGS__)
+#define PRIV_TMFE_48(_do, X, ...) _do(X)PRIV_TMFE_47(_do, __VA_ARGS__)
+#define PRIV_TMFE_49(_do, X, ...) _do(X)PRIV_TMFE_48(_do, __VA_ARGS__)
+#define PRIV_TMFE_50(_do, X, ...) _do(X)PRIV_TMFE_49(_do, __VA_ARGS__)
+#define PRIV_TMFE_51(_do, X, ...) _do(X)PRIV_TMFE_50(_do, __VA_ARGS__)
+#define PRIV_TMFE_52(_do, X, ...) _do(X)PRIV_TMFE_51(_do, __VA_ARGS__)
+#define PRIV_TMFE_53(_do, X, ...) _do(X)PRIV_TMFE_52(_do, __VA_ARGS__)
+#define PRIV_TMFE_54(_do, X, ...) _do(X)PRIV_TMFE_53(_do, __VA_ARGS__)
+#define PRIV_TMFE_55(_do, X, ...) _do(X)PRIV_TMFE_54(_do, __VA_ARGS__)
+#define PRIV_TMFE_56(_do, X, ...) _do(X)PRIV_TMFE_55(_do, __VA_ARGS__)
+#define PRIV_TMFE_57(_do, X, ...) _do(X)PRIV_TMFE_56(_do, __VA_ARGS__)
+#define PRIV_TMFE_58(_do, X, ...) _do(X)PRIV_TMFE_57(_do, __VA_ARGS__)
+#define PRIV_TMFE_59(_do, X, ...) _do(X)PRIV_TMFE_58(_do, __VA_ARGS__)
 
 #define TARGOMAN_MACRO_FOREACH(action,...) \
   TARGOMAN_MACRO_ARG_COUNT_HELPER(__VA_ARGS__,\
-    _TMFE_59,_TMFE_58,_TMFE_57,_TMFE_56,_TMFE_55,_TMFE_54,_TMFE_53,_TMFE_52,_TMFE_51,_TMFE_50, \
-    _TMFE_49,_TMFE_48,_TMFE_47,_TMFE_46,_TMFE_45,_TMFE_44,_TMFE_43,_TMFE_42,_TMFE_41,_TMFE_40, \
-    _TMFE_39,_TMFE_38,_TMFE_37,_TMFE_36,_TMFE_35,_TMFE_34,_TMFE_33,_TMFE_32,_TMFE_31,_TMFE_30, \
-    _TMFE_29,_TMFE_28,_TMFE_27,_TMFE_26,_TMFE_25,_TMFE_24,_TMFE_23,_TMFE_22,_TMFE_21,_TMFE_20, \
-    _TMFE_19,_TMFE_18,_TMFE_17,_TMFE_16,_TMFE_15,_TMFE_14,_TMFE_13,_TMFE_12,_TMFE_11,_TMFE_10, \
-    _TMFE_9,_TMFE_8,_TMFE_7,_TMFE_6,_TMFE_5,_TMFE_4,_TMFE_3,_TMFE_2,_TMFE_1)(action,__VA_ARGS__)
+    PRIV_TMFE_59,PRIV_TMFE_58,PRIV_TMFE_57,PRIV_TMFE_56,PRIV_TMFE_55,PRIV_TMFE_54,PRIV_TMFE_53,PRIV_TMFE_52,PRIV_TMFE_51,PRIV_TMFE_50, \
+    PRIV_TMFE_49,PRIV_TMFE_48,PRIV_TMFE_47,PRIV_TMFE_46,PRIV_TMFE_45,PRIV_TMFE_44,PRIV_TMFE_43,PRIV_TMFE_42,PRIV_TMFE_41,PRIV_TMFE_40, \
+    PRIV_TMFE_39,PRIV_TMFE_38,PRIV_TMFE_37,PRIV_TMFE_36,PRIV_TMFE_35,PRIV_TMFE_34,PRIV_TMFE_33,PRIV_TMFE_32,PRIV_TMFE_31,PRIV_TMFE_30, \
+    PRIV_TMFE_29,PRIV_TMFE_28,PRIV_TMFE_27,PRIV_TMFE_26,PRIV_TMFE_25,PRIV_TMFE_24,PRIV_TMFE_23,PRIV_TMFE_22,PRIV_TMFE_21,PRIV_TMFE_20, \
+    PRIV_TMFE_19,PRIV_TMFE_18,PRIV_TMFE_17,PRIV_TMFE_16,PRIV_TMFE_15,PRIV_TMFE_14,PRIV_TMFE_13,PRIV_TMFE_12,PRIV_TMFE_11,PRIV_TMFE_10, \
+    PRIV_TMFE_9,PRIV_TMFE_8,PRIV_TMFE_7,PRIV_TMFE_6,PRIV_TMFE_5,PRIV_TMFE_4,PRIV_TMFE_3,PRIV_TMFE_2,PRIV_TMFE_1)(action,__VA_ARGS__)
 
 /********************************************************************************************
  * Predefined functions. This macro must be included in all libraries.
@@ -193,12 +193,12 @@
     namespace _name{ enum Type { \
         __VA_ARGS__ \
       }; \
-      inline static int getCount(){ return TARGOMAN_MACRO_ARG_COUNT(__VA_ARGS__); } \
+      inline int getCount(){ return TARGOMAN_MACRO_ARG_COUNT(__VA_ARGS__); } \
       static const char* Strings[] ={ \
           TARGOMAN_MACRO_FOREACH(TARGOMAN_M2STR_WITHCOMMA, __VA_ARGS__) \
       }; \
-     inline static QStringList options(enuEnumPart::Type _part = enuEnumPart::Keys){ \
-       QStringList Options; \
+     inline QStringList options(enuEnumPart::Type _part = enuEnumPart::Keys){ \
+       (void)options; QStringList Options; \
        int EnumSize = getCount(); \
        qint64 LastID = 0;\
        for(int i=0; i< EnumSize; i++) { \
@@ -245,24 +245,24 @@ inline constexpr _name::Type operator & (const _name::Type _first, const _name::
     }; static const char* Strings[] ={ \
         TARGOMAN_MACRO_FOREACH(TARGOMAN_M2STR_WITHCOMMA, __VA_ARGS__) \
     }; \
-    inline static int getCount() { return sizeof(Strings)/sizeof(char*); } \
-    inline static const char* toStr(Type _type) { \
-      if ((int)_type <= Unknown || (int)_type > getCount()) return "Unknown";\
+    inline int getCount() { return sizeof(Strings)/sizeof(char*); } \
+    inline const char* toStr(Type _type) { \
+      if (static_cast<int>(_type) <= Unknown || static_cast<int>(_type) > getCount()) return "Unknown";\
       return Strings[_type]; \
       toStr(Unknown);  \
     } \
-    inline static Type toEnum(const QString& _name) { \
+    inline Type toEnum(const QString& _name) { \
       if (_name.isEmpty()) \
         return Unknown; \
       int EnumSize = getCount(); \
       for(int i=0; i< EnumSize; i++) { \
         if (_name.toLower() == QString(Strings[i]).toLower()) \
-          return (Type) i; \
+          return static_cast<Type>(i); \
       } \
       return Unknown; \
       toEnum(""); \
     } \
-    inline static QStringList options(){ \
+    inline QStringList options(){ \
       QStringList Options; \
       int EnumSize = getCount(); \
       for(int i=0; i< EnumSize; i++) \

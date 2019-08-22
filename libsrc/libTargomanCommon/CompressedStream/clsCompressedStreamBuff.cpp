@@ -57,7 +57,7 @@ bool clsCompressedStreamBuff::open(const std::string &_name, std::ios_base::open
     *Fmodeptr = '\0';
 
     this->File = gzopen(_name.c_str(), Fmode);
-    if (this->File == NULL)
+    if (this->File == nullptr)
         return false;
 
     this->Opened = 1;

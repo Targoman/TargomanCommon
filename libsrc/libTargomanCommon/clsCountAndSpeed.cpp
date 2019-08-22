@@ -76,7 +76,7 @@ void clsCountAndSpeed::snapshot(quint16 _secsBetween)
     for(quint16 i=0; i < this->pPrivate->MaxSnapshots; ++i)
         SumValue+=this->pPrivate->Snapshots[i];
 
-    this->pPrivate->LastSpeed = ((double)SumValue) / (_secsBetween * this->pPrivate->MaxSnapshots);
+    this->pPrivate->LastSpeed = static_cast<quint64>((static_cast<double>(SumValue)) / (_secsBetween * this->pPrivate->MaxSnapshots));
 }
 
 }

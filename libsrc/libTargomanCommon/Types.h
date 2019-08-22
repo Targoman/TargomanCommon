@@ -100,8 +100,8 @@ struct stuPos : public QPair<qint32, qint32>{
         Q_ASSERT((_start < _end) || (_start == -1 && _end == -1));
     }
 
-    size_t start()const         {return this->first;}
-    size_t end()const           {return this->second;}
+    size_t start()const         {return static_cast<size_t>(this->first);}
+    size_t end()const           {return static_cast<size_t>(this->second);}
     bool   isValid() const      {return this->first >= 0;}
     bool   hasSingleItem() const {return this->second - this->first == 1; }
 };

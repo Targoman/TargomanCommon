@@ -218,7 +218,7 @@ class Logger : public QObject
     Q_OBJECT
 public:
     static inline Logger& instance(){
-        static Logger* Instance = NULL;
+        static Logger* Instance = nullptr;
         return *(Q_LIKELY(Instance) ? Instance : (Instance = new Logger));
     }
     ~Logger();
@@ -272,7 +272,7 @@ private:
     /**
      * @brief sets all kinds logSettings levels to lowest level.
      */
-    Logger(QObject *parent=0);
+    Logger(QObject *parent=nullptr);
 
 signals:
     void sigLogAdded(const QDateTime& _time,

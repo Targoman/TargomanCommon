@@ -63,7 +63,7 @@ template <template <class itmplKey, class itmplVal> class BaseContainer_t, class
 
         inline Iterator_t insert(itmplKey _key, itmplVal _val){
             QMutexLocker Locker(&this->Lock);
-            if(this->MaxItems && BaseContainer_t<itmplKey, itmplVal>::size() >= (int)this->MaxItems){
+            if(this->MaxItems && BaseContainer_t<itmplKey, itmplVal>::size() >= static_cast<int>(this->MaxItems)){
                 QList<QTime> Values = this->KeyAccessDateTime.values();
                 std::nth_element(Values.begin(), Values.begin() + this->MaxItems / 2, Values.end());
                 QList<itmplKey> ExpiredKeys;

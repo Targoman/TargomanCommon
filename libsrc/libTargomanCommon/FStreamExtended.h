@@ -49,7 +49,8 @@ public:
      */
     clsOFStreamExtended(const QString& _filePath) :
         std::fstream(_filePath.toUtf8().constData(), std::ios_base::out)
-    {}
+    {;}
+    virtual ~clsOFStreamExtended();
 
     /**
      *  @brief This template function, facilitates writing basic data types and can be overloaded for
@@ -57,7 +58,10 @@ public:
      */
     template <class Type_t>
     inline void write(const Type_t _value){
-        this->write((char*)&_value, sizeof(_value));
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wold-style-cast"
+        this->write((char*)(&_value), sizeof(_value));
+#pragma GCC diagnostic pop
     }
 
     /**
@@ -67,7 +71,7 @@ public:
      * @return returns itself.
      */
     inline __ostream_type& write(const char* _data, size_t _size) {
-        std::fstream::write(_data, _size);
+        std::fstream::write(_data, static_cast<std::streamsize>(_size));
         return *this;
     }
 };
@@ -83,6 +87,7 @@ public:
     clsIFStreamExtended()
     { }
 
+    virtual ~clsIFStreamExtended();
     /**
      * @brief clsOFStreamExtended   Constructor of this class, instantiates base fstream class with
      *                              file path and open file for input.
@@ -102,7 +107,10 @@ public:
     template <class Type_t>
     inline Type_t read(){
         Type_t _storage;
-        this->read((char*)&_storage, sizeof(_storage));
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wold-style-cast"
+        this->read((char*)(&_storage), sizeof(_storage));
+#pragma GCC diagnostic pop
         return _storage;
     }
 
@@ -115,16 +123,16 @@ public:
     inline __istream_type& read(char* _data, size_t _size) {
         if (this->UseBuffer){
             if(_size > Common::Constants::MaxFileIOBytes) {
-                size_t BytesRead = this->BufferStream.readRawData(_data, _size);
-                std::fstream::read(_data + BytesRead, _size - BytesRead);
+                int BytesRead = this->BufferStream.readRawData(_data, static_cast<int>(_size));
+                std::fstream::read(_data + BytesRead, static_cast<std::streamsize>(static_cast<int>(_size) - BytesRead));
                 this->Buffer.clear();
                 this->BufferStream.device()->seek(0);
                 this->BufferStream.resetStatus();
             } else {
-                size_t BytesToRead = _size;
+                int BytesToRead = static_cast<int>(_size);
                 do{
                     if(this->BufferStream.atEnd()){
-                        this->Buffer.resize(Constants::MaxFileIOBytes);
+                        this->Buffer.resize(static_cast<int>(Constants::MaxFileIOBytes));
                         this->BufferStream.device()->seek(0);
                         this->BufferStream.resetStatus();
                         std::fstream::read(this->Buffer.data(), Constants::MaxFileIOBytes);
@@ -133,7 +141,7 @@ public:
                 }while(BytesToRead > 0);
             }
         }else
-            std::fstream::read(_data, _size);
+            std::fstream::read(_data, static_cast<std::streamsize>(_size));
         return *this;
     }
 
@@ -166,7 +174,7 @@ public:
         if (this->UseBuffer){
             throw exTargomanNotImplemented("tellg can not be used in Buffered mode.");
         }else
-            return std::fstream::tellg();
+            return static_cast<quint64>(std::fstream::tellg());
     }
 
 private:
