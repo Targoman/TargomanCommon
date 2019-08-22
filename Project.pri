@@ -88,6 +88,7 @@ BaseConfigFolder         = $$BaseOutput/out/$$ConfigFolderPattern
 #+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-
 INCLUDEPATH += $$BaseLibraryIncludeFolder \
                $$PREFIX/include \
+               $(HOME)/local/include \
                $$DependencyIncludePaths/
 
 #+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-
