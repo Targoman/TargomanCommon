@@ -94,8 +94,11 @@ protected:
 protected:
     static Node_t& invalidInstance() {
         static Node_t InvalidInstance;
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstrict-aliasing"
         if(Q_UNLIKELY(InvalidInstance.ref == 0))
             InvalidInstance.ref.ref();
+#pragma GCC pop
         return InvalidInstance;
     }
 
