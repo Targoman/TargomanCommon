@@ -91,7 +91,6 @@ void ConfigManager::init(const QString& _license,
         this->pPrivate->printHelp(_license, _minimal);
         QCoreApplication::exit(1);
         exit(1);
-        return;
     }
 
     QSet<QString> Modules;
@@ -171,7 +170,7 @@ void ConfigManager::init(const QString& _license,
                                 intfConfigurableArray* ConfArray = dynamic_cast<intfConfigurableArray*>(ConfigItem);
                                 if (!ConfArray)
                                     throw exConfiguration("Invalid use of array flag on non array configuration");
-                                ConfArray->reserve(ConfigFile->childGroups().size());
+                                ConfArray->reserve(static_cast<size_t>(ConfigFile->childGroups().size()));
                                 Generated = true;
                                 ConfigFile->endGroup();
                             }else if (ConfigItem->configType() == enuConfigType::MultiMap){
@@ -182,7 +181,7 @@ void ConfigManager::init(const QString& _license,
                                     throw exConfiguration("Invalid use of multimap flag on non multimap configuration");
                                 foreach(const QString& Key, ConfigFile->childGroups()){
                                     ConfigFile->beginGroup(Key);
-                                    ConfMap->reserve(Key, ConfigFile->childGroups().size());
+                                    ConfMap->reserve(Key, static_cast<quint16>(ConfigFile->childGroups().size()));
                                     ConfigFile->endGroup();
                                 }
                                 Generated = true;
@@ -391,7 +390,7 @@ void ConfigManager::save2File(const QString &_fileName, bool _backup, int _wrapL
         ConfigStream<<"# "<<Prepared.replace("\n", "\n# ")<<"\n";
     };
     auto writeLine = [&](char _ch, float _scale = 1) {
-        ConfigStream<<"#"<<QString((_wrapLine - 1) * _scale, _ch)<<"\n";
+        ConfigStream<<"#"<<QString(static_cast<int>((_wrapLine - 1) * _scale), _ch)<<"\n";
     };
 
     auto writeSection  = [&](const QString& _sectionName) {

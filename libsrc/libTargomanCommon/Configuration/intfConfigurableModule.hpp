@@ -45,9 +45,10 @@ namespace Configuration {
  */
 class intfModule : public QObject{
 public:
-    intfModule(QObject* _parent = NULL):
+    intfModule(QObject* _parent = nullptr):
       QObject(_parent)
     {}
+    ~intfModule();
 
     virtual QString moduleFullName() {
         throw exTargomanMustBeImplemented("Seems that you forgot to use TARGOMAN_DEFINE_MODULE_SCOPE macro");
@@ -77,7 +78,7 @@ typedef intfModule* (*fpModuleInstantiator_t)();
 struct stuInstantiator{
     fpModuleInstantiator_t fpMethod;
     bool                 IsSingleton;
-    stuInstantiator(fpModuleInstantiator_t _method = NULL,
+    stuInstantiator(fpModuleInstantiator_t _method = nullptr,
                     bool _isSingleton = false ){
         this->fpMethod = _method;
         this->IsSingleton = _isSingleton;
@@ -118,7 +119,7 @@ private: \
 public: \
     static QString moduleFullNameStatic(){return Targoman::Common::demangle(typeid(_name).name());}\
     QString moduleFullName(){return _name::moduleFullNameStatic();}\
-    static _name& instance() {return *((_name*)_name::moduleInstance());} \
+    static _name& instance() {return *(reinterpret_cast<_name*>(_name::moduleInstance()));} \
     static Targoman::Common::Configuration::intfModule* moduleInstance(){static _name* Instance = NULL; return Q_LIKELY(Instance) ? Instance : (Instance = new _name);} \
     static QString moduleName(){return QStringLiteral(TARGOMAN_M2STR(_name));}  \
 private: \
@@ -129,7 +130,7 @@ private: \
 public: \
     static QString moduleFullNameStatic(){return Targoman::Common::demangle(typeid(_name).name());}\
     virtual QString moduleFullName(){return _name::moduleFullNameStatic();}\
-    static _name& instance() {return *((_name*)_name::moduleInstance());} \
+    static _name& instance() {return *(reinterpret_cast<_name*>(_name::moduleInstance()));} \
     static Targoman::Common::Configuration::intfModule* moduleInstance(){static _name* Instance = NULL; return Q_LIKELY(Instance) ? Instance : (Instance = new _name);} \
     static QString moduleName(){return QStringLiteral(TARGOMAN_M2STR(TARGOMAN_CAT_BY_SLASH(_module,_name)));}  \
 private: \

@@ -335,7 +335,10 @@ void clsConfigManagerPrivate::registerJsonRPCModule(QJsonRpcService &_service)
 }
 #endif
 
+
 }
+//Just to suppress vtable warning
+intfModule::~intfModule(){;}
 }
 }
 }
