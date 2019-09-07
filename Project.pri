@@ -102,10 +102,6 @@ unix {
                              $(HOME)/local/lib64 \
 
   FullDependencySearchPaths+=  $$DependencySearchPaths \
-                             $$PREFIX/lib64 \
-                             $$PREFIX/lib \
-                             $(HOME)/local/lib \
-                             $(HOME)/local/lib64 \
                                /usr/lib \
                                /usr/lib64 \
                                /usr/local/lib \
