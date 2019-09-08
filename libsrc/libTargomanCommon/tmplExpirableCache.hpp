@@ -63,6 +63,11 @@ template <template <class itmplKey, class itmplVal> class BaseContainer_t, class
             return BaseCacheClass_t::insert(_key, ExpirableCacheItem_t(_val, QTime::currentTime().addSecs(_ttl)));
         }
 
+        inline bool contains(const itmplKey& _key){
+            itmplVal Value = this->value(_key, false);
+            return Value != itmplVal();
+        }
+
         inline itmplVal value(const itmplKey& _key,
                               bool _updateAccessTime = true,
                               const itmplVal& _defaultValue = itmplVal()){
