@@ -33,6 +33,6 @@ ENUM_CONFIGURABLE(enuTestEnum);
 
 extern Targoman::Common::Configuration::tmplConfigurable<enuTestEnum::Type> TestE;
 extern Targoman::Common::Configuration::tmplConfigurable<QWildCard>      WildPattern;
-extern Targoman::Common::Configuration::tmplConfigurable<QRegExp>     RegexPattern;
+//extern Targoman::Common::Configuration::tmplConfigurable<QRegExp>     RegexPattern;
 
 #endif // TEST_H

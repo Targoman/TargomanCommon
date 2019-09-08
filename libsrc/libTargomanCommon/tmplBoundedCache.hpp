@@ -24,8 +24,8 @@
  * @author Saeed Torabzadeh <saeed.torabzadeh@targoman.com>
  */
 
-#ifndef TARGOMAN_COMMON_TMPLEXPIRABLECACHE_H
-#define TARGOMAN_COMMON_TMPLEXPIRABLECACHE_H
+#ifndef TARGOMAN_COMMON_TMPLBOUNDEDCACHE_H
+#define TARGOMAN_COMMON_TMPLBOUNDEDCACHE_H
 
 #include <QHash>
 #include <QTime>
@@ -114,7 +114,7 @@ template <template <class itmplKey, class itmplVal> class BaseContainer_t, class
 
             if (_updateAccessTime)
                 this->KeyAccessDateTime.insert(_key, QTime::currentTime());
-            return BaseContainer_t<itmplKey, itmplVal>::value(_key);
+            return this->baseValue (_key);
         }
 
         inline QList<itmplVal> values(const itmplKey& _key,
@@ -156,7 +156,12 @@ template <template <class itmplKey, class itmplVal> class BaseContainer_t, class
 
         quint32 maxItems(){ return this->MaxItems; }
 
-    private:
+    protected:
+        inline itmplVal baseValue(const itmplKey& _key){
+            return BaseContainer_t<itmplKey, itmplVal>::value(_key);
+        }
+
+    protected:
         QMutex                       Lock;
         QHash<itmplKey, QTime >      KeyAccessDateTime;
 
@@ -164,4 +169,4 @@ template <template <class itmplKey, class itmplVal> class BaseContainer_t, class
     };
 }
 }
-#endif // TARGOMAN_COMMON_TMPLEXPIRABLECACHE_H
+#endif // TARGOMAN_COMMON_TMPLBOUNDEDCACHE_H

@@ -65,7 +65,8 @@ HEADERS += libTargomanCommon/exTargomanBase.h \
     libTargomanCommon/Configuration/tmplModuleConfig.hpp \
     libTargomanCommon/Configuration/tmplAddinConfig.hpp \
     libTargomanCommon/clsCountAndSpeed.h \
-    libTargomanCommon/Private/clsCountAndSpeed_p.h
+    libTargomanCommon/Private/clsCountAndSpeed_p.h \
+    libTargomanCommon/tmplExpirableCache.hpp
 
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
 SOURCES += \

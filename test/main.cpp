@@ -35,6 +35,7 @@
 #include "libTargomanCommon/Configuration/Validators.hpp"
 #include "libTargomanCommon/Configuration/tmplModuleConfig.hpp"
 #include "libTargomanCommon/tmplBoundedCache.hpp"
+#include "libTargomanCommon/tmplExpirableCache.hpp"
 #include "libTargomanCommon/FStreamExtended.h"
 #include "libTargomanCommon/PrefixTree/tmplPrefixTree.h"
 #include "libTargomanCommon/Configuration/tmplConfigurableArray.hpp"
@@ -65,7 +66,7 @@ static Configuration::tmplModuleConfig  LM("/Modules/LM", "LM Module", "Default"
 class exSample: public exTargomanBase
 {
 public:
-    exSample(const QString& _message, int _line) throw () :
+    exSample(const QString& _message, quint32 _line):
         exTargomanBase(_message, _line)
     {
         this->Message.append(" >;exSample:");
@@ -192,13 +193,25 @@ int main(int argc, char *argv[])
 */
 
 
-    /*Targoman::Common::tmplExpirableCache<QHash,int,QString> A;
-    qDebug()<<getTypeStr(A);
+    Targoman::Common::tmplExpirableCache<QHash,int,QString> A;
+    A.insert (3, 1, "MyVAL1");
+    qDebug()<<A.value(1)<<"Ok";
+    sleep(1);
+    qDebug()<<A.value(1)<<"Ok";
+    sleep(1);
+    qDebug()<<A.value(1)<<"Ok";
+    sleep(1);
+    qDebug()<<A.value(1)<<"Ok";
+    sleep(1);
+    qDebug()<<A.value(1)<<"Ok";
+    QCoreApplication::exit(1); return 1;
+
+    /*qDebug()<<getTypeStr(A);
     enuBaba::Type B = enuBaba::cc;
     qDebug()<<getTypeStr(B);
 
-    A.clear();
-*/
+    A.clear();*/
+
     clsCmdProgressBar PB("Marquee");
     for (int i=0;i<10;i++){
         PB.setValue(i);

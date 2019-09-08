@@ -42,11 +42,11 @@ tmplConfigurable<QWildCard>     WildPattern(
         "w",
         "PTRN",
         "wildcard",
-        (enuConfigSource::Type)(
+        static_cast<enuConfigSource::Type>(
             enuConfigSource::Arg  |
             enuConfigSource::File));
 
-tmplConfigurable<QRegExp>     RegexPattern(
+/*tmplConfigurable<QRegularExpression>     RegexPattern(
         clsConfigPath("RegexPattern"),
         "FilePatterns to include when converting (WildCard format)",
         "",
@@ -54,6 +54,7 @@ tmplConfigurable<QRegExp>     RegexPattern(
         "p",
         "PTRN",
         "pattern",
-        (enuConfigSource::Type)(
+        static_cast<enuConfigSource::Type>(
             enuConfigSource::Arg  |
             enuConfigSource::File));
+*/
