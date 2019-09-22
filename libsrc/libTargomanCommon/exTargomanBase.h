@@ -44,10 +44,10 @@ namespace Common {
     /*this->Message.append(" >;" TARGOMAN_M2STR(_name));*/\
     }}
 
-#define TARGOMAN_ADD_HTTP_EXCEPTION_HANDLER(_name,_base,_httpErrorCode) \
-    class _name : public _base{\
+#define TARGOMAN_ADD_EXCEPTION_HANDLER_WITH_CODE(_errorCode, _name) \
+    class _name : public Targoman::Common::exTargomanBase{\
     public: _name (const QString& _message = "") : \
-            _base (_message, _httpErrorCode){ \
+            Targoman::Common::exTargomanBase (_message, _errorCode){ \
     /*this->Message.append(" >;" TARGOMAN_M2STR(_name));*/\
     }}
 
@@ -58,9 +58,12 @@ public:
         return this->Message.constData();
     }
 
+    inline qint32 code(){return this->Code;}
+    inline quint16 httpCode(){return this->Code < 300 || this->Code > 600 ? 500 : static_cast<quint16>(this->Code);}
+
 protected:
   QByteArray Message;
-  qint32     HTTPErrorCode;
+  qint32     Code;
 };
 
 /**
@@ -76,7 +79,7 @@ class exTargomanBase: public exTargomanStdOverrider
      * @param _message Message to be shown when calling what()
      * @param _line Line Number where the exception occured Defaults to 0.
      **/
-    exTargomanBase(const QString& _message = "", qint32 _httpErrorCode = 500);
+    exTargomanBase(const QString& _message = "", qint32 errorCode = -1);
 
     void raise() const;
     QException* clone() const;

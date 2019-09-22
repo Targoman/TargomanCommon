@@ -28,9 +28,9 @@
 namespace Targoman {
 namespace Common {
 
-exTargomanBase::exTargomanBase(const QString& _message, qint32 _httpErrorCode){
+exTargomanBase::exTargomanBase(const QString& _message, qint32 errorCode){
     this->Message = _message.toUtf8();
-    this->HTTPErrorCode = _httpErrorCode;
+    this->Code = errorCode;
 }
 
 void exTargomanBase::raise() const
