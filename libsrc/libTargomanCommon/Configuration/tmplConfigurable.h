@@ -108,8 +108,6 @@ public:
     /**
      * @brief tmplConfigurable Copy constructor of this class.
      */
-
-
     tmplConfigurable(const tmplConfigurable<itmplType_t>& _other) :
         intfConfigurable(_other){
         this->Value = _other.Value;
@@ -322,6 +320,7 @@ SPECIAL_CONFIGURABLE(double);
 SPECIAL_CONFIGURABLE(float);
 
 SPECIAL_CONFIGURABLE(QString);
+SPECIAL_CONFIGURABLE(QUrl);
 SPECIAL_CONFIGURABLE(FilePath_t);
 SPECIAL_CONFIGURABLE(QStringList);
 template <> QVariant Targoman::Common::Configuration::tmplConfigurable<QStringList>::toVariant() const;

@@ -133,11 +133,11 @@ public:
     }
 
     void reserve(size_t _count){
-        if (_count < (size_t)Items.size())
+        if (_count < static_cast<size_t>(Items.size()))
             throw exConfiguration(this->configPath() + " cannot remove items via calling reserve");
-        if (this->MaxItems<0 && (size_t)this->Items.size() + _count > (size_t)this->MaxItems)
+        if (this->MaxItems<0 && static_cast<size_t>(this->Items.size()) + _count > static_cast<size_t>(this->MaxItems))
             throw exConfiguration(this->configPath() + " is full. Cannot add more items");
-        for (int i=Items.size(); i<(int)_count; ++i)
+        for (size_t i=Items.size(); i<_count; ++i)
             this->Items.append(tmplConfigurableArrayItem<itmplType_t>(this->configPath(), i));
     }
 

@@ -39,10 +39,18 @@ namespace Common {
  **/
 #define TARGOMAN_ADD_EXCEPTION_HANDLER(_name,_base) \
     class _name : public _base{\
-    public: _name (const QString& _message = "", quint32 _line = 0) : \
-            _base (_message, _line){ \
+    public: _name (const QString& _message = "") : \
+            _base (_message){ \
     /*this->Message.append(" >;" TARGOMAN_M2STR(_name));*/\
     }}
+
+#define TARGOMAN_ADD_HTTP_EXCEPTION_HANDLER(_name,_base,_httpErrorCode) \
+    class _name : public _base{\
+    public: _name (const QString& _message = "") : \
+            _base (_message, _httpErrorCode){ \
+    /*this->Message.append(" >;" TARGOMAN_M2STR(_name));*/\
+    }}
+
 
 class exTargomanStdOverrider : public QException {
 public:
@@ -52,6 +60,7 @@ public:
 
 protected:
   QByteArray Message;
+  qint32     HTTPErrorCode;
 };
 
 /**
@@ -67,7 +76,7 @@ class exTargomanBase: public exTargomanStdOverrider
      * @param _message Message to be shown when calling what()
      * @param _line Line Number where the exception occured Defaults to 0.
      **/
-    exTargomanBase(const QString& _message = "", quint32 _line = 0);
+    exTargomanBase(const QString& _message = "", qint32 _httpErrorCode = 500);
 
     void raise() const;
     QException* clone() const;
@@ -89,7 +98,7 @@ class exTargomanBase: public exTargomanStdOverrider
 class exTargomanInvalidParameter: public exTargomanBase
 {
   public:
-    exTargomanInvalidParameter(const QString& _message = "", quint32 _line = 0);
+    exTargomanInvalidParameter(const QString& _message = "");
 };
 
 /**
@@ -99,7 +108,7 @@ class exTargomanInvalidParameter: public exTargomanBase
 class exTargomanNotEnoughMemory: public exTargomanBase
 {
   public:
-    exTargomanNotEnoughMemory(const QString& _message, quint32 _line = 0);
+    exTargomanNotEnoughMemory(const QString& _message);
 };
 
 /**
@@ -109,7 +118,7 @@ class exTargomanNotEnoughMemory: public exTargomanBase
 class exTargomanNotImplemented: public exTargomanBase
 {
   public:
-    exTargomanNotImplemented(const QString& _message = "", quint32 _line = 0);
+    exTargomanNotImplemented(const QString& _message = "");
 };
 
 /**
@@ -119,7 +128,7 @@ class exTargomanNotImplemented: public exTargomanBase
 class exTargomanMustBeImplemented: public exTargomanNotImplemented
 {
   public:
-    exTargomanMustBeImplemented(const QString& _message = "", quint32 _line = 0);
+    exTargomanMustBeImplemented(const QString& _message = "");
 };
 
 /**
@@ -129,7 +138,7 @@ class exTargomanMustBeImplemented: public exTargomanNotImplemented
 class exTargomanInitialization: public exTargomanBase
 {
   public:
-    exTargomanInitialization(const QString& _message = "", quint32 _line = 0);
+    exTargomanInitialization(const QString& _message = "");
 };
 
 }

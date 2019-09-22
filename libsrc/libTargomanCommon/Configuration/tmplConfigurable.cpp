@@ -88,6 +88,21 @@ void tmplConfigurable<QString>::setFromVariant(const QVariant& _value){ this->Va
 template <>
 QString tmplConfigurable<QString>::validValues() const { return ""; }
 
+//////QUrl
+template <>
+bool tmplConfigurable<QUrl>::validate(const QVariant& _value, QString& _error)const {
+    QUrl URL(_value.toString());
+    if(URL.isValid())
+        return true;
+
+    _error = "Invalid URL provided";
+    return false;
+}
+template <>
+void tmplConfigurable<QUrl>::setFromVariant(const QVariant& _value){ this->Value = QUrl(_value.toString()); }
+template <>
+QString tmplConfigurable<QUrl>::validValues() const { return "A Valid URL"; }
+
 //////FilePath_t
 template <>
 bool tmplConfigurable<FilePath_t>::validate(const QVariant&, QString& )const { return true; }

@@ -28,9 +28,9 @@
 namespace Targoman {
 namespace Common {
 
-exTargomanBase::exTargomanBase(const QString& _message, quint32 _line){
-    QString Message = _line ? QString::number(_line) + ": " + _message : _message;
-    this->Message = Message.toUtf8();
+exTargomanBase::exTargomanBase(const QString& _message, qint32 _httpErrorCode){
+    this->Message = _message.toUtf8();
+    this->HTTPErrorCode = _httpErrorCode;
 }
 
 void exTargomanBase::raise() const
@@ -49,34 +49,34 @@ QString exTargomanBase::what()
     return QString::fromUtf8(this->Message);
 }
 
-exTargomanInvalidParameter::exTargomanInvalidParameter(const QString& _message, quint32 _line):
-    exTargomanBase(_message, _line)
+exTargomanInvalidParameter::exTargomanInvalidParameter(const QString& _message):
+    exTargomanBase(_message)
 {
     /// Class name not inserted in message to be hidden in subclass messages
 }
 
-exTargomanNotEnoughMemory::exTargomanNotEnoughMemory(const QString& _message, quint32 _line) :
-    exTargomanBase(_message, _line)
+exTargomanNotEnoughMemory::exTargomanNotEnoughMemory(const QString& _message) :
+    exTargomanBase(_message)
 {
     /// Class name not inserted in message to be hidden in subclass messages
 }
 
-exTargomanNotImplemented::exTargomanNotImplemented(const QString& _message, quint32 _line) :
-    exTargomanBase(_message, _line)
+exTargomanNotImplemented::exTargomanNotImplemented(const QString& _message) :
+    exTargomanBase(_message)
 {
     this->Message.append(">;exTargomanNotImplemented");
     //Show error on screen as this exception normally occurs before application startup
     std::cerr<<this->Message.constData()<<std::endl;
 }
 
-exTargomanMustBeImplemented::exTargomanMustBeImplemented(const QString& _message, quint32 _line) :
-    exTargomanNotImplemented(_message, _line)
+exTargomanMustBeImplemented::exTargomanMustBeImplemented(const QString& _message) :
+    exTargomanNotImplemented(_message)
 {
     this->Message.append(">;exTargomanMustBeImplemented");
 }
 
-exTargomanInitialization::exTargomanInitialization(const QString& _message, quint32 _line) :
-    exTargomanBase(_message, _line)
+exTargomanInitialization::exTargomanInitialization(const QString& _message) :
+    exTargomanBase(_message)
 {
     this->Message.append(">;exTargomanInitialization");
     //Show error on screen as this exception normally occurs before application startup

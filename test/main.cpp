@@ -66,8 +66,8 @@ static Configuration::tmplModuleConfig  LM("/Modules/LM", "LM Module", "Default"
 class exSample: public exTargomanBase
 {
 public:
-    exSample(const QString& _message, quint32 _line):
-        exTargomanBase(_message, _line)
+    exSample(const QString& _message):
+        exTargomanBase(_message)
     {
         this->Message.append(" >;exSample:");
     }
@@ -267,7 +267,7 @@ int main(int argc, char *argv[])
 
         try{
             throw exSample2("Hello Wolrd to exception");
-            throw exSample("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ", __LINE__);
+            throw exSample("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ");
         }catch (exSample& e){
             TargomanError(" %s", qPrintable(e.what()));
         }catch (exTargomanBase& e){
@@ -275,7 +275,7 @@ int main(int argc, char *argv[])
         }
 
         try{
-            throw exTargomanInvalidParameter("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ", __LINE__);
+            throw exTargomanInvalidParameter("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ");
         }catch (exSample& e){
             TargomanError(" %s", qPrintable(e.what()));
         }catch (exTargomanBase& e){
