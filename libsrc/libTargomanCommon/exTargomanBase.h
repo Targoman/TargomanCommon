@@ -41,7 +41,7 @@ namespace Common {
     class _name : public _base{\
     public: _name (const QString& _message = "") : \
             _base (_message){ \
-    /*this->Message.append(" >;" TARGOMAN_M2STR(_name));*/\
+        this->Message.append(" >;" TARGOMAN_M2STR(_name));\
     }}
 
 #define TARGOMAN_ADD_EXCEPTION_HANDLER_WITH_CODE(_errorCode, _name) \
