@@ -210,7 +210,7 @@ class QJsonValueRef;
                  if(Option.contains('=')){ \
                     Option = Option.split('=').last(); \
                     bool Ok; LastID = Option.toLongLong(&Ok); \
-                    if(!Ok) LastID = Option.toLatin1().at(0); \
+                    if(!Ok) LastID = Option.toLatin1()[0]; \
                  } else {Option = QString("%1").arg(++LastID);};\
                  break;  \
             default: break;\
@@ -218,28 +218,28 @@ class QJsonValueRef;
           Options.append( Option.trimmed() ); \
        }return Options; \
      } \
-      static QString toStr(Type _value){ \
-          (void)toStr; int EnumSize = getCount(); int LastID = 0; \
-          for(int i=0; i< EnumSize; i++) { \
-             QString Option = Strings[i]; \
-             if(Option.contains('=')){ \
-                Option = Option.split('=').last(); \
-                bool Ok; LastID = Option.toInt(&Ok); \
-                if(!Ok) LastID = Option.toLatin1().at(0); \
-             } else ++LastID;\
-             if (_value == LastID) return QString(Strings[i]).split('=').first(); \
-          }   \
-          return "Unknown"; \
-      } \
-      inline QString toStr(const QJsonValueRef& _value){return toStr(static_cast<Type>(_value.toString().toLatin1().at(0)));}\
-      static Type toEnum(const QString& _value){ \
+     static QString toStr(Type _value){ \
+        (void)toStr; int EnumSize = getCount(); int LastID = 0; \
+        for(int i=0; i< EnumSize; i++) { \
+           QString Option = Strings[i]; \
+           if(Option.contains('=')){ \
+              Option = Option.split('=').last().trimmed(); \
+              if(Option.startsWith('\'')) LastID = Option.mid(1).toLatin1().at(0); \
+              else LastID = Option.toInt(); \
+           } else ++LastID; \
+           if (_value == LastID) return QString(Strings[i]).split('=').first().trimmed(); \
+        } \
+        return "Unknown"; \
+     } \
+     inline QString toStr(const QString& _value){return toStr(static_cast<Type>(static_cast<char>(_value.toLatin1()[0])));} \
+     static Type toEnum(const QString& _value){ \
           int EnumSize = getCount(); int LastID = 0; \
           for(int i=0; i< EnumSize; i++) { \
              QString Option = Strings[i]; \
              if(Option.contains('=')){ \
                 Option = Option.split('=').last(); \
                 bool Ok; LastID = Option.toInt(&Ok); \
-                if(!Ok) LastID = Option.toLatin1().at(0); \
+                if(!Ok) LastID = Option.toLatin1()[0]; \
              } else ++LastID;\
              if (_value == QString(Strings[i]).split('=').first()) return static_cast<Type>(LastID); \
           }  \
@@ -292,7 +292,7 @@ inline constexpr _name::Type operator & (const _name::Type _first, const _name::
       return Unknown; \
       toEnum(""); \
     } \
-    inline QString toStr(const QJsonValueRef& _value){return toStr(static_cast<Type>(_value.toString().toLatin1().at(0)));}\
+    inline QString toStr(const QString& _value){return toStr(static_cast<Type>(static_cast<char>(_value.toLatin1()[0])));}\
     inline QStringList options(){ \
       QStringList Options; \
       int EnumSize = getCount(); \
