@@ -188,6 +188,7 @@
   inline void set##_name(_type _value)  {this->m_##_name = _value;} \
   protected: _type m_##_name;
 
+class QJsonValueRef;
 /** @brief A macro to define Enum in a semi-enhanced method in which Enums will reside in a namespace */
 #define TARGOMAN_DEFINE_ENUM(_name, ...) \
     namespace _name{ enum Type { \
@@ -230,6 +231,7 @@
           }   \
           return "Unknown"; \
       } \
+      inline QString toStr(const QJsonValueRef& _value){return toStr(static_cast<Type>(_value.toString().toLatin1().at(0)));}\
       static Type toEnum(const QString& _value){ \
           int EnumSize = getCount(); int LastID = 0; \
           for(int i=0; i< EnumSize; i++) { \
@@ -244,7 +246,7 @@
           throw std::exception();\
       } \
       Q_DECLARE_FLAGS(Type##s, Type)\
-      inline void dummy(){Q_UNUSED(toEnum);Q_UNUSED(toStr);Q_UNUSED(options)} \
+      inline void dummy(){Q_UNUSED(toEnum);Q_UNUSED(options)} \
     }\
     Q_DECLARE_OPERATORS_FOR_FLAGS(_name::Type##s)
 
@@ -290,6 +292,7 @@ inline constexpr _name::Type operator & (const _name::Type _first, const _name::
       return Unknown; \
       toEnum(""); \
     } \
+    inline QString toStr(const QJsonValueRef& _value){return toStr(static_cast<Type>(_value.toString().toLatin1().at(0)));}\
     inline QStringList options(){ \
       QStringList Options; \
       int EnumSize = getCount(); \
