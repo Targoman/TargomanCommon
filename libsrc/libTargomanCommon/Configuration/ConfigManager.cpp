@@ -201,7 +201,7 @@ void ConfigManager::init(const QString& _license,
                 }
 
                 intfConfigurable* ConfigItem  = this->pPrivate->Configs[Key];
-                if (testFlag(ConfigItem->configSources(), enuConfigSource::File) == false)
+                if (ConfigItem->configSources().testFlag(enuConfigSource::File) == false)
                     throw exConfiguration("Configuration path <"+Key+"> can not be configured by file");
 
                 QVariant Value = ConfigFile->value(Key);
@@ -234,7 +234,7 @@ void ConfigManager::init(const QString& _license,
             for (auto ConfigItemIter = this->pPrivate->Configs.begin();
                  ConfigItemIter != this->pPrivate->Configs.end();
                  ConfigItemIter++){
-                if (testFlag(ConfigItemIter.value()->configSources(), enuConfigSource::Arg) == false)
+                if (ConfigItemIter.value()->configSources().testFlag(enuConfigSource::Arg) == false)
                     continue;
                 if ((KeyIter->startsWith("--") &&
                      (*KeyIter).toLower() == "--" + ConfigItemIter.value()->longSwitch()) ||
@@ -429,7 +429,7 @@ void ConfigManager::save2File(const QString &_fileName, bool _backup, int _wrapL
             Configurable = this->pPrivate->Configs.value(Group + (Key.isEmpty() ? "" : "/"+Key) + '/');
         Q_ASSERT(Configurable);
 
-        if (testFlag(Configurable->configSources(), enuConfigSource::File) == false)
+        if (Configurable->configSources().testFlag(enuConfigSource::File) == false)
             continue;
 
         if (LastGroup != Group){

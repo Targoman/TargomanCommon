@@ -54,7 +54,7 @@ template <typename Type_t, int _min, int _max>
 /**
 * @brief The tmplPathAccessValidator template function can be used for path(string) configurables
 */
-template <Targoman::Common::enuPathAccess::Type _requiredAccess, bool _required = true>
+template <enuPathAccess::Type _requiredAccess, bool _required = true>
    bool tmplPathAccessValidator (const intfConfigurable& _item,
                                   QString& _errorMessage){
         if (_required == false &&
@@ -64,8 +64,9 @@ template <Targoman::Common::enuPathAccess::Type _requiredAccess, bool _required 
 
         QString Path = _item.toVariant().toString();
         QFileInfo PathInfo(Path);
+        QFlags<enuPathAccess::Type> PathAccess(_required);
 
-        if (Targoman::Common::testFlag(_requiredAccess, Targoman::Common::enuPathAccess::Dir) &&
+        if (PathAccess.testFlag(Targoman::Common::enuPathAccess::Dir) &&
                 (PathInfo.exists() == false || PathInfo.isDir() == false)){
             _errorMessage = _item.configPath() + ": <"+Path+"> must be a directory";
             return false;
@@ -74,18 +75,18 @@ template <Targoman::Common::enuPathAccess::Type _requiredAccess, bool _required 
             _errorMessage = _item.configPath() + ": <"+Path+"> must be a file";
             return false;
         }*/
-        if (Targoman::Common::testFlag(_requiredAccess, Targoman::Common::enuPathAccess::Executable) &&
+        if (PathAccess.testFlag(Targoman::Common::enuPathAccess::Executable) &&
                 PathInfo.isExecutable() == false){
             _errorMessage = _item.configPath() + ": <"+Path+"> must be executable";
             return false;
         }
 
-        if (Targoman::Common::testFlag(_requiredAccess, Targoman::Common::enuPathAccess::Readable) &&
+        if (PathAccess.testFlag(Targoman::Common::enuPathAccess::Readable) &&
                 PathInfo.isReadable() == false){
             _errorMessage = _item.configPath() + ": Unable to open <"+Path+"> for READING";
             return false;
         }
-        if (Targoman::Common::testFlag(_requiredAccess, Targoman::Common::enuPathAccess::Writeatble)){
+        if (PathAccess.testFlag(Targoman::Common::enuPathAccess::Writeatble)){
             if (PathInfo.exists() == false){
                 if (QFileInfo(PathInfo.path()).isWritable() == false){
                     _errorMessage = _item.configPath() + ": Unable to create <"+Path+">";
@@ -101,11 +102,12 @@ template <Targoman::Common::enuPathAccess::Type _requiredAccess, bool _required 
         return true;
     }
 
+#define TARGOMAN_PATH_ACCESS(_requiredAccess) static_cast<enuPathAccess::Type>(static_cast<int>(_requiredAccess))
+
 #define ConditionalPathValidator(_condition, _requiredAccess)\
    [] (const intfConfigurable& _item, QString& _errorMessage) { \
        if(_condition) \
-           return Validators::tmplPathAccessValidator< \
-                   (enuPathAccess::Type)(_requiredAccess), true>( \
+           return Validators::tmplPathAccessValidator<(_requiredAccess), true>( \
                        _item, _errorMessage); \
        else \
             return true;\

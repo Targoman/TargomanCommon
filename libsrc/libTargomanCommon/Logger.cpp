@@ -54,7 +54,7 @@ static tmplConfigurable<QString> LogFile(
         "",
         "FILE_PATH",
         "log-file",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -70,7 +70,7 @@ static tmplConfigurable<bool> DontShow(
         "",
         "",
         "log-dont-show",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -120,7 +120,7 @@ static tmplConfigurable<QStringList> LogDebugDetail(
         "",
         "SHOW_TIME,SHOW_ACTOR",
         "log-debug-details",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -136,7 +136,7 @@ static tmplRangedConfigurable<quint8> LogDebugLevel(
         "",
         "LEVEL",
         "log-debug-level",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -157,7 +157,7 @@ static tmplConfigurable<QStringList> LogWarningDetail(
         "",
         "SHOW_TIME,SHOW_ACTOR",
         "log-warning-details",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -173,7 +173,7 @@ static tmplRangedConfigurable<quint8> LogWarningLevel(
         "",
         "LEVEL",
         "log-warning-level",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -194,7 +194,7 @@ static tmplConfigurable<QStringList> LogErrorDetail(
         "",
         "SHOW_TIME,SHOW_ACTOR",
         "log-error-details",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -215,7 +215,7 @@ static tmplConfigurable<QStringList> LogInfoDetail(
         "",
         "SHOW_TIME,SHOW_ACTOR",
         "log-info-details",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -231,7 +231,7 @@ static tmplRangedConfigurable<quint8> LogInfoLevel(
         "",
         "LEVEL",
         "log-info-level",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -252,7 +252,7 @@ static tmplConfigurable<QStringList> LogHappyDetail(
         "",
         "SHOW_TIME,SHOW_ACTOR",
         "log-happy-details",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -268,7 +268,7 @@ static tmplRangedConfigurable<quint8> LogHappyLevel(
         "",
         "LEVEL",
         "log-happy-level",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 

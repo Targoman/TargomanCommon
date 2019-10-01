@@ -51,7 +51,7 @@ using namespace Targoman::Common;
 static Configuration::tmplConfigurable<FilePath_t> B(
         "/s","fjkdfjkdsfjk","123",
         Configuration::Validators::tmplPathAccessValidator<
-        (enuPathAccess::Type)(enuPathAccess::Dir | enuPathAccess::Readable)>);
+        TARGOMAN_PATH_ACCESS(enuPathAccess::Dir | enuPathAccess::Readable)>);
 
 //static Configuration::tmplConfigurable<double> C("/s2","fjkdfjkdsfjk",123,
 //                                                  Configuration::Validators::tmplNumericValidator<double, -12, 5>);

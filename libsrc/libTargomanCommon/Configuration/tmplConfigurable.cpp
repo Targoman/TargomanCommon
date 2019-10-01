@@ -244,7 +244,7 @@ intfConfigurable::intfConfigurable(enuConfigType::Type _configType,
                                    const QString &_shortSwitch,
                                    const QString &_shortHelp,
                                    const QString &_longSwitch,
-                                   enuConfigSource::Type _configSources,
+                                   QFlags<enuConfigSource::Type> _configSources,
                                    bool _remoteView,
                                    const std::function<void(const intfConfigurable& _item)> &_finalizer) :
     pPrivate(new Private::intfConfigurablePrivate)
@@ -270,13 +270,13 @@ intfConfigurable::intfConfigurable(enuConfigType::Type _configType,
             if (this->ConfigPath.endsWith("/") == false)
                 this->ConfigPath.append("/");
 
-        if (testFlag(_configSources, enuConfigSource::Arg) && _shortSwitch == "" && _longSwitch == "")
+        if (_configSources.testFlag(enuConfigSource::Arg) && _shortSwitch == "" && _longSwitch == "")
             throw exConfiguration(this->configPath() + " defined to be configured by argument but no switch provided");
 
         if (_shortSwitch.size() || _longSwitch.size())
-            _configSources = (enuConfigSource::Type)(_configSources | enuConfigSource::Arg);
+            _configSources = _configSources | enuConfigSource::Arg;
 
-        this->ArgCount = this->shortHelp().size() ? this->ShortHelp.split(" ").size() : 0;
+        this->ArgCount = static_cast<qint8>(this->shortHelp().size() ? this->ShortHelp.split(" ").size() : 0);
         this->WasConfigured = false;
         this->ConfigSources = _configSources;
         this->RemoteViewAllowed = _remoteView;

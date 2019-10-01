@@ -42,9 +42,7 @@ tmplConfigurable<QWildCard>     WildPattern(
         "w",
         "PTRN",
         "wildcard",
-        static_cast<enuConfigSource::Type>(
-            enuConfigSource::Arg  |
-            enuConfigSource::File));
+        enuConfigSource::Arg | enuConfigSource::File);
 
 /*tmplConfigurable<QRegularExpression>     RegexPattern(
         clsConfigPath("RegexPattern"),

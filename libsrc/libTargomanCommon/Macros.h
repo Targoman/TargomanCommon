@@ -197,7 +197,7 @@
       static const char* Strings[] ={ \
           TARGOMAN_MACRO_FOREACH(TARGOMAN_M2STR_WITHCOMMA, __VA_ARGS__) \
       }; \
-     inline QStringList options(enuEnumPart::Type _part = enuEnumPart::Keys){ \
+      static QStringList options(enuEnumPart::Type _part = enuEnumPart::Keys){ \
        (void)options; QStringList Options; \
        int EnumSize = getCount(); \
        qint64 LastID = 0;\
@@ -217,8 +217,36 @@
           Options.append( Option.trimmed() ); \
        }return Options; \
      } \
+      static QString toStr(Type _value){ \
+          (void)toStr; int EnumSize = getCount(); int LastID = 0; \
+          for(int i=0; i< EnumSize; i++) { \
+             QString Option = Strings[i]; \
+             if(Option.contains('=')){ \
+                Option = Option.split('=').last(); \
+                bool Ok; LastID = Option.toInt(&Ok); \
+                if(!Ok) LastID = Option.toLatin1().at(0); \
+             } else ++LastID;\
+             if (_value == LastID) return QString(Strings[i]).split('=').first(); \
+          }   \
+          return "Unknown"; \
+      } \
+      static Type toEnum(const QString& _value){ \
+          int EnumSize = getCount(); int LastID = 0; \
+          for(int i=0; i< EnumSize; i++) { \
+             QString Option = Strings[i]; \
+             if(Option.contains('=')){ \
+                Option = Option.split('=').last(); \
+                bool Ok; LastID = Option.toInt(&Ok); \
+                if(!Ok) LastID = Option.toLatin1().at(0); \
+             } else ++LastID;\
+             if (_value == QString(Strings[i]).split('=').first()) return static_cast<Type>(LastID); \
+          }  \
+          throw std::exception();\
+      } \
+      Q_DECLARE_FLAGS(Type##s, Type)\
+      inline void dummy(){Q_UNUSED(toEnum);Q_UNUSED(toStr);Q_UNUSED(options)} \
     }\
-    inline bool testFlag(_name::Type _key, _name::Type _check)  {return (_key & _check) == _check;}
+    Q_DECLARE_OPERATORS_FOR_FLAGS(_name::Type##s)
 
 TARGOMAN_DEFINE_ENUM(enuEnumPart,
                      Full,
@@ -269,7 +297,10 @@ inline constexpr _name::Type operator & (const _name::Type _first, const _name::
           Options.append(Strings[i]); \
       return Options; \
     } \
-    }
+    Q_DECLARE_FLAGS(Type##s, Type)\
+    } \
+    Q_DECLARE_OPERATORS_FOR_FLAGS(_name::Type##s)
+
 
 /********************************************************************************************
  * Usefull Macros.

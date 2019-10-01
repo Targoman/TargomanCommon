@@ -72,9 +72,7 @@ public:
                      const QString&  _shortSwitch = "",
                      const QString&  _shortHelp = "",
                      const QString&  _LongSwitch = "",
-                     enuConfigSource::Type _configSources = static_cast<enuConfigSource::Type>(
-                enuConfigSource::File |
-                enuConfigSource::Net ),
+                     QFlags<enuConfigSource::Type> _configSources = enuConfigSource::File |enuConfigSource::Net,
                      bool _remoteView = true,
                      const std::function< void(const intfConfigurable& _item) >& _finalizer = VoidFinalizer()
                      ) :
@@ -182,9 +180,7 @@ public:
                      const QString&  _shortSwitch = "",
                      const QString&  _shortHelp = "",
                      const QString&  _LongSwitch = "",
-                     enuConfigSource::Type _configSources = static_cast<enuConfigSource::Type>(
-                enuConfigSource::File |
-                enuConfigSource::Net ),
+                     QFlags<enuConfigSource::Type> _configSources = enuConfigSource::File |enuConfigSource::Net,
                      bool _remoteView = true,
                      const std::function< void(const intfConfigurable& _item) >& _finalizer = VoidFinalizer()
                      ) :

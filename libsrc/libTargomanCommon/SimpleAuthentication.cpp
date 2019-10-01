@@ -38,9 +38,7 @@ tmplConfigurable<FilePath_t> SimpleAuthentication::UserInfoFile(
         MAKE_CONFIG_PATH("UserInfoFile"),
         "Path to file containing valid usernames and passwords. Relative to config file path unless specified as absolute path.",
         "",
-        Validators::tmplPathAccessValidator<
-            static_cast<enuPathAccess::Type>(enuPathAccess::File | enuPathAccess::Readable),
-            false>,
+        Validators::tmplPathAccessValidator<TARGOMAN_PATH_ACCESS(enuPathAccess::File | enuPathAccess::Readable), false>,
         "","",""/*,
         enuConfigSource::File,
         false*/

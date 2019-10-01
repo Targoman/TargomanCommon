@@ -96,7 +96,7 @@ static tmplConfigurable<QStringList> DebugDetail(
         "",
         "SHOW_TIME,SHOW_FUNC,SHOW_LINE,SHOW_FILE",
         "out-debug-details",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -112,7 +112,7 @@ static tmplRangedConfigurable<quint8> DebugLevel(
         "",
         "LEVEL",
         "out-debug-level",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -135,7 +135,7 @@ static tmplConfigurable<QStringList> InfoDetail(
         "",
         "SHOW_TIME,SHOW_FUNC,SHOW_LINE,SHOW_FILE",
         "out-info-details",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -151,7 +151,7 @@ static tmplRangedConfigurable<quint8> InfoLevel(
         "",
         "LEVEL",
         "out-info-level",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -174,7 +174,7 @@ static tmplConfigurable<QStringList> WarningDetail(
         "",
         "SHOW_TIME,SHOW_FUNC,SHOW_LINE,SHOW_FILE",
         "out-warning-details",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -190,7 +190,7 @@ static tmplRangedConfigurable<quint8> WarningLevel(
         "",
         "LEVEL",
         "out-warning-level",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -213,7 +213,7 @@ static tmplConfigurable<QStringList> ErrorDetail(
         "",
         "SHOW_TIME,SHOW_FUNC,SHOW_LINE,SHOW_FILE",
         "out-error-details",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -236,7 +236,7 @@ static tmplConfigurable<QStringList> HappyDetail(
         "",
         "SHOW_TIME,SHOW_FUNC,SHOW_LINE,SHOW_FILE",
         "out-happy-details",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -252,7 +252,7 @@ static tmplRangedConfigurable<quint8> HappyLevel(
         "",
         "LEVEL",
         "out-happy-level",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -275,7 +275,7 @@ static tmplConfigurable<QStringList> NormalDetail(
         "",
         "SHOW_TIME,SHOW_FUNC,SHOW_LINE,SHOW_FILE",
         "out-normal-details",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -291,7 +291,7 @@ static tmplRangedConfigurable<quint8> NormalLevel(
         "",
         "LEVEL",
         "out-normal-level",
-        static_cast<enuConfigSource::Type>(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 

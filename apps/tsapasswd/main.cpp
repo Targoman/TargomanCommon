@@ -99,9 +99,7 @@ tmplConfigurable<FilePath_t> UserInfoFile(
         clsConfigPath("File/Path"),
         "File path to store information. Relative to config file path unless specified as absolute path.",
         "./tsa.ini",
-        Validators::tmplPathAccessValidator<
-            (enuPathAccess::Type)(enuPathAccess::Writeatble),
-            true>,
+        Validators::tmplPathAccessValidator<TARGOMAN_PATH_ACCESS(enuPathAccess::Writeatble), true>,
         "f",
         "FILE_PATH",
         "file");

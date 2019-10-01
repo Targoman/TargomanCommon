@@ -111,10 +111,9 @@ public:
                      const QString&  _shortSwitch = "",
                      const QString&  _shortHelp = "",
                      const QString&  _longSwitch = "",
-                     enuConfigSource::Type _configSources =
-                        (enuConfigSource::Type)(
+                     QFlags<enuConfigSource::Type> _configSources =
                             enuConfigSource::File |
-                            enuConfigSource::Net ),
+                            enuConfigSource::Net,
                      bool _remoteView = true,
                      const std::function< void(const intfConfigurable& _item) >& _finalizer = VoidFinalizer()
                      );
@@ -166,12 +165,12 @@ public:
     inline bool  canBemanaged() { return this->ConfigType == enuConfigType::Normal ||
                                          this->ConfigType == enuConfigType::Module ||
                                          this->ConfigType == enuConfigType::Addin; }
-    inline bool  canBeConfigured(enuConfigSource::Type _source) const { return testFlag(this->ConfigSources, _source) ;}
+    inline bool  canBeConfigured(enuConfigSource::Type _source) const { return this->ConfigSources.testFlag(_source) ;}
     inline qint8 argCount()const{return this->ArgCount;}
     inline const QString& configPath()const{return this->ConfigPath;}
     inline void  setIsConfigured() { this->WasConfigured = true; }
     inline bool  wasConfigured() const {return this->WasConfigured; }
-    inline enuConfigSource::Type configSources() { return this->ConfigSources; }
+    inline QFlags<enuConfigSource::Type> configSources() { return this->ConfigSources; }
     inline bool remoteView() const { return this->RemoteViewAllowed; }
     inline enuConfigType::Type configType(){return this->ConfigType;}
 
@@ -184,7 +183,7 @@ protected:
     QString LongSwitch;     /**< (Optional) Long switch to be used to configure item via program arguments*/
     qint8   ArgCount;       /**< Number of arguments for this configurable */
     bool    WasConfigured;      /**< Indicates that value has been set by Config sources not default */
-    enuConfigSource::Type  ConfigSources; /**< Indicates that from which source this item can be configured */
+    QFlags<enuConfigSource::Type>  ConfigSources; /**< Indicates that from which source this item can be configured */
     bool    RemoteViewAllowed;   /** Indicates wheter this item can be monitored remotely or not **/
 private:
     QScopedPointer<Private::intfConfigurablePrivate> pPrivate;
