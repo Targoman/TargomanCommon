@@ -188,7 +188,8 @@
   inline void set##_name(_type _value)  {this->m_##_name = _value;} \
   protected: _type m_##_name;
 
-class QJsonValueRef;
+#define TARGOMAN_CREATE_CONSTEXPR(_name) constexpr char _name[] = #_name
+
 /** @brief A macro to define Enum in a semi-enhanced method in which Enums will reside in a namespace */
 #define TARGOMAN_DEFINE_ENUM(_name, ...) \
     namespace _name{ enum Type { \
