@@ -53,6 +53,10 @@ public:
     virtual QString moduleFullName() {
         throw exTargomanMustBeImplemented("Seems that you forgot to use TARGOMAN_DEFINE_MODULE_SCOPE macro");
     }
+
+    virtual QString moduleBaseName(){
+        throw exTargomanMustBeImplemented("Seems that you forgot to use TARGOMAN_DEFINE_MODULE_SCOPE macro");
+    }
 };
 
 //Following macro must be used in all interfaces derved from intfModule
@@ -122,17 +126,19 @@ public: \
     static _name& instance() {return *(reinterpret_cast<_name*>(_name::moduleInstance()));} \
     static Targoman::Common::Configuration::intfModule* moduleInstance(){static _name* Instance = NULL; return Q_LIKELY(Instance) ? Instance : (Instance = new _name);} \
     static QString moduleName(){return QStringLiteral(TARGOMAN_M2STR(_name));}  \
+    QString moduleBaseName(){return _name::moduleName();} \
 private: \
     Q_DISABLE_COPY(_name) \
     static Targoman::Common::Configuration::clsModuleRegistrar Registrar
 
-#define TARGOMAN_DEFINE_SINGLETONSUBMODULE(_module, _name) \
+#define TARGOMAN_DEFINE_SINGLETON_SUBMODULE(_module, _name) \
 public: \
     static QString moduleFullNameStatic(){return Targoman::Common::demangle(typeid(_name).name());}\
     virtual QString moduleFullName(){return _name::moduleFullNameStatic();}\
     static _name& instance() {return *(reinterpret_cast<_name*>(_name::moduleInstance()));} \
     static Targoman::Common::Configuration::intfModule* moduleInstance(){static _name* Instance = NULL; return Q_LIKELY(Instance) ? Instance : (Instance = new _name);} \
     static QString moduleName(){return QStringLiteral(TARGOMAN_M2STR(TARGOMAN_CAT_BY_SLASH(_module,_name)));}  \
+    QString moduleBaseName(){return _name::moduleName();} \
 private: \
     Q_DISABLE_COPY(_name) \
     static Targoman::Common::Configuration::clsModuleRegistrar Registrar

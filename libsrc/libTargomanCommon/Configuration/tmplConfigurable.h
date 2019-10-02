@@ -289,7 +289,7 @@ namespace Targoman { namespace Common { namespace Configuration { \
         QString ErrorMessage; \
         if (this->validate(_value, ErrorMessage)) this->Value = \
             (_value.toString().at(0).isDigit() ? \
-            (_enum::Type)_value.toInt() : \
+            static_cast<_enum::Type>(_value.toInt()) : \
             _enum::toEnum(_value.toString().toLatin1().constData())); \
         else throw exConfiguration(this->ConfigPath + ": " + ErrorMessage); \
     } \
