@@ -30,6 +30,7 @@
 #include <QStringList>
 #include <cstring>
 #include <functional>
+#include <QDebug>
 
 /********************************************************************************************
   Environmet detection macros
@@ -238,9 +239,9 @@
           for(int i=0; i< EnumSize; i++) { \
              QString Option = Strings[i]; \
              if(Option.contains('=')){ \
-                Option = Option.split('=').last(); \
-                bool Ok; LastID = Option.toInt(&Ok); \
-                if(!Ok) LastID = Option.toLatin1()[0]; \
+                Option = Option.split('=').last().trimmed(); \
+                if(Option.startsWith('\'')) LastID = Option.mid(1).toLatin1().at(0); \
+                else LastID = Option.toInt(); \
              } else ++LastID;\
              if (_value == QString(Strings[i]).split('=').first().trimmed()) return static_cast<Type>(LastID); \
           }  \
@@ -364,3 +365,4 @@ inline constexpr _name::Type operator & (const _name::Type _first, const _name::
 #endif
 
 #endif /* TARGOMAN_COMMON_MACROS_H_ */
+
