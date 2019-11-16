@@ -242,7 +242,7 @@
                 bool Ok; LastID = Option.toInt(&Ok); \
                 if(!Ok) LastID = Option.toLatin1()[0]; \
              } else ++LastID;\
-             if (_value == QString(Strings[i]).split('=').first()) return static_cast<Type>(LastID); \
+             if (_value == QString(Strings[i]).split('=').first().trimmed()) return static_cast<Type>(LastID); \
           }  \
           throw std::exception();\
       } \
