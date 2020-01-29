@@ -204,7 +204,7 @@
        (void)options; QStringList Options; \
        int EnumSize = getCount(); \
        qint64 LastID = 0;\
-       for(int i=0; i< EnumSize; i++) { \
+       for(int i=0; i< EnumSize; ++i) { \
           QString Option = Strings[i]; \
           switch(_part){ \
             case enuEnumPart::Keys: Option = Option.split('=').first();break; \
@@ -234,7 +234,7 @@
         return "Unknown"; \
      } \
      inline QString toStr(const QString& _value){return toStr(static_cast<Type>(static_cast<char>(_value.toLatin1()[0])));} \
-     static Type toEnum(const QString& _value){ \
+     static Type toEnum(const QString& _value, bool _byValue = false){ \
           int EnumSize = getCount(); int LastID = 0; \
           for(int i=0; i< EnumSize; i++) { \
              QString Option = Strings[i]; \
@@ -243,7 +243,9 @@
                 if(Option.startsWith('\'')) LastID = Option.mid(1).toLatin1().at(0); \
                 else LastID = Option.toInt(); \
              } else ++LastID;\
-             if (_value == QString(Strings[i]).split('=').first().trimmed()) return static_cast<Type>(LastID); \
+             if((_byValue && _value.toInt() == LastID) || \
+                (!_byValue && _value == QString(Strings[i]).split('=').first().trimmed())) \
+                return static_cast<Type>(LastID); \
           }  \
           throw std::exception();\
       } \
@@ -283,8 +285,8 @@ inline constexpr _name::Type operator & (const _name::Type _first, const _name::
       return Strings[_type]; \
       toStr(Unknown);  \
     } \
-    inline Type toEnum(const QString& _name) { \
-      if (_name.isEmpty()) \
+    inline Type toEnum(const QString& _name, bool _byValue = false) { \
+      if (_name.isEmpty() || _byValue) \
         return Unknown; \
       int EnumSize = getCount(); \
       for(int i=0; i< EnumSize; i++) { \
@@ -317,6 +319,7 @@ inline constexpr _name::Type operator & (const _name::Type _first, const _name::
 #define OUTPUT
 #define INOUT
 
+#define instanceGetter(_class) _class& instance(){static _class* Instance = nullptr; return *(Q_LIKELY(Instance) ? Instance : (Instace = new _class))}
 #define FORWARD_DECLARE_PRIVATE(_class) namespace Private{class _class##Private;}
 
 // Unfortunately, some compilers will default to bool/int before it assumes
