@@ -319,7 +319,7 @@ inline constexpr _name::Type operator & (const _name::Type _first, const _name::
 #define OUTPUT
 #define INOUT
 
-#define instanceGetter(_class) _class& instance(){static _class* Instance = nullptr; return *(Q_LIKELY(Instance) ? Instance : (Instace = new _class))}
+#define instanceGetter(_class) _class& instance(){static _class* Instance = nullptr; return *(Q_LIKELY(Instance) ? Instance : (Instance = new _class))}
 #define FORWARD_DECLARE_PRIVATE(_class) namespace Private{class _class##Private;}
 
 // Unfortunately, some compilers will default to bool/int before it assumes
