@@ -47,8 +47,11 @@ class clsConfigManagerPrivate;
 class intfConfigurablePrivate;
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wweak-vtables"
 TARGOMAN_ADD_EXCEPTION_HANDLER(exConfiguration, exTargomanBase);
 TARGOMAN_ADD_EXCEPTION_HANDLER(exCofigItemNotInitialized, exConfiguration);
+#pragma clang diagnostic pop
 
 /**
  * @brief The ConfigManager class is the manager class for configurables data.

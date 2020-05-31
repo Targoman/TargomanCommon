@@ -25,6 +25,8 @@ QT+=network
 
 ProjectDependencies += z
 
+QMAKE_CXXFLAGS += -Wno-unknown-pragmas -Wno-padded
+
 ################################################################################
 #                       DO NOT CHANGE ANYTHING BELOW                           #
 # more info: http://www.qtcentre.org/wiki/index.php?title=Undocumented_qmake   #
@@ -61,7 +63,6 @@ error("***** $$ProjectName: Unable to find Configuration file $$ProjectConfig **
 include ($$ProjectConfig)
 
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
-
 for(Project, ProjectDependencies) {
   for(Path, FullDependencySearchPaths):isEmpty( Found ) {
       message(Looking for $$Project in $$Path/)
