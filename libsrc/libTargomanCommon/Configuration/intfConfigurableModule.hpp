@@ -33,6 +33,7 @@
 #include "libTargomanCommon/Helpers.hpp"
 
 #define TARGOMAN_CAT_BY_SLASH(_m1,_m2) _m1/_m2
+#define TARGOMAN_CAT_BY_COLON(_m1,_m2) _m1:_m2
 #define MAKE_ABSOLUTE_MODULE_NAME \
     QString("%1/%2").arg(TARGOMAN_M2STR(CONFIG_ROOT_PATH)).arg(moduleName()).replace("//", "/")
 

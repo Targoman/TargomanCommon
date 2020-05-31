@@ -251,8 +251,8 @@
       } \
       Q_DECLARE_FLAGS(Type##s, Type)\
       inline void dummy(){Q_UNUSED(toEnum);Q_UNUSED(options)} \
-    }\
-    Q_DECLARE_OPERATORS_FOR_FLAGS(_name::Type##s)
+      Q_DECLARE_OPERATORS_FOR_FLAGS(_name::Type##s)
+    }
 
 TARGOMAN_DEFINE_ENUM(enuEnumPart,
                      Full,
@@ -263,6 +263,81 @@ TARGOMAN_DEFINE_ENUM(enuEnumPart,
 inline constexpr _name::Type operator | (const _name::Type _first, const _name::Type _second) {return (_name::Type)(_first | _second);}\
 inline constexpr _name::Type operator & (const _name::Type _first, const _name::Type _second) {return (_name::Type)(_first & _second);}\
 */
+
+/*namespace enuEnumPart{
+enum Type{
+  Full,
+  Keys,
+  Values
+};
+}
+
+class intfEnum{
+  public:
+    virtual ~intfEnum(){;}
+    QStringList optionsImpl(enuEnumPart::Type _part) const {
+      switch(_part) {
+      case enuEnumPart::Keys: return this->ParsedOptions.keys();
+      case enuEnumPart::Values: return this->ParsedOptions.values();
+      default: return this->optionsHelper();
+      }
+    }
+    QString toStrImpl(qint32 _value) const {
+        return this->ParsedOptions.value(this->intToStr(_value), "UNKNOWN");
+    }
+    qint32 toEnumImpl(const QString& _value, bool _byValue = false){
+        QString Value = _byValue ? this->ParsedOptions.key(_value) : this->ParsedOptions.value(_value);
+        if(Value.isNull())
+          throw std::exception();
+        return Value.toInt();
+    }
+  protected:
+    virtual int getCountHelper() const = 0;
+    virtual QStringList optionsHelper() const = 0;
+    QString intToStr(qint32 _value) const { return (_value >= 32 && _value <= 126) ? QString(QChar(_value)) : QString("%1").arg(_value); }
+    void parseOptions(){
+      if(this->ParsedOptions.isEmpty()) {
+        int EnumSize = this->getCountHelper();
+        qint32 LastID = -1;
+        for(int i=0; i< EnumSize; i++) {
+          QString Option = optionsHelper().value(i);
+          QString Name = Option.split("=").first().trimmed();
+          if(Option.contains('=')){
+            QString OptionValue = Option.split('=').last().trimmed();
+            bool Ok; LastID = OptionValue.toInt(&Ok);
+            if(!Ok){
+              OptionValue = OptionValue.replace('\'',"");
+              Q_ASSERT(OptionValue.size());
+              LastID = OptionValue.toLatin1()[0];
+              this->ParsedOptions.insert(OptionValue, Name);
+            }else
+               this->ParsedOptions.insert(QString("%1").arg(++LastID), Name);
+          }
+        }
+      }
+    }
+  protected:
+    QMap<QString, QString> ParsedOptions;
+
+};
+
+#define TARGOMAN_DEFINE_ENUM(_name, ...) \
+    class _name : intfEnum{  \
+      private: static _name& instance() {static _name* Instance = nullptr; if(Q_UNLIKELY(Instance)){ Instance = new _name; Instance->parseOptions();} return *Instance;} \
+      private: int getCountHelper() const { return TARGOMAN_MACRO_ARG_COUNT(__VA_ARGS__); } \
+      private: QStringList optionsHelper() const { return { TARGOMAN_MACRO_FOREACH(TARGOMAN_M2STR_WITHCOMMA, __VA_ARGS__) }; } \
+      public: \
+        _name(){;} \
+        enum Type{ __VA_ARGS__ }; \
+        static inline int getCount(){ return _name::instance().getCountHelper(); } \
+        static inline QStringList options(enuEnumPart::Type _part = enuEnumPart::Keys) { return  _name::instance().optionsImpl(_part); } \
+        static inline QString toStr(Type _value){ return  _name::instance().toStrImpl(static_cast<int>(_value)); } \
+        static inline QString toStr(const QString& _value){return _name::instance().toStr(static_cast<Type>(static_cast<char>(_value.toLatin1()[0])));} \
+        static Type toEnum(const QString& _value, bool _byValue = false){ return static_cast<Type>(_name::instance().toEnumImpl(_value, _byValue)); } \
+        Q_DECLARE_FLAGS(Type##s, Type)\
+        Q_DECLARE_FLAGS(Type##s, Type)\
+    };\
+    Q_DECLARE_OPERATORS_FOR_FLAGS(_name::Type##s)*/
 
 /**
  * @brief A macro to define Enum in an enhanced method in which Enums will reside in a namespace and can have string
@@ -319,7 +394,7 @@ inline constexpr _name::Type operator & (const _name::Type _first, const _name::
 #define OUTPUT
 #define INOUT
 
-#define instanceGetter(_class) _class& instance(){static _class* Instance = nullptr; return *(Q_LIKELY(Instance) ? Instance : (Instance = new _class));}
+#define instanceGetter(_class) static _class& instance(){static _class* Instance = nullptr; return *(Q_LIKELY(Instance) ? Instance : (Instance = new _class));}
 #define FORWARD_DECLARE_PRIVATE(_class) namespace Private{class _class##Private;}
 
 // Unfortunately, some compilers will default to bool/int before it assumes
