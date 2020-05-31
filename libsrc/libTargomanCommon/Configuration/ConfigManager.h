@@ -62,7 +62,7 @@ class ConfigManager : public QObject
 public:
     ~ConfigManager();
     static inline ConfigManager& instance(){
-        static ConfigManager* Instance = NULL;
+        static ConfigManager* Instance = nullptr;
         return *(Q_LIKELY(Instance) ? Instance : (Instance = new ConfigManager));
     }
 

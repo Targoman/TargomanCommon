@@ -50,7 +50,7 @@ tmplRangedConfigurable<unsigned> intfConfigManagerOverNet::Port(
         "",
         "PORT",
         "admin-port",
-        (enuConfigSource::Type)(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -62,7 +62,7 @@ tmplConfigurable<bool> intfConfigManagerOverNet::AdminLocal(
         "",
         "",
         "admin-just-local",
-        (enuConfigSource::Type)(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -74,7 +74,7 @@ tmplConfigurable<bool> intfConfigManagerOverNet::WaitPortReady(
         "",
         "",
         "admin-wait-port-ready",
-        (enuConfigSource::Type)(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -96,7 +96,7 @@ tmplRangedConfigurable<int> intfConfigManagerOverNet::MaxSessionTime(
         "",
         "SECONDS",
         "admin-max-session-time",
-        (enuConfigSource::Type)(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -119,7 +119,7 @@ tmplRangedConfigurable<int> intfConfigManagerOverNet::MaxIdleTime(
         "",
         "SECONDS",
         "admin-max-idle-time",
-        (enuConfigSource::Type)(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -131,7 +131,7 @@ tmplConfigurable<quint16> intfConfigManagerOverNet::MaxConnections(
         "",
         "MAX_ALLOWED",
         "admin-max-connections",
-        (enuConfigSource::Type)(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
@@ -143,7 +143,7 @@ tmplConfigurable<enuConfigOverNetMode::Type> clsConfigManagerPrivate::ConfigOver
         "",
         "OVER_NET_MODE",
         "admin-mode",
-        (enuConfigSource::Type)(enuConfigSource::Arg | enuConfigSource::File),
+        enuConfigSource::Arg | enuConfigSource::File,
         false
         );
 
