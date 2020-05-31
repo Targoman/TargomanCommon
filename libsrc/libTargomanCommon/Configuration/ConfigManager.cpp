@@ -78,7 +78,7 @@ ConfigManager::~ConfigManager()
 
 void ConfigManager::init(const QString& _license,
                          const QStringList &_arguments,
-                         fnAppInitializer_t _appInitializer,
+                         std::function<void()> _appInitializer,
                          bool _minimal)
 {
     QString ErrorMessage;
