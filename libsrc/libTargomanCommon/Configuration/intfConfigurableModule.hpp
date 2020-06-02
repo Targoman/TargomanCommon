@@ -44,6 +44,17 @@ namespace Configuration {
 /**
  * @brief This is the base class for all module classes.
  */
+
+struct stuPluginInfo{
+    stuPluginInfo(const QString& _file = {}, QObject* _instance = {}) :
+        File(_file),
+        Instance(_instance)
+    {}
+
+    QString File;
+    QObject* Instance;
+};
+
 class intfModule : public QObject{
 public:
     intfModule(QObject* _parent = nullptr):
@@ -70,20 +81,15 @@ public:
         throw exTargomanMustBeImplemented("Seems that you forgot to use module definition macros");\
     }
 
-
-
-/**
- * fpModuleInstantiator_t is function pointer to functions that returns pointer of intfModule (or its derivations) and have no argumnt.
- */
-typedef intfModule* (*fpModuleInstantiator_t)();
+typedef std::function<intfModule*()> fnModuleInstantiator_t ;
 
 /**
- * @brief This struct encapsulates modules's instantiator function pointer and wethere it is singleton or not.
+ * @brief This struct encapsulates modules's instantiator function and wethere it is singleton or not.
  */
 struct stuInstantiator{
-    fpModuleInstantiator_t fpMethod;
+    std::function<intfModule*()> fpMethod;
     bool                 IsSingleton;
-    stuInstantiator(fpModuleInstantiator_t _method = nullptr,
+    stuInstantiator(std::function<intfModule*()> _method = nullptr,
                     bool _isSingleton = false ){
         this->fpMethod = _method;
         this->IsSingleton = _isSingleton;

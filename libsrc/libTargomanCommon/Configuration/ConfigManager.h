@@ -71,7 +71,7 @@ public:
 
     void init(const QString &_license,
               const QStringList &_arguments = QStringList(),
-              std::function<void()> _appInitializer = [](){},
+              std::function<void()> _appInitializer = nullptr,
               bool _minimal = false);
     void save2File(const QString&  _fileName, bool _backup, int _wrapLine = 80);
     void addConfig(const QString _path, intfConfigurable* _item);
@@ -79,10 +79,11 @@ public:
     QStringList registeredModules(const QString& _moduleRoot);
     QVariant getConfig(const QString& _path, const QVariant &_default = QVariant()) const;
     void setValue(const QString& _path, const QVariant &_value) const;
-    fpModuleInstantiator_t getInstantiator(const QString& _name) const;
+    fnModuleInstantiator_t getInstantiator(const QString& _name) const;
     void getInstantiator(const QString& _name,
-                         fpModuleInstantiator_t& _instantoiator,
+                         fnModuleInstantiator_t& _instantiator,
                          bool& _isSingleton) const;
+    QList<stuPluginInfo> loadedPlugins();
     QString configFilePath();
     QSharedPointer<QSettings> configSettings();
     QString configFileDir();

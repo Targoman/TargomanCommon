@@ -108,6 +108,7 @@ public:
 
     bool SetPathsRelativeToConfigPath;
 
+    QList<stuPluginInfo> LoadedPlugins;
     ConfigManager& Parent;
     QScopedPointer<intfConfigManagerOverNet> ConfigOverNetServer;
     static Common::Configuration::tmplConfigurable<enuConfigOverNetMode::Type>    ConfigOverNetMode;

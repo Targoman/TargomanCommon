@@ -115,7 +115,7 @@ public:
         foreach(const QString CheckingAddin,
                 ConfigManager::instance().registeredModules(this->AcceptableModuleScope)){
             try{
-                fpModuleInstantiator_t Instantiator;
+                fnModuleInstantiator_t Instantiator;
                 bool IsSingleton;
                 ConfigManager::instance().getInstantiator(
                             this->AcceptableModuleScope + "::" + CheckingAddin,
@@ -135,7 +135,7 @@ public:
 
 private:
     QStringList ActiveAddins;
-    fpModuleInstantiator_t Instantiatior;   /**< Pointer to the Instantiator function of module.*/
+    fnModuleInstantiator_t Instantiatior;   /**< Pointer to the Instantiator function of module.*/
     QString AcceptableModuleScope;
 };
 

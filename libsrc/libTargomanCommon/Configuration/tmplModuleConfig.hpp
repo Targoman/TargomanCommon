@@ -109,7 +109,7 @@ public:
 
 private:
     QString ActiveModuleName;               /**< Module name which will be set by setFromVariant(const QVariant&)*/
-    fpModuleInstantiator_t Instantiatior;   /**< Pointer to the Instantiator function of module.*/
+    fnModuleInstantiator_t Instantiatior;   /**< Pointer to the Instantiator function of module.*/
     QString AcceptableModule;
 
 };

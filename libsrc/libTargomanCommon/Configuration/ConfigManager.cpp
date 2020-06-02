@@ -97,6 +97,34 @@ void ConfigManager::init(const QString& _license,
     bool SaveFile = false;
     bool FirstTimeConfigFile = false;
 
+    int Index = _arguments.indexOf("--plugins");
+    if (Index>=0){
+        if (_arguments.size() <= Index + 1)
+            throw exConfiguration("Invalid plugins option with no path");
+        QString PluginsPath = _arguments.at(Index + 1);
+        if (QFileInfo(PluginsPath).isDir() && QFileInfo(PluginsPath).isReadable() == false)
+            throw exConfiguration("Plugin path: <"+PluginsPath+"> not found or can not be read.");
+
+        QDir PluginsDir = QDir(PluginsPath);
+        foreach (QString FileName, PluginsDir.entryList(QDir::Files)) {
+            if(!FileName.endsWith(".so") && !FileName.endsWith(".dll"))
+                continue;
+            TargomanDebug(5,"Loading Module: "<<PluginsDir.absoluteFilePath(FileName));
+            QPluginLoader* Loader = new QPluginLoader(PluginsDir.absoluteFilePath(FileName));
+            if (!Loader)
+                throw exTargomanInitialization(QString("Unable to load %1 ").arg(FileName));
+            QObject* ModuleObject = Loader->instance();
+            if (ModuleObject)
+                this->pPrivate->LoadedPlugins.append(stuPluginInfo(FileName, ModuleObject));
+            else{
+                TargomanWarn(5,"Unable to load Module :"<<Loader->errorString());
+                if (Loader->isLoaded())
+                    Loader->unload(); //Unload plugin if it canot be used by the application
+                delete Loader;
+            }
+        }
+    }
+
     if (_minimal == false){
         // ////////////////////////////////////////////////
         // /check arguments to see wheter we must save file or not
@@ -111,7 +139,7 @@ void ConfigManager::init(const QString& _license,
         if (_arguments.count("-c") + _arguments.count("--config") > 1)
             throw exConfiguration("Invalid multiple ConfigManager file definition");
 
-        int Index = _arguments.indexOf(QRegExp("-c|--config"));
+        Index = _arguments.indexOf(QRegExp("-c|--config"));
         if (Index>=0){
             if (_arguments.size() <= Index + 1)
                 throw exConfiguration("Invalid config option with no file name");
@@ -129,7 +157,7 @@ void ConfigManager::init(const QString& _license,
         if (this->pPrivate->ConfigFilePath.isEmpty()){
             this->pPrivate->ConfigFilePath = QCoreApplication::applicationDirPath() + QCoreApplication::applicationName() + ".ini";
             if (QFileInfo(this->pPrivate->ConfigFilePath).isReadable() == false){
-                _appInitializer();
+                if(_appInitializer) _appInitializer();
                 if(SaveFile == false){
                     TargomanWarn(1, "No ConfigFile could be found. It is absolutely recomended to write one. Use --config-save to create one");
                     this->pPrivate->ConfigFilePath.clear();
@@ -569,15 +597,20 @@ void ConfigManager::setValue(const QString &_path, const QVariant &_value) const
     }
 }
 
+QList<stuPluginInfo> ConfigManager::loadedPlugins()
+{
+    return this->pPrivate->LoadedPlugins;
+}
+
 /**
  * @brief gives instantiator function of a module.
  * @param _name     Name of module.
  * @exception throws exception if ConfigManager is not initialized yet.
  * @exception throws exception if input module is singleton (because singleton module can not be reinitialized).
  */
-fpModuleInstantiator_t ConfigManager::getInstantiator(const QString &_name) const
+fnModuleInstantiator_t ConfigManager::getInstantiator(const QString &_name) const
 {
-    fpModuleInstantiator_t Instantiator;
+    fnModuleInstantiator_t Instantiator;
     bool IsSingleton;
 
     this->getInstantiator(_name, Instantiator, IsSingleton);
@@ -588,7 +621,7 @@ fpModuleInstantiator_t ConfigManager::getInstantiator(const QString &_name) cons
     return Instantiator;
 }
 
-void ConfigManager::getInstantiator(const QString &_name, fpModuleInstantiator_t &_instantiator, bool &_isSingleton) const
+void ConfigManager::getInstantiator(const QString &_name, fnModuleInstantiator_t &_instantiator, bool &_isSingleton) const
 {
     if (this->pPrivate->Initialized == false)
         throw exCofigItemNotInitialized("Configuration is not initialized yet.");

@@ -37,6 +37,7 @@ namespace Targoman {
 namespace Common {
 namespace Configuration {
 
+
 /// @brief A predefined lambda function used which always returns true used when there
 /// is no further crossvalidation condition.
 inline std::function<bool(const intfConfigurable& _item,
