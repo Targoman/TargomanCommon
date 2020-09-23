@@ -248,6 +248,7 @@ void clsConfigManagerPrivate::printHelp(const QString& _license, bool _minimal)
     std::cout<<"Usage:"<<std::endl;
     std::cout<<"\t-h|--help \n\t\t Print this help"<<std::endl;
     std::cout<<"\t--loaded-libs \n\t\t Print a list of loaded libraries"<<std::endl;
+    std::cout<<"\n\t--plugins: PLUGINS_PATH\n\t\t Path where plugins are stored"<<std::endl;
     if (_minimal == false){
         std::cout<<"\n**** "<<ConfigManager::moduleName().toLatin1().constData()<<" ****\n";
         std::cout<<"\t-c|--config FILE_PATH\n\t\t Path to config file"<<std::endl;

@@ -248,7 +248,7 @@ void ConfigManager::init(const QString& _license,
     for (auto KeyIter = _arguments.begin();
          KeyIter != _arguments.end();
          KeyIter++){
-        if (*KeyIter == "-c" || *KeyIter == "--config"){
+        if (*KeyIter == "-c" || *KeyIter == "--config" || *KeyIter == "--plugins"){
             KeyIter++;
             if (KeyIter != _arguments.end())
                 continue;
