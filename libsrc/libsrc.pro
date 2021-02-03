@@ -1,32 +1,26 @@
 ################################################################################
-#   Targoman: A robust Machine Translation framework
+#   TargomanBuildSystem
 #
-#   Copyright 2014-2018 by ITRC <http://itrc.ac.ir>
+#   Copyright 2010-2021 by Targoman Intelligent Processing <http://tip.co.ir>
 #
-#   This file is part of Targoman.
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
 #
-#   Targoman is free software: you can redistribute it and/or modify
-#   it under the terms of the GNU Lesser General Public License as published by
-#   the Free Software Foundation, either version 3 of the License, or
-#   (at your option) any later version.
+#    http://www.apache.org/licenses/LICENSE-2.0
 #
-#   Targoman is distributed in the hope that it will be useful,
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#   GNU Lesser General Public License for more details.
-#
-#   You should have received a copy of the GNU Lesser General Public License
-#   along with Targoman. If not, see <http://www.gnu.org/licenses/>.
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
 ################################################################################
-BasePath = ".."
-
-# +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
-HEADERS += libTargomanCommon/exTargomanBase.h \
+DIST_HEADERS += \
+    libTargomanCommon/exTargomanBase.h \
     libTargomanCommon/Macros.h \
     libTargomanCommon/clsSafeCoreApplication.h \
     libTargomanCommon/CmdIO.h \
     libTargomanCommon/Logger.h \
-    libTargomanCommon/Private/Logger_p.h \
     libTargomanCommon/FastOperations.hpp \
     libTargomanCommon/Constants.h \
     libTargomanCommon/Types.h \
@@ -47,10 +41,8 @@ HEADERS += libTargomanCommon/exTargomanBase.h \
     libTargomanCommon/PrefixTree/tmplAbstractPrefixTreeNode.hpp \
     libTargomanCommon/PrefixTree/tmplOnDemandPrefixTreeNode.hpp \
     libTargomanCommon/JSONConversationProtocol.h \
-    libTargomanCommon/Private/clsConfigManager_p.h \
     libTargomanCommon/Configuration/tmplConfigurableArray.hpp \
     libTargomanCommon/SimpleAuthentication.h \
-    libTargomanCommon/Private/RPCRegistry.hpp \
     libTargomanCommon/Configuration/intfRPCExporter.hpp \
     libTargomanCommon/Helpers.hpp \
     libTargomanCommon/PrefixTree/tmplAbstractOnDiskPrefixTreeNode.hpp \
@@ -58,15 +50,21 @@ HEADERS += libTargomanCommon/exTargomanBase.h \
     libTargomanCommon/PrefixTree/tmplNoCachePrefixTreeNode.hpp \
     libTargomanCommon/tmplBoundedCache.hpp \
     libTargomanCommon/Configuration/tmplConfigurableMultiMap.hpp \
+    libTargomanCommon/Configuration/tmplModuleConfig.hpp \
+    libTargomanCommon/Configuration/tmplAddinConfig.hpp \
+    libTargomanCommon/clsCountAndSpeed.h \
+    libTargomanCommon/tmplExpirableCache.hpp
+
+# +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
+PRIVATE_HEADERS += \
+    libTargomanCommon/Private/clsCountAndSpeed_p.h \
     libTargomanCommon/Private/intfConfigManagerOverNet.hpp \
     libTargomanCommon/Private/clsConfigByJsonRPC.h \
     libTargomanCommon/Private/clsBaseConfigOverNet.h \
     libTargomanCommon/Private/clsLegacyConfigOverTCP.h \
-    libTargomanCommon/Configuration/tmplModuleConfig.hpp \
-    libTargomanCommon/Configuration/tmplAddinConfig.hpp \
-    libTargomanCommon/clsCountAndSpeed.h \
-    libTargomanCommon/Private/clsCountAndSpeed_p.h \
-    libTargomanCommon/tmplExpirableCache.hpp
+    libTargomanCommon/Private/Logger_p.h \
+    libTargomanCommon/Private/RPCRegistry.hpp \
+    libTargomanCommon/Private/clsConfigManager_p.h \
 
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
 SOURCES += \
@@ -95,29 +93,4 @@ OTHER_FILES += \
     libTargomanCommon/Private/primeGenerator.sh
 
 ################################################################################
-#                       DO NOT CHANGE ANYTHING BELOW                           #
-################################################################################
-ConfigFile = $$BasePath/Configs.pri
-!exists($$ConfigFile){
-error("**** libsrc: Unable to find Configuration file $$ConfigFile ****")
-}
-include ($$ConfigFile)
-
-TEMPLATE = lib
-TARGET = $$ProjectName
-DESTDIR = $$BaseLibraryFolder
-OBJECTS_DIR = $$BaseBuildFolder/$$TARGET/obj
-MOC_DIR = $$BaseBuildFolder/$$TARGET/moc
-QMAKE_CXXFLAGS_RELEASE += -fPIC
-QMAKE_CXXFLAGS_DEBUG += -fPIC
-INCLUDEPATH+=lib$$ProjectName
-
-build_static {
-    DEFINES += TARGOMAN_BUILD_STATIC
-    CONFIG+= staticlib
-}
-
-QMAKE_POST_LINK += $$BaseOutput/linuxPostBuild.sh lib$$ProjectName $$BaseLibraryIncludeFolder $$BaseConfigFolder
-
-
-
+include(../qmake/libConfigs.pri)

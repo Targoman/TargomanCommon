@@ -1,7 +1,7 @@
 ################################################################################
-#   Targoman: A robust Machine Translation framework
+#   TargomanCommon: Primitive but usefull tools for Targoman
 #
-#   Copyright 2014-2018 by ITRC <http://itrc.ac.ir>
+#   Copyright 2014-2021 by ITRC <http://itrc.ac.ir>
 #
 #   This file is part of Targoman.
 #
