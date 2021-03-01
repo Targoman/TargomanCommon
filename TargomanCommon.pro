@@ -6,7 +6,6 @@
 #   Redistribution and use in source and binary forms are allowed under the
 #   terms of BSD License 2.0.
 ################################################################################
-PRJ_BASE_DIR=$$PWD
 include (./qmake/configs.pri)
 TEMPLATE = subdirs
 CONFIG += ordered
