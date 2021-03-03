@@ -7,7 +7,8 @@
 #   terms of BSD License 2.0.
 ################################################################################
 APP_NAME=tsapasswd
-include(../../qmake/appConfigs.pri)
+include($$QBUILD_PATH/templates/innerAppConfigs.pri)
+
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
 HEADERS =
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#

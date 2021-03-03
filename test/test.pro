@@ -17,4 +17,4 @@ SOURCES = \
 
 
 ################################################################################
-include(../qmake/testConfigs.pri)
+include($$QBUILD_PATH/templates/testConfigs.pri)

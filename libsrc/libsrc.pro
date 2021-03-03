@@ -84,4 +84,4 @@ OTHER_FILES += \
     libTargomanCommon/Private/primeGenerator.sh
 
 ################################################################################
-include(../qmake/libConfigs.pri)
+include($$QBUILD_PATH/templates/libConfigs.pri)

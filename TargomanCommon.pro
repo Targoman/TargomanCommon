@@ -6,15 +6,14 @@
 #   Redistribution and use in source and binary forms are allowed under the
 #   terms of BSD License 2.0.
 ################################################################################
-include (./qmake/configs.pri)
-TEMPLATE = subdirs
-CONFIG += ordered
-# +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
+include($$QBUILD_PATH/templates/projectConfigs.pri)
+
 addSubdirs(libsrc)
 addSubdirs(test, libsrc)
 addSubdirs(unitTest, libsrc)
 addSubdirs(apps, libsrc)
 
+# +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
 OTHER_FILES += \
     README.md \
     INSTALL \
