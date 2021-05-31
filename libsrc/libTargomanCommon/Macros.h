@@ -54,10 +54,19 @@
  * Helper Macros (Macro in Macro) These macros must be used jusrt in other macros
  ********************************************************************************************/
 
-#define TARGOMAN_M2CONCAT(_Arg1, _Arg2) _Arg1##_Arg2
-#define TARGOMAN_M3CONCAT(_Arg1, _Arg2, _Arg3) _Arg1##_Arg2##_Arg3
-#define TARGOMAN_M4CONCAT(_Arg1, _Arg2, _Arg3, _Arg4) _Arg1##_Arg2##_Arg3##_Arg4
-#define TARGOMAN_M7CONCAT(_Arg1, _Arg2, _Arg3, _Arg4, _Arg5, _Arg6, _Arg7) _Arg1##_Arg2##_Arg3##_Arg4##_Arg5##_Arg6##_Arg7
+#define TARGOMAN_M2PASTER(_Arg1, _Arg2) _Arg1##_Arg2
+#define TARGOMAN_M3PASTER(_Arg1, _Arg2, _Arg3) _Arg1##_Arg2##_Arg3
+#define TARGOMAN_M4PASTER(_Arg1, _Arg2, _Arg3, _Arg4) _Arg1##_Arg2##_Arg3##_Arg4
+#define TARGOMAN_M5PASTER(_Arg1, _Arg2, _Arg3, _Arg4, _Arg5) _Arg1##_Arg2##_Arg3##_Arg4##_Arg5
+#define TARGOMAN_M6PASTER(_Arg1, _Arg2, _Arg3, _Arg4, _Arg5, _Arg6) _Arg1##_Arg2##_Arg3##_Arg4##_Arg5##_Arg6
+#define TARGOMAN_M7PASTER(_Arg1, _Arg2, _Arg3, _Arg4, _Arg5, _Arg6, _Arg7) _Arg1##_Arg2##_Arg3##_Arg4##_Arg5##_Arg6##_Arg7
+
+#define TARGOMAN_M2CONCAT(_Arg1, _Arg2) TARGOMAN_M2PASTER(_Arg1, _Arg2)
+#define TARGOMAN_M3CONCAT(_Arg1, _Arg2, _Arg3) TARGOMAN_M3PASTER(_Arg1, _Arg2, _Arg3)
+#define TARGOMAN_M4CONCAT(_Arg1, _Arg2, _Arg3, _Arg4) TARGOMAN_M4PASTER(_Arg1, _Arg2, _Arg3, _Arg4)
+#define TARGOMAN_M5CONCAT(_Arg1, _Arg2, _Arg3, _Arg4, _Arg5) TARGOMAN_M5PASTER(_Arg1, _Arg2, _Arg3, _Arg4, _Arg5)
+#define TARGOMAN_M6CONCAT(_Arg1, _Arg2, _Arg3, _Arg4, _Arg5, _Arg6) TARGOMAN_M6PASTER(_Arg1, _Arg2, _Arg3, _Arg4, _Arg5, _Arg6)
+#define TARGOMAN_M7CONCAT(_Arg1, _Arg2, _Arg3, _Arg4, _Arg5, _Arg6, _Arg7) TARGOMAN_M7PASTER(_Arg1, _Arg2, _Arg3, _Arg4, _Arg5, _Arg6, _Arg7)
 
 #define TARGOMAN_STR_VALUE(_arg)      #_arg
 #define TARGOMAN_M2STR(_Macro) TARGOMAN_STR_VALUE(_Macro)
@@ -72,7 +81,7 @@
     _50,_51,_52,_53,_54,_55,_56,_57,_58,_59,  \
     N,...) N
 
-#define TARGOMAN_MACRO_ARG_COUNT(...) \
+#define TARGOMANINTERNAL_MACRO_ARG_COUNT(...) \
     TARGOMAN_MACRO_ARG_COUNT_HELPER(__VA_ARGS__,\
     59,58,57,56,55,54,53,52,51,50,  \
     49,48,47,46,45,44,43,42,41,40,  \
@@ -80,6 +89,39 @@
     29,28,27,26,25,24,23,22,21,20,  \
     19,18,17,16,15,14,13,12,11,10,  \
     9,8,7,6,5,4,3,2,1,0)
+
+
+
+#define TARGOMANINTERNAL_VA_ARGS_MULTI_OR_EMPTY_HELPER(...) TARGOMAN_MACRO_ARG_COUNT_HELPER(__VA_ARGS__, \
+    EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, \
+    EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, \
+    EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, \
+    EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, \
+    EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, \
+    EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, \
+    MULTI)
+
+
+#define TARGOMANINTERNAL_VA_ARGS_MULTI_OR_EMPTY(_0, _1, _2, _3) TARGOMANINTERNAL_VA_ARGS_MULTI_OR_EMPTY_HELPER(TARGOMAN_M5PASTER(TARGOMANINTERNAL_VA_ARGS_MULTI_OR_EMPTY_HELPER_CASE_, _0, _1, _2, _3))
+#define TARGOMANINTERNAL_VA_ARGS_MULTI_OR_EMPTY_HELPER_CASE_MULTIMULTIMULTIEMPTY ,
+#define TARGOMANINTERNAL_TRIGGER_PARENTHESIS_(...) ,
+#define TARGOMAN_VA_ARGS_MULTI_OR_EMPTY(...) \
+    TARGOMANINTERNAL_VA_ARGS_MULTI_OR_EMPTY( \
+        /* test if there is just one argument, eventually an empty one */ \
+        TARGOMANINTERNAL_VA_ARGS_MULTI_OR_EMPTY_HELPER(__VA_ARGS__), \
+        /* test if _TRIGGER_PARENTHESIS_ together with the argument adds a comma */ \
+        TARGOMANINTERNAL_VA_ARGS_MULTI_OR_EMPTY_HELPER(TARGOMANINTERNAL_TRIGGER_PARENTHESIS_ __VA_ARGS__), \
+        /* test if the argument together with a parenthesis adds a comma */ \
+        TARGOMANINTERNAL_VA_ARGS_MULTI_OR_EMPTY_HELPER(__VA_ARGS__ (/*empty*/)), \
+        /* test if placing it between _TRIGGER_PARENTHESIS_ and the parenthesis adds a comma */ \
+        TARGOMANINTERNAL_VA_ARGS_MULTI_OR_EMPTY_HELPER(TARGOMANINTERNAL_TRIGGER_PARENTHESIS_ __VA_ARGS__ (/*empty*/)) \
+    )
+
+#define TARGOMANINTERNAL_MACRO_ARG_COUNT_HELPER_EMPTY(...) 0
+#define TARGOMANINTERNAL_MACRO_ARG_COUNT_HELPER_MULTI(...) TARGOMANINTERNAL_MACRO_ARG_COUNT(__VA_ARGS__)
+#define TARGOMAN_MACRO_ARG_COUNT(...) \
+    TARGOMAN_M2CONCAT(TARGOMANINTERNAL_MACRO_ARG_COUNT_HELPER_, TARGOMAN_VA_ARGS_MULTI_OR_EMPTY(__VA_ARGS__))(__VA_ARGS__)
+
 
 #define TARGOMAN_MACRO_ARG_BASED_FUNC(_fn,...) TARGOMAN_MACRO_ARG_COUNT_HELPER(__VA_ARGS__,\
     _fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,  \
