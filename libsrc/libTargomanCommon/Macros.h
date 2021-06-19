@@ -263,7 +263,7 @@
        }return Options; \
      } \
      static QString toStr(Type _value){ \
-        (void)toStr; int EnumSize = getCount(); int LastID = 0; \
+        (void)toStr; int EnumSize = getCount(); int LastID = -1; \
         for(int i=0; i< EnumSize; i++) { \
            QString Option = Strings[i]; \
            if(Option.contains('=')){ \
@@ -277,7 +277,7 @@
      } \
      inline QString toStr(const QString& _value){return toStr(static_cast<Type>(static_cast<char>(_value.toLatin1()[0])));} \
      static Type toEnum(const QString& _value, bool _byValue = false){ \
-          int EnumSize = getCount(); int LastID = 0; \
+          int EnumSize = getCount(); int LastID = -1; \
           for(int i=0; i< EnumSize; i++) { \
              QString Option = Strings[i]; \
              if(Option.contains('=')){ \
