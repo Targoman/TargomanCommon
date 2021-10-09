@@ -30,10 +30,12 @@
 #include <QtCore>
 #include "limits.h"
 #include "Macros.h"
+
 /**
  * @brief Base namespace surrounding all other namespaces
  */
 namespace Targoman {
+
 /**
  * @brief Namespace containing classes, macros and usefull functions used all over the
  *        project without any other project dependency.Lo
@@ -146,4 +148,5 @@ public:
 Q_DECLARE_METATYPE(Targoman::Common::stuPong)
 typedef Targoman::Common::clsFilePath FilePath_t;
 
+//-------------------------------------------------------------
 #endif // TARGOMAN_COMMON_TYPES_H

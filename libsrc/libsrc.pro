@@ -8,6 +8,7 @@
 ################################################################################
 DIST_HEADERS += \
     libTargomanCommon/exTargomanBase.h \
+    libTargomanCommon/MacrosPrivate.hpp \
     libTargomanCommon/Macros.h \
     libTargomanCommon/clsSafeCoreApplication.h \
     libTargomanCommon/CmdIO.h \
@@ -58,7 +59,49 @@ PRIVATE_HEADERS += \
     libTargomanCommon/Private/clsConfigManager_p.h \
 
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
+HEADERS += \
+    libTargomanCommon/exTargomanBase.h \
+    libTargomanCommon/MacrosPrivate.hpp \
+    libTargomanCommon/Macros.h \
+    libTargomanCommon/clsSafeCoreApplication.h \
+    libTargomanCommon/CmdIO.h \
+    libTargomanCommon/Logger.h \
+    libTargomanCommon/FastOperations.hpp \
+    libTargomanCommon/Constants.h \
+    libTargomanCommon/Types.h \
+    libTargomanCommon/clsCmdProgressBar.h \
+    libTargomanCommon/HashFunctions.hpp \
+    libTargomanCommon/Configuration/intfConfigurable.hpp \
+    libTargomanCommon/Configuration/clsFileBasedConfig.hpp \
+    libTargomanCommon/Configuration/tmplConfigurable.h \
+    libTargomanCommon/Configuration/ConfigManager.h \
+    libTargomanCommon/Configuration/intfConfigurableModule.hpp \
+    libTargomanCommon/CompressedStream/clsCompressedInputStream.h \
+    libTargomanCommon/CompressedStream/clsCompressedOutputStream.h \
+    libTargomanCommon/CompressedStream/clsCompressedStreamBuff.h \
+    libTargomanCommon/Configuration/Validators.hpp \
+    libTargomanCommon/FStreamExtended.h \
+    libTargomanCommon/PrefixTree/tmplPrefixTree.h \
+    libTargomanCommon/PrefixTree/tmplOnMemoryPrefixTreeNode.hpp \
+    libTargomanCommon/PrefixTree/tmplAbstractPrefixTreeNode.hpp \
+    libTargomanCommon/PrefixTree/tmplOnDemandPrefixTreeNode.hpp \
+    libTargomanCommon/JSONConversationProtocol.h \
+    libTargomanCommon/Configuration/tmplConfigurableArray.hpp \
+    libTargomanCommon/SimpleAuthentication.h \
+    libTargomanCommon/Configuration/intfRPCExporter.hpp \
+    libTargomanCommon/Helpers.hpp \
+    libTargomanCommon/PrefixTree/tmplAbstractOnDiskPrefixTreeNode.hpp \
+    libTargomanCommon/PrefixTree/tmplFullCachePrefixTreeNode.hpp \
+    libTargomanCommon/PrefixTree/tmplNoCachePrefixTreeNode.hpp \
+    libTargomanCommon/tmplBoundedCache.hpp \
+    libTargomanCommon/Configuration/tmplConfigurableMultiMap.hpp \
+    libTargomanCommon/Configuration/tmplModuleConfig.hpp \
+    libTargomanCommon/Configuration/tmplAddinConfig.hpp \
+    libTargomanCommon/clsCountAndSpeed.h \
+    libTargomanCommon/tmplExpirableCache.hpp
+
 SOURCES += \
+    libTargomanCommon/Types.cpp \
     libTargomanCommon/exTargomanBase.cpp \
     libTargomanCommon/clsSafeCoreApplication.cpp \
     libTargomanCommon/CmdIO.cpp \
