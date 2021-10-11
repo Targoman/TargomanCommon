@@ -36,8 +36,11 @@
 #include <QJsonDocument>
 #include "libTargomanCommon/Types.h"
 
-namespace Targoman {
-namespace Common {
+namespace Targoman::Common {
+
+inline QString toCammel(const QString& _name) {
+    return _name.mid(0,1).toLower() + _name.mid(1);
+}
 
 inline QString demangle(const char* name) {
     Q_UNUSED(demangle)
@@ -157,6 +160,7 @@ inline QJsonObject mergeJsonObjects(QJsonObject _first, const QJsonObject::itera
         _first.insert (_second.key(), _second.value());
     return _first;
 }
-}
-}
+
+} //namespace Targoman::Common
+
 #endif // TARGOMAN_COMMON_HELPERS_HPP

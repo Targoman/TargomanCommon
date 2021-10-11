@@ -20,19 +20,38 @@
 ################################################################################*/
 /**
  * @author S. Mohammad M. Ziabary <ziabary@targoman.com>
+ * @author Behrooz Vedadian <vedadian@targoman.com>
+ * @author Saeed Torabzadeh <saeed.torabzadeh@targoman.com>
+ * @author Kambiz Zandi <kambizzandi@gmail.com>
  */
 
-#ifndef UNITTEST_H
-#define UNITTEST_H
+//#include "UnitTest.h"
+//QTEST_MAIN(UnitTest)
 
-#include <QtTest/QtTest>
+#include <QtTest>
+#include "testNullable.hpp"
 
-class UnitTest: public QObject
+int main(int argc, char *argv[])
 {
-    Q_OBJECT
+    QCoreApplication App(argc, argv);
+    App.setAttribute(Qt::AA_Use96Dpi, true);
 
-private slots:
+    bool BreakOnFirstFail = true;
+    int FailedTests = 0;
 
-};
+    try {
+        if (BreakOnFirstFail && !FailedTests) FailedTests += QTest::qExec(new testNullable, argc, argv);
+    }
+    catch (std::exception &e) {
+        qDebug()<<e.what();
+    }
 
-#endif // UNITTEST_H
+    if (FailedTests > 0) {
+        qDebug() << "total number of failed tests: " << FailedTests;
+    }
+    else {
+        qDebug() << "all tests passed :)";
+    }
+
+    return FailedTests;
+}

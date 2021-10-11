@@ -85,3 +85,6 @@ OTHER_FILES += \
 
 ################################################################################
 include($$QBUILD_PATH/templates/libConfigs.pri)
+
+HEADERS += \
+    libTargomanCommon/MacrosPrivate.hpp
