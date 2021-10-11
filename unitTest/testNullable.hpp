@@ -74,6 +74,21 @@ private slots:
         QVERIFY(TARGOMAN_NULLABLE_GET_OR_DEFAULT(a, 456) == 456);
     }
 
+    void test_instantiate_empty()
+    {
+        QVariant v;
+        auto a = TARGOMAN_NULLABLE_INSTANTIATE_FROM_QVARIANT(int, v);
+
+        QVERIFY(TARGOMAN_NULLABLE_GET_OR_DEFAULT(a, 456) == 456);
+    }
+
+    void test_instantiate_value()
+    {
+        QVariant v = 123;
+        auto a = TARGOMAN_NULLABLE_INSTANTIATE_FROM_QVARIANT(int, v);
+
+        QVERIFY(TARGOMAN_NULLABLE_GET_OR_DEFAULT(a, 456) == 123);
+    }
 };
 
 #endif // TESTNULLABLE_HPP
