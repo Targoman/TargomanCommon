@@ -122,7 +122,7 @@ template <>
 void tmplConfigurable<QStringList>::setFromVariant(const QVariant& _value){
     QString ErrorMessage;
     if (this->validate(_value, ErrorMessage)){
-        if (_value.canConvert(QVariant::StringList))
+        if (_value.userType() == QMetaType::QStringList)
             this->Value = _value.toStringList();
         else
             this->Value = _value.toString().split(',');
