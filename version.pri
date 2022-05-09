@@ -7,27 +7,27 @@
 #   terms of BSD License 2.0.
 ################################################################################
 ProjectName="TargomanCommon"
-VERSION=1.1.1
+VERSION=1.1.2
 
 #+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-
 LIBS += -lz
 
 #+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-
-QT+= core network
+QT += core network
 QT -= gui
 QMAKE_CXXFLAGS += -Wno-unknown-pragmas
 
-!defined(QJsonRPC, var)|equals(QJsonRPC, 1) {
+defined(QJsonRPC, var) equals(QJsonRPC, 1) {
     DEFINES += WITH_QJsonRPC
     LIBS += -lQJsonRPC
-}else{
+} else {
     DISABLED_DPES += QJsonRPC
 }
 
 #+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-
 # Qt5.5.1 on OSX needs both c++11 and c++14!! the c++14 is not enough
-QMAKE_CXXFLAGS += -std=c++11 -std=c++14
-CONFIGS += c++11 c++14
+QMAKE_CXXFLAGS += -std=c++11 -std=c++14 -std=c++17
+CONFIGS += c++11 c++14 c++17
 
 #+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-
 #following definitions are used on all Targoman projects

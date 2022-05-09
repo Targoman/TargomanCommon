@@ -59,6 +59,7 @@ PRIVATE_HEADERS += \
 
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
 SOURCES += \
+    libTargomanCommon/TLogger.cpp \
     libTargomanCommon/exTargomanBase.cpp \
     libTargomanCommon/clsSafeCoreApplication.cpp \
     libTargomanCommon/CmdIO.cpp \
@@ -85,3 +86,6 @@ OTHER_FILES += \
 
 ################################################################################
 include($$QBUILD_PATH/templates/libConfigs.pri)
+
+HEADERS += \
+    libTargomanCommon/TLogger.h

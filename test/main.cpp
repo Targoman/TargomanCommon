@@ -41,6 +41,7 @@
 #include "libTargomanCommon/Configuration/tmplConfigurableArray.hpp"
 #include "libTargomanCommon/SimpleAuthentication.h"
 #include "libTargomanCommon/clsCountAndSpeed.h"
+#include "libTargomanCommon/TLogger.h"
 
 #include <iostream>
 #include <unistd.h>
@@ -169,63 +170,61 @@ static Targoman::Common::Configuration::tmplConfigurableArray<stuServers> Server
 
 int main(int argc, char *argv[])
 {
-    try{
+    try {
 
         Targoman::Common::clsCountAndSpeed ABCD;
         QHash<QString, Targoman::Common::clsCountAndSpeed> BCDE;
 
-    Targoman::Common::printLoadedLibs();
+        Targoman::Common::printLoadedLibs();
 
-/*    tmplExpirableCache<QMap,  QString, int> FF;
-    tmplExpirableCache<QMap,  QString, int> DD(FF);
-*/
+    /*    tmplExpirableCache<QMap,  QString, int> FF;
+        tmplExpirableCache<QMap,  QString, int> DD(FF);
+    */
 
-    QCoreApplication App(argc, argv);
+        QCoreApplication App(argc, argv);
 
-/*    qDebug()<<TestE.value();
-    WildPattern.setFromVariant("*.xml");
-    qDebug()<<WildPattern.value();
-    RegexPattern.setFromVariant("^[a-z]*");
-    qDebug()<<RegexPattern.value();
+    /*    qDebug()<<TestE.value();
+        WildPattern.setFromVariant("*.xml");
+        qDebug()<<WildPattern.value();
+        RegexPattern.setFromVariant("^[a-z]*");
+        qDebug()<<RegexPattern.value();
 
-    qDebug()<<SimpleAuthentication::hashPass("mehran", "1234");
-    exit(0);
-*/
+        qDebug()<<SimpleAuthentication::hashPass("mehran", "1234");
+        exit(0);
+    */
+/*
+        Targoman::Common::tmplExpirableCache<QHash,int,QString> A;
+        A.insert (3, 1, "MyVAL1");
+        qDebug()<<A.value(1)<<"Ok";
+        sleep(1);
+        qDebug()<<A.value(1)<<"Ok";
+        sleep(1);
+        qDebug()<<A.value(1)<<"Ok";
+        sleep(1);
+        qDebug()<<A.value(1)<<"Ok";
+        sleep(1);
+        qDebug()<<A.value(1)<<"Ok";
 
+//        qDebug()<<getTypeStr(A);
+//        enuBaba::Type B = enuBaba::cc;
+//        qDebug()<<getTypeStr(B);
 
-    Targoman::Common::tmplExpirableCache<QHash,int,QString> A;
-    A.insert (3, 1, "MyVAL1");
-    qDebug()<<A.value(1)<<"Ok";
-    sleep(1);
-    qDebug()<<A.value(1)<<"Ok";
-    sleep(1);
-    qDebug()<<A.value(1)<<"Ok";
-    sleep(1);
-    qDebug()<<A.value(1)<<"Ok";
-    sleep(1);
-    qDebug()<<A.value(1)<<"Ok";
-    QCoreApplication::exit(1); return 1;
+//        A.clear();
 
-    /*qDebug()<<getTypeStr(A);
-    enuBaba::Type B = enuBaba::cc;
-    qDebug()<<getTypeStr(B);
+        clsCmdProgressBar PB("Marquee");
+        for (int i=0;i<10;i++){
+            PB.setValue(i);
+            usleep(10000);
+        }
+        PB.finalize(true, 100000);
 
-    A.clear();*/
+        //  std::function<bool(int)> Lambda = ;
+        SampleLamda AAA([] (int x) {
+            return x > 0; }
+        );
 
-    clsCmdProgressBar PB("Marquee");
-    for (int i=0;i<10;i++){
-        PB.setValue(i);
-        usleep(10000);
-    }
-    PB.finalize(true, 100000);
-
-    //  std::function<bool(int)> Lambda = ;
-    SampleLamda AAA([] (int x) {
-        return x > 0; }
-    );
-
-    std::cout<<AAA.CrossValidator(5)<<std::endl;
-    std::cout<<AAA.CrossValidator(-5)<<std::endl;
+        std::cout<<AAA.CrossValidator(5)<<std::endl;
+        std::cout<<AAA.CrossValidator(-5)<<std::endl;
 
 
         TARGOMAN_IO_SETTINGS.setFull();
@@ -307,14 +306,51 @@ int main(int argc, char *argv[])
         }
         PBMarquee.finalize(true);
 
+*/
         TARGOMAN_IO_SETTINGS.setFull();
 
-    }catch(exTargomanBase &e){
+        qDebug() << "> 1";
+
+        tWarn(1)  << "T1 Log Warn";
+        tInfo(2)  << "T1 Log Info";
+        tHappy(3) << "T1 Log Happy";
+        tError()  << "T1 Log Error";
+        tDebug(5) << "T1 Log Debug"
+                  << QVariant(11)
+                     ;
+
+        qDebug() << "> 2";
+
+        tWarnLog(1)  << "T2 Log File Warn";
+        tInfoLog(2)  << "T2 Log File Info";
+        tHappyLog(3) << "T2 Log File Happy";
+        tErrorLog()  << "T2 Log File Error";
+        tDebugLog(5) << "T2 Log File Debug"
+                  << QVariant(22)
+                     ;
+
+        qDebug() << "> 3";
+
+        Targoman::Common::Logger::instance().init("log.log");
+
+        tWarnLog(1)  << "T3 Log File Warn";
+        tInfoLog(2)  << "T3 Log File Info";
+        tHappyLog(3) << "T3 Log File Happy";
+        tErrorLog()  << "T3 Log File Error";
+        tDebugLog(5) << "T3 Log File Debug"
+                  << QVariant(33)
+                     ;
+
+        qDebug() << "> 4";
+
+//        QCoreApplication::exit(1);
+//        return 1;
+
+    } catch(exTargomanBase &e) {
         TargomanError(e.what());
         return 1;
     }
 
-    return 0;
+    QCoreApplication::exit(1);
+    return 1;
 }
-
-
