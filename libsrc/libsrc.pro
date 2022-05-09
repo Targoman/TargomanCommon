@@ -12,6 +12,7 @@ DIST_HEADERS += \
     libTargomanCommon/clsSafeCoreApplication.h \
     libTargomanCommon/CmdIO.h \
     libTargomanCommon/Logger.h \
+    libTargomanCommon/TLogger.h \
     libTargomanCommon/FastOperations.hpp \
     libTargomanCommon/Constants.h \
     libTargomanCommon/Types.h \
@@ -86,6 +87,3 @@ OTHER_FILES += \
 
 ################################################################################
 include($$QBUILD_PATH/templates/libConfigs.pri)
-
-HEADERS += \
-    libTargomanCommon/TLogger.h
