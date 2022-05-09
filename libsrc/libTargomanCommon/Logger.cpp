@@ -289,7 +289,6 @@ bool Logger::init(const QString &_fileName,
     return this->pPrivate->open();
 }
 
-
 void Logger::write(const QString &_callerFuncName,
                    enuLogType::Type _type,
                    quint8 _level,
@@ -299,19 +298,22 @@ void Logger::write(const QString &_callerFuncName,
     if (this->isActive() == false || LogSettings[_type].canBeShown(_level) == false)
         return;
 
-    QByteArray LogMessage= LogSettings[_type].details(_callerFuncName).toLatin1();
+    QByteArray LogMessage = LogSettings[_type].details(_callerFuncName).toLatin1();
 
-    LogMessage+= QString("[%1]").arg(enuLogType::toStr(_type));
+    LogMessage += QString("[%1]").arg(enuLogType::toStr(_type));
+
     LogMessage += "[" + QString::number(_level) + "]";
+
     if (Identifier.value().size())
         LogMessage+= QString("[%1]").arg(Identifier.value());
-    LogMessage +=": ";
+
+    LogMessage += ": ";
 
     if (_newLine)
-        LogMessage += _message+"\n";
-
+        LogMessage += _message + "\n";
 
     QMutexLocker Locker(&this->pPrivate->mxLog);
+
     if (this->pPrivate->LogFile.fileName().size()){
         if (!this->pPrivate->LogFile.isOpen() ||
                 !this->pPrivate->LogFile.isWritable())
@@ -321,33 +323,35 @@ void Logger::write(const QString &_callerFuncName,
             this->pPrivate->LogFile.write(LogMessage);
     }
 
-    if (this->isVisible()){
-        switch(_type){
-        case enuLogType::Debug:
-            fprintf(stderr,"%s%s%s", TARGOMAN_COLOR_DEBUG, LogMessage.constData(), TARGOMAN_COLOR_NORMAL);
-            break;
-        case enuLogType::Info:
-            fprintf(stderr,"%s%s%s", TARGOMAN_COLOR_INFO, LogMessage.constData(), TARGOMAN_COLOR_NORMAL);
-            break;
-        case enuLogType::Warning:
-            fprintf(stderr,"%s%s%s", TARGOMAN_COLOR_WARNING, LogMessage.constData(), TARGOMAN_COLOR_NORMAL);
-            break;
-        case enuLogType::Happy:
-            fprintf(stderr,"%s%s%s", TARGOMAN_COLOR_HAPPY, LogMessage.constData(), TARGOMAN_COLOR_NORMAL);
-            break;
-        case enuLogType::Error:
-            fprintf(stderr,"%s%s%s", TARGOMAN_COLOR_ERROR, LogMessage.constData(), TARGOMAN_COLOR_NORMAL);
-            break;
-        default:
-            break;
+    if (this->isVisible()) {
+        switch(_type) {
+            case enuLogType::Debug:
+                fprintf(stderr, "%s%s%s", TARGOMAN_COLOR_DEBUG, LogMessage.constData(), TARGOMAN_COLOR_NORMAL);
+                break;
+            case enuLogType::Info:
+                fprintf(stderr, "%s%s%s", TARGOMAN_COLOR_INFO, LogMessage.constData(), TARGOMAN_COLOR_NORMAL);
+                break;
+            case enuLogType::Warning:
+                fprintf(stderr, "%s%s%s", TARGOMAN_COLOR_WARNING, LogMessage.constData(), TARGOMAN_COLOR_NORMAL);
+                break;
+            case enuLogType::Happy:
+                fprintf(stderr, "%s%s%s", TARGOMAN_COLOR_HAPPY, LogMessage.constData(), TARGOMAN_COLOR_NORMAL);
+                break;
+            case enuLogType::Error:
+                fprintf(stderr, "%s%s%s", TARGOMAN_COLOR_ERROR, LogMessage.constData(), TARGOMAN_COLOR_NORMAL);
+                break;
+            default:
+                break;
         }
     }
 
-    if (this->pPrivate->LogFile.fileName().size()){
+    if (this->pPrivate->LogFile.fileName().size()) {
         this->pPrivate->LogFile.flush();
         this->pPrivate->rotateLog();
     }
+
     Locker.unlock();
+
     emit this->sigLogAdded(QDateTime().currentDateTime(), _callerFuncName, _type, _level, _message);
 }
 

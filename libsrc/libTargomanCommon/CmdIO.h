@@ -47,12 +47,12 @@ extern char getche(void);
 namespace Targoman {
 namespace Common {
 
-class clsOutputSettings{
+class clsOutputSettings {
 public:
     /**
      * @brief Constructor sets level of details at highest level.
      */
-    clsOutputSettings(){
+    clsOutputSettings() {
         this->Details = 0xFF;
     }
 
@@ -60,7 +60,7 @@ public:
      * @brief canBeShown
      * @return Returns true if #Details is greater than _level
      */
-    inline bool canBeShown(quint8 _level){
+    inline bool canBeShown(quint8 _level) {
         return (this->Details & 0x0F) >= _level;
     }
 
@@ -68,7 +68,7 @@ public:
      * @brief validateLevel
      * @exception Throws exceptions if input level is equal or greater than 10
      */
-    inline bool validateLevel(quint8 _level){
+    inline bool validateLevel(quint8 _level) {
         Q_ASSERT_X(_level < 10, "CmdIO",  "Level must be between 0 to 9");
         if (_level > 9)
             throw std::bad_exception();
@@ -78,7 +78,7 @@ public:
     /**
      * @brief Sets level of output by setting lower bits of #Details.
      */
-    inline void setLevel(quint8 _level){
+    inline void setLevel(quint8 _level) {
         this->validateLevel(_level);
         this->Details = (this->Details & 0xF0) + _level;
     }
@@ -91,17 +91,14 @@ public:
      * @param _file whether output file name or not.
      */
     inline void setDetails(bool _time = false, bool _func = false, bool _line = false, bool _file = false) {
-        this->Details &= 0x0F;
-        if(_time)
-            this->Details |= 0x10;
-        if(_func)
-            this->Details |= 0x40;
-        if(_file)
-            this->Details |= 0x20;
-        if(_line)
-            this->Details |= 0x80;
-    }
 
+        this->Details &= 0x0F;
+
+        if (_time) this->Details |= 0x10;
+        if (_file) this->Details |= 0x20;
+        if (_func) this->Details |= 0x40;
+        if (_line) this->Details |= 0x80;
+    }
 
     /**
      * @brief set, sets details and level of output.
@@ -112,16 +109,15 @@ public:
      * @param _level level of output.
      */
     inline void set(quint8 _level, bool _time = false, bool _func = false, bool _line = false, bool _file = false) {
+
         this->validateLevel(_level);
+
         this->Details = _level;
-        if(_time)
-            this->Details |= 0x10;
-        if(_func)
-            this->Details |= 0x40;
-        if(_file)
-            this->Details |= 0x20;
-        if(_line)
-            this->Details |= 0x80;
+
+        if (_time) this->Details |= 0x10;
+        if (_file) this->Details |= 0x20;
+        if (_func) this->Details |= 0x40;
+        if (_line) this->Details |= 0x80;
     }
 
     /**
@@ -131,22 +127,25 @@ public:
      * @param[in] _line line number
      * @return returns a QString of current time, function name, file name and line number.
      */
-    inline QString details(const char* _function, const char* _file, quint16 _line){
+    inline QString details(const char* _function, const char* _file, quint16 _line) {
         QString OutStr;
-        OutStr +=  (this->Details & 0x10 ?
-                    QString("[" + QDateTime().currentDateTime().toString("dd-MM-yyyy hh:mm:ss.zzz") + "]") :
-                    QString(""));
-        if (this->Details & 0x60){
-            OutStr += "[";
-            if (this->Details & 0x20)
-                    OutStr +=  QString(" %1 %2").arg(_file).arg(this->Details & 0xC0 ? ":" : "");
-            if (this->Details & 0x40)
-                    OutStr +=  QString(" %1 ").arg(_function);
-            if (this->Details & 0x80)
-                OutStr += QString(":%1").arg(_line) + " ]";
-            else
-                OutStr += " ]";
-        }
+
+        if (this->Details & 0x10)
+            OutStr += "[" + QDateTime().currentDateTime().toString("dd-MM-yyyy hh:mm:ss.zzz") + "]";
+
+        QStringList OtherParts;
+
+        if (this->Details & 0x20)
+            OtherParts << _file;
+
+        if (this->Details & 0x40)
+            OtherParts << _function;
+
+        if (this->Details & 0x80)
+            OtherParts << QString(":%1").arg(_line);
+
+        if (OtherParts.length())
+            OutStr += "[" + OtherParts.join(" ") + "]";
 
         return OutStr;
     }
@@ -161,40 +160,39 @@ private:/**
     quint8 Details;
 };
 
-
 /**
  * @brief This Class makes 6 instantiation of class clsOutputSettings for Debug, Info, Warning Happy and Normal output modes
  * and sets their Details and level of outputs.
  *
  */
-class clsIOSettings{
+class clsIOSettings {
 public:
-    clsIOSettings(){
+    clsIOSettings() {
         this->setDefault();
     }
 
     /**
      * @brief setSilent, sets level of out messages to lowest level, and none output modes, shows their messages.
      */
-    void setSilent(){
-        this->Debug.setLevel(0);
-        this->Info.setLevel(0);
-        this->Warning.setLevel(0);
-        this->Happy.setLevel(0);
-        this->Normal.setLevel(0);
+    void setSilent() {
+        this->Debug     .setLevel(0);
+        this->Info      .setLevel(0);
+        this->Warning   .setLevel(0);
+        this->Happy     .setLevel(0);
+        this->Normal    .setLevel(0);
 //        this->Error.setLevel(0); //Error must not be silented
     }
 
     /**
      * @brief setFull, sets level of out messages to highest level, and all output modes, shows their messages.
      */
-    void setFull(){
-        this->Debug.set(9,true,true,true);
-        this->Info.set(9,true,true,true);
-        this->Warning.set(9,true,true,true);
-        this->Happy.set(9,true,true,true);
-        this->Error.set(9,true,true,true);
-        this->Normal.set(9,true,true,true);
+    void setFull() {
+        this->Debug     .set(9, true, true, true);
+        this->Info      .set(9, true, true, true);
+        this->Warning   .set(9, true, true, true);
+        this->Happy     .set(9, true, true, true);
+        this->Error     .set(9, true, true, true);
+        this->Normal    .set(9, true, true, true);
     }
 
     /**
@@ -202,13 +200,13 @@ public:
      * @param _debugLevel level of output for debug mode.
      * @param _otherLevel level of output for other modes.
      */
-    void setDefault(quint8 _debugLevel = 5, quint8 _otherLevel = 9){
-        this->Debug.set(_debugLevel,true,true,true);
-        this->Info.set(_otherLevel,true);
-        this->Warning.set(_otherLevel,true);
-        this->Happy.set(_otherLevel,true);
-        this->Error.set(_otherLevel,true);
-        this->Normal.set(_otherLevel,true);
+    void setDefault(quint8 _debugLevel = 5, quint8 _otherLevel = 9) {
+        this->Debug     .set(_debugLevel, true, true, true);
+        this->Info      .set(_otherLevel, true);
+        this->Warning   .set(_otherLevel, true);
+        this->Happy     .set(_otherLevel, true);
+        this->Error     .set(_otherLevel, true);
+        this->Normal    .set(_otherLevel, true);
     }
 
     clsOutputSettings Debug;
@@ -217,6 +215,7 @@ public:
     clsOutputSettings Happy;
     clsOutputSettings Error;
     clsOutputSettings Normal;
+
     bool ShowColored; /**< whether show output messages in color or not. */
 
     /**
