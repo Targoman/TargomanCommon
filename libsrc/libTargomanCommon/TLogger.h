@@ -30,7 +30,7 @@
 #include "Logger.h"
 #include "CmdIO.h"
 
-#define INTERNAL_tLogLog(_type, _level)  TLog(Targoman::Common::TARGOMAN_IO_SETTINGS._type.details(Q_FUNC_INFO, __FILE__, __LINE__).toUtf8().constData(), Targoman::Common::enuLogType::_type, _level)
+#define INTERNAL_tLogLog(_type, _level)  TLog(Q_FUNC_INFO, __FILE__, __LINE__, Targoman::Common::enuLogType::_type, _level)
 
 #define tInfoLog(_level)    INTERNAL_tLogLog(Info, _level)
 #define tInfo(_level)       tInfoLog(_level).nolog()
@@ -51,7 +51,12 @@ namespace Targoman::Common {
 
 class TLog : public QDebug {
 public:
-    TLog(const char *_funcName, enuLogType::Type _type, quint8 _level);
+    TLog(const char *_function,
+         const char *_file,
+         quint16 _line,
+         enuLogType::Type _type,
+         quint8 _level
+         );
 /*
     inline TLog(TLog &_other) :
         QDebug(&this->Buffer),
@@ -68,7 +73,10 @@ public:
     TLog& nolog();
 
 protected:
-    QString FuncName;
+    QString Function;
+    QString File;
+    quint16 Line;
+
     enuLogType::Type Type;
     quint8 Level;
     bool Log;

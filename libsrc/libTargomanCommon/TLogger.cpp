@@ -27,9 +27,16 @@
 
 namespace Targoman::Common {
 
-TLog::TLog(const char *_funcName, enuLogType::Type _type, quint8 _level) :
+TLog::TLog(const char *_function,
+           const char *_file,
+           quint16 _line,
+           enuLogType::Type _type,
+           quint8 _level
+) :
     QDebug(&this->Buffer),
-    FuncName(_funcName),
+    Function(_function),
+    File(_file),
+    Line(_line),
     Type(_type),
     Level(_level),
     Log(true)
@@ -49,27 +56,33 @@ TLog::TLog(const char *_funcName, enuLogType::Type _type, quint8 _level) :
 */
 TLog::~TLog() {
     if (this->Log) {
-        Targoman::Common::Logger::instance().write(this->FuncName,
+        Targoman::Common::Logger::instance().write(QString("%1 %2:%3").arg(this->Function).arg(this->File).arg(this->Line),
                                                    this->Type,
                                                    this->Level,
                                                    this->Buffer);
     } else {
+        clsOutputSettings *OutputSettings = &TARGOMAN_IO_SETTINGS.Info;
         std::string color = TARGOMAN_COLOR_INFO;
 
         switch (this->Type) {
-            case enuLogType::Info:
-                color = TARGOMAN_COLOR_INFO;
-                break;
+//            case enuLogType::Info:
+//                OutputSettings = &TARGOMAN_IO_SETTINGS.Info;
+//                color = TARGOMAN_COLOR_INFO;
+//                break;
             case enuLogType::Warning:
+                OutputSettings = &TARGOMAN_IO_SETTINGS.Warning;
                 color = TARGOMAN_COLOR_WARNING;
                 break;
             case enuLogType::Error:
+                OutputSettings = &TARGOMAN_IO_SETTINGS.Error;
                 color = TARGOMAN_COLOR_ERROR;
                 break;
             case enuLogType::Debug:
+                OutputSettings = &TARGOMAN_IO_SETTINGS.Debug;
                 color = TARGOMAN_COLOR_DEBUG;
                 break;
             case enuLogType::Happy:
+                OutputSettings = &TARGOMAN_IO_SETTINGS.Happy;
                 color = TARGOMAN_COLOR_HAPPY;
                 break;
             default:
@@ -79,7 +92,7 @@ TLog::~TLog() {
         fprintf(stderr,
                 "%s%s[%s][%d] %s%s\n",
                 color.c_str(),
-                this->FuncName.toStdString().c_str(),
+                OutputSettings->details(this->Function.toStdString().c_str(), this->File.toStdString().c_str(), this->Line).toStdString().c_str(),
                 enuLogType::toStr(this->Type),
                 this->Level,
                 this->Buffer.toStdString().c_str(),

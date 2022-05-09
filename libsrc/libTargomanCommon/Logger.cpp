@@ -424,22 +424,30 @@ void Targoman::Common::Private::LoggerPrivate::rotateLog()
 QString clsLogSettings::getPrettyModuleName(const QString &_callerFuncName)
 {
     thread_local static QRegExp RxPrivate("::Private$");
+
     QString ModuleName = _callerFuncName;
+
     int ParenthesisLoc = ModuleName.indexOf('(');
-    if (ParenthesisLoc >=0 )
+
+    if (ParenthesisLoc >=0)
         ModuleName.truncate(ParenthesisLoc);
+
     int SpaceLoc = ModuleName.lastIndexOf(" ");
+
     ModuleName = (SpaceLoc >= 0 ? ModuleName.mid(SpaceLoc + 1) : ModuleName);
     ModuleName = ModuleName.mid(0, ModuleName.lastIndexOf("::"));
+
     if(ModuleName.contains("cls"))
         ModuleName = ModuleName.mid(0, ModuleName.lastIndexOf("::"));
+
     if(ModuleName.contains("intf"))
         ModuleName = ModuleName.mid(0, ModuleName.lastIndexOf("::"));
+
     ModuleName.replace("::Private::", "::");
     ModuleName.replace(RxPrivate, "");
+
     return ModuleName;
 }
 
 }
 }
-
