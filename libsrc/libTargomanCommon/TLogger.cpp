@@ -82,8 +82,8 @@ TLog::~TLog() {
                 this->FuncName.toStdString().c_str(),
                 enuLogType::toStr(this->Type),
                 this->Level,
-                TARGOMAN_COLOR_NORMAL,
-                this->Buffer.toStdString().c_str()
+                this->Buffer.toStdString().c_str(),
+                TARGOMAN_COLOR_NORMAL
                 );
     }
 }
