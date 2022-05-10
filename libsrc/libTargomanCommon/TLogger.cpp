@@ -99,7 +99,7 @@ TLog::~TLog() {
                    .arg(enuLogType::toStr(this->Type))
                    .arg(this->Level);
 
-        Out += this->Buffer.trimmed();
+        Out += this->Buffer;
 
         Out += TARGOMAN_COLOR_NORMAL;
 

@@ -254,6 +254,7 @@ public:
                  bool _showLabel
                  );
 
+    //this is for creating signature for backward compatibility
     void   write(const QString&     _callerFuncName,
                  enuLogType::Type   _type,
                  quint8             _level,
