@@ -294,6 +294,23 @@ void Logger::write(
     enuLogType::Type _type,
     quint8 _level,
     const QString &_message,
+    bool _newLine
+) {
+    this->write(
+        _callerFuncName,
+        _type,
+        _level,
+        _message,
+        _newLine,
+        true
+    );
+}
+
+void Logger::write(
+    const QString &_callerFuncName,
+    enuLogType::Type _type,
+    quint8 _level,
+    const QString &_message,
     bool _newLine,
     bool _showLabel
 ) {
