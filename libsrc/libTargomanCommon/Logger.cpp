@@ -20,6 +20,7 @@
 ################################################################################*/
 /**
  * @author S. Mohammad M. Ziabary <ziabary@targoman.com>
+ * @author Kambiz Zandi <kambizzandi@gmail.com>
  */
 
 #include <QDateTime>
@@ -289,29 +290,54 @@ bool Logger::init(const QString &_fileName,
     return this->pPrivate->open();
 }
 
+void Logger::write(
+    const QString &_callerFuncName,
+    enuLogType::Type _type,
+    quint8 _level,
+    const QString &_message,
+    bool _newLine
+) {
+    this->write(
+        _callerFuncName,
+        _type,
+        _level,
+        _message,
+        _newLine,
+        true
+    );
+}
 
-void Logger::write(const QString &_callerFuncName,
-                   enuLogType::Type _type,
-                   quint8 _level,
-                   const QString &_message,
-                   bool _newLine)
-{
+void Logger::write(
+    const QString &_callerFuncName,
+    enuLogType::Type _type,
+    quint8 _level,
+    const QString &_message,
+    bool _newLine,
+    bool _showLabel
+) {
     if (this->isActive() == false || LogSettings[_type].canBeShown(_level) == false)
         return;
 
-    QByteArray LogMessage= LogSettings[_type].details(_callerFuncName).toLatin1();
+    QByteArray LogMessage;
 
-    LogMessage+= QString("[%1]").arg(enuLogType::toStr(_type));
-    LogMessage += "[" + QString::number(_level) + "]";
-    if (Identifier.value().size())
-        LogMessage+= QString("[%1]").arg(Identifier.value());
-    LogMessage +=": ";
+    if (_showLabel) {
+        LogMessage += LogSettings[_type].details(_callerFuncName).toLatin1();
+
+        LogMessage += QString("[%1]").arg(enuLogType::toStr(_type));
+
+        LogMessage += "[" + QString::number(_level) + "]";
+
+        if (Identifier.value().size())
+            LogMessage+= QString("[%1]").arg(Identifier.value());
+
+        LogMessage += ": ";
+    }
 
     if (_newLine)
-        LogMessage += _message+"\n";
-
+        LogMessage += _message + "\n";
 
     QMutexLocker Locker(&this->pPrivate->mxLog);
+
     if (this->pPrivate->LogFile.fileName().size()){
         if (!this->pPrivate->LogFile.isOpen() ||
                 !this->pPrivate->LogFile.isWritable())
@@ -321,33 +347,35 @@ void Logger::write(const QString &_callerFuncName,
             this->pPrivate->LogFile.write(LogMessage);
     }
 
-    if (this->isVisible()){
-        switch(_type){
-        case enuLogType::Debug:
-            fprintf(stderr,"%s%s%s", TARGOMAN_COLOR_DEBUG, LogMessage.constData(), TARGOMAN_COLOR_NORMAL);
-            break;
-        case enuLogType::Info:
-            fprintf(stderr,"%s%s%s", TARGOMAN_COLOR_INFO, LogMessage.constData(), TARGOMAN_COLOR_NORMAL);
-            break;
-        case enuLogType::Warning:
-            fprintf(stderr,"%s%s%s", TARGOMAN_COLOR_WARNING, LogMessage.constData(), TARGOMAN_COLOR_NORMAL);
-            break;
-        case enuLogType::Happy:
-            fprintf(stderr,"%s%s%s", TARGOMAN_COLOR_HAPPY, LogMessage.constData(), TARGOMAN_COLOR_NORMAL);
-            break;
-        case enuLogType::Error:
-            fprintf(stderr,"%s%s%s", TARGOMAN_COLOR_ERROR, LogMessage.constData(), TARGOMAN_COLOR_NORMAL);
-            break;
-        default:
-            break;
+    if (this->isVisible()) {
+        switch(_type) {
+            case enuLogType::Debug:
+                fprintf(stderr, "%s%s%s", TARGOMAN_COLOR_DEBUG, LogMessage.constData(), TARGOMAN_COLOR_NORMAL);
+                break;
+            case enuLogType::Info:
+                fprintf(stderr, "%s%s%s", TARGOMAN_COLOR_INFO, LogMessage.constData(), TARGOMAN_COLOR_NORMAL);
+                break;
+            case enuLogType::Warning:
+                fprintf(stderr, "%s%s%s", TARGOMAN_COLOR_WARNING, LogMessage.constData(), TARGOMAN_COLOR_NORMAL);
+                break;
+            case enuLogType::Happy:
+                fprintf(stderr, "%s%s%s", TARGOMAN_COLOR_HAPPY, LogMessage.constData(), TARGOMAN_COLOR_NORMAL);
+                break;
+            case enuLogType::Error:
+                fprintf(stderr, "%s%s%s", TARGOMAN_COLOR_ERROR, LogMessage.constData(), TARGOMAN_COLOR_NORMAL);
+                break;
+            default:
+                break;
         }
     }
 
-    if (this->pPrivate->LogFile.fileName().size()){
+    if (this->pPrivate->LogFile.fileName().size()) {
         this->pPrivate->LogFile.flush();
         this->pPrivate->rotateLog();
     }
+
     Locker.unlock();
+
     emit this->sigLogAdded(QDateTime().currentDateTime(), _callerFuncName, _type, _level, _message);
 }
 
@@ -420,22 +448,30 @@ void Targoman::Common::Private::LoggerPrivate::rotateLog()
 QString clsLogSettings::getPrettyModuleName(const QString &_callerFuncName)
 {
     thread_local static QRegExp RxPrivate("::Private$");
+
     QString ModuleName = _callerFuncName;
+
     int ParenthesisLoc = ModuleName.indexOf('(');
-    if (ParenthesisLoc >=0 )
+
+    if (ParenthesisLoc >=0)
         ModuleName.truncate(ParenthesisLoc);
+
     int SpaceLoc = ModuleName.lastIndexOf(" ");
+
     ModuleName = (SpaceLoc >= 0 ? ModuleName.mid(SpaceLoc + 1) : ModuleName);
     ModuleName = ModuleName.mid(0, ModuleName.lastIndexOf("::"));
+
     if(ModuleName.contains("cls"))
         ModuleName = ModuleName.mid(0, ModuleName.lastIndexOf("::"));
+
     if(ModuleName.contains("intf"))
         ModuleName = ModuleName.mid(0, ModuleName.lastIndexOf("::"));
+
     ModuleName.replace("::Private::", "::");
     ModuleName.replace(RxPrivate, "");
+
     return ModuleName;
 }
 
 }
 }
-

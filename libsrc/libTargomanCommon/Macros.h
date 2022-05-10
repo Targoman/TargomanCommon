@@ -122,14 +122,19 @@
 #define TARGOMAN_MACRO_ARG_COUNT(...) \
     TARGOMAN_M2CONCAT(TARGOMANINTERNAL_MACRO_ARG_COUNT_HELPER_, TARGOMAN_VA_ARGS_MULTI_OR_EMPTY(__VA_ARGS__))(__VA_ARGS__)
 
-
-#define TARGOMAN_MACRO_ARG_BASED_FUNC(_fn,...) TARGOMAN_MACRO_ARG_COUNT_HELPER(__VA_ARGS__,\
+#define TARGOMAN_MACRO_ARG_BASED_FUNC(_fn, ...) TARGOMAN_MACRO_ARG_COUNT_HELPER(__VA_ARGS__, \
     _fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,  \
     _fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,  \
     _fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,  \
     _fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,  \
     _fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,  \
     _fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Multi,_fn##Single, None)
+
+#define TARGOMANINTERNAL_MACRO_ARG_BASED_FUNC_EMPTY(_fn, ...)   TARGOMAN_M2CONCAT(_fn, Empty)
+#define TARGOMANINTERNAL_MACRO_ARG_BASED_FUNC_MULTI(_fn, ...)   TARGOMAN_MACRO_ARG_BASED_FUNC(_fn, __VA_ARGS__)
+#define TARGOMAN_MACRO_ARG_BASED_FUNC_WITH_EMPTY(_fn, ...) \
+    TARGOMAN_M2CONCAT(TARGOMANINTERNAL_MACRO_ARG_BASED_FUNC_, TARGOMAN_VA_ARGS_MULTI_OR_EMPTY(__VA_ARGS__))(_fn, __VA_ARGS__)
+
 
 // Following definition is used in complex templates where a template is instantiating other templates which needs comma
 #define TARGOMAN_VIRTUAL_COMMA() ,

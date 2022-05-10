@@ -20,6 +20,7 @@
 ################################################################################*/
 /**
  * @author S. Mohammad M. Ziabary <ziabary@targoman.com>
+ * @author Kambiz Zandi <kambizzandi@gmail.com>
  */
 
 #ifndef TARGOMAN_COMMON_LOGGER_H
@@ -32,57 +33,130 @@
 
 #include "libTargomanCommon/exTargomanBase.h"
 
-namespace Targoman {
-namespace Common {
+namespace Targoman::Common {
 
 TARGOMAN_ADD_EXCEPTION_HANDLER(exLogger, Targoman::Common::exTargomanBase);
 
-
-
-/** @brief These are helper macros to ease usage of Logger */
-#define TargomanLogWarn(_level, _message) {\
-    QString Buffer; \
-    Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
-                                               Targoman::Common::enuLogType::Warning, \
-                                               _level,\
-                                               *(QTextStream(&Buffer)<<_message).string());\
-}
-
-#define TargomanLogInfo( _level, _message) {\
-    QString Buffer; \
-    Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
-                                               Targoman::Common::enuLogType::Info, \
-                                               _level,\
-                                               *(QTextStream(&Buffer)<<_message).string());\
-}
-
-#define TargomanLogError( _message) {\
-    QString Buffer; \
-    Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
-                                               Targoman::Common::enuLogType::Error, \
-                                               1,\
-                                               *(QTextStream(&Buffer)<<_message).string());\
-}
-
+/**
+ * Debug
+ */
 #if TARGOMAN_SHOW_DEBUG
-    #define TargomanLogDebug(_level, _message) {\
+    #define TargomanLogDebug_Multi(_level, _fmt, ...) { \
+        QString Buffer; \
+        Buffer.sprintf(_fmt, __VA_ARGS__); \
+        Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
+                                                   Targoman::Common::enuLogType::Debug, \
+                                                   _level, \
+                                                   Buffer); \
+    }
+
+    #define TargomanLogDebug_Single(_level, _stream) { \
         QString Buffer; \
         Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
                                                    Targoman::Common::enuLogType::Debug, \
-                                                   _level,\
-                                                   *(QTextStream(&Buffer)<<_message).string());\
+                                                   _level, \
+                                                   *(QTextStream(&Buffer) << _stream).string()); \
     }
+
 #else
-    #define TargomanLogDebug(_level, _message) {}
+    #define TargomanLogDebug_Multi(_level, _fmt, ...)
+    #define TargomanLogDebug_Single(_level, _stream)
 #endif //TARGOMAN_SHOW_DEBUG
 
-#define TargomanLogHappy(_level, _message) {\
+#define TargomanLogDebug(_level, ...) \
+    TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanLogDebug_, __VA_ARGS__)(_level, __VA_ARGS__)
+
+/**
+ * Warning
+ */
+#define TargomanLogWarn_Multi(_level, _fmt, ...) { \
+    QString Buffer; \
+    Buffer.sprintf(_fmt, __VA_ARGS__); \
+    Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
+                                               Targoman::Common::enuLogType::Warning, \
+                                               _level, \
+                                               Buffer); \
+}
+
+#define TargomanLogWarn_Single(_level, _stream) { \
+    QString Buffer; \
+    Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
+                                               Targoman::Common::enuLogType::Warning, \
+                                               _level, \
+                                               *(QTextStream(&Buffer) << _stream).string()); \
+}
+
+#define TargomanLogWarn(_level, ...) \
+    TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanLogWarn_, __VA_ARGS__)(_level, __VA_ARGS__)
+
+/**
+ * Info
+ */
+#define TargomanLogInfo_Multi(_level, _fmt, ...) { \
+    QString Buffer; \
+    Buffer.sprintf(_fmt, __VA_ARGS__); \
+    Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
+                                               Targoman::Common::enuLogType::Info, \
+                                               _level, \
+                                               Buffer); \
+}
+
+#define TargomanLogInfo_Single(_level, _stream) { \
+    QString Buffer; \
+    Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
+                                               Targoman::Common::enuLogType::Info, \
+                                               _level, \
+                                               *(QTextStream(&Buffer) << _stream).string()); \
+}
+
+#define TargomanLogInfo(_level, ...) \
+    TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanLogInfo_, __VA_ARGS__)(_level, __VA_ARGS__)
+
+/**
+ * Error
+ */
+#define TargomanLogError_Multi(_fmt, ...) { \
+    QString Buffer; \
+    Buffer.sprintf(_fmt, __VA_ARGS__); \
+    Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
+                                               Targoman::Common::enuLogType::Error, \
+                                               0, \
+                                               Buffer); \
+}
+
+#define TargomanLogError_Single(_stream) { \
+    QString Buffer; \
+    Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
+                                               Targoman::Common::enuLogType::Error, \
+                                               0, \
+                                               *(QTextStream(&Buffer) << _stream).string()); \
+}
+
+#define TargomanLogError(...) \
+    TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanLogError_, __VA_ARGS__)(__VA_ARGS__)
+
+/**
+ * Happy
+ */
+#define TargomanLogHappy_Multi(_level, _fmt, ...) { \
+    QString Buffer; \
+    Buffer.sprintf(_fmt, __VA_ARGS__); \
+    Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
+                                               Targoman::Common::enuLogType::Happy, \
+                                               _level, \
+                                               Buffer); \
+}
+
+#define TargomanLogHappy_Single(_level, _stream) { \
     QString Buffer; \
     Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
                                                Targoman::Common::enuLogType::Happy, \
-                                               _level,\
-                                               *(QTextStream(&Buffer)<<_message).string());\
+                                               _level, \
+                                               *(QTextStream(&Buffer) << _stream).string()); \
 }
+
+#define TargomanLogHappy(_level, ...) \
+    TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanLogHappy_, __VA_ARGS__)(_level, __VA_ARGS__)
 
 namespace Private {
 class LoggerPrivate;
@@ -250,8 +324,17 @@ public:
                  enuLogType::Type   _type,
                  quint8             _level,
                  const QString&     _message,
-                 bool _newLine = true);
+                 bool _newLine,
+                 bool _showLabel
+                 );
 
+    //this is for creating signature for backward compatibility
+    void   write(const QString&     _callerFuncName,
+                 enuLogType::Type   _type,
+                 quint8             _level,
+                 const QString&     _message,
+                 bool _newLine = true
+                 );
 
     /**
      * @brief setActive Activates and deactivates logging
@@ -288,8 +371,7 @@ private:
     friend class Targoman::Common::Private::LoggerPrivate;
 };
 
-}
-}
+} //namespace Targoman::Common
 
 /* Below line will register enuLogType as a MetaType to be used in signals and slots */
 Q_DECLARE_METATYPE(Targoman::Common::enuLogType::Type)

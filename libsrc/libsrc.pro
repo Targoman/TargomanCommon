@@ -44,7 +44,8 @@ DIST_HEADERS += \
     libTargomanCommon/Configuration/tmplModuleConfig.hpp \
     libTargomanCommon/Configuration/tmplAddinConfig.hpp \
     libTargomanCommon/clsCountAndSpeed.h \
-    libTargomanCommon/tmplExpirableCache.hpp
+    libTargomanCommon/tmplExpirableCache.hpp \
+    libTargomanCommon/Private/TLogger.h \
 
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
 PRIVATE_HEADERS += \
@@ -59,6 +60,7 @@ PRIVATE_HEADERS += \
 
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
 SOURCES += \
+    libTargomanCommon/Private/TLogger.cpp \
     libTargomanCommon/exTargomanBase.cpp \
     libTargomanCommon/clsSafeCoreApplication.cpp \
     libTargomanCommon/CmdIO.cpp \
