@@ -32,21 +32,6 @@
 
 #define INTERNAL_tLogLog(_type, _level)  TLog(Q_FUNC_INFO, __FILE__, __LINE__, Targoman::Common::enuLogType::_type, _level)
 
-#define tInfoLog(_level)    INTERNAL_tLogLog(Info, _level)
-#define tInfo(_level)       tInfoLog(_level).noLog()
-
-#define tDebugLog(_level)   INTERNAL_tLogLog(Debug, _level)
-#define tDebug(_level)      tDebugLog(_level).noLog()
-
-#define tWarnLog(_level)    INTERNAL_tLogLog(Warning, _level)
-#define tWarn(_level)       tWarnLog(_level).noLog()
-
-#define tHappyLog(_level)   INTERNAL_tLogLog(Happy, _level)
-#define tHappy(_level)      tHappyLog(_level).noLog()
-
-#define tErrorLog()         INTERNAL_tLogLog(Error, 0)
-#define tError()            tErrorLog().noLog()
-
 namespace Targoman::Common {
 
 class TLog : public QDebug {

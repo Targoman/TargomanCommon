@@ -67,10 +67,10 @@ TLog::~TLog() {
         QString color = TARGOMAN_COLOR_INFO;
 
         switch (this->Type) {
-//            case enuLogType::Info:
-//                OutputSettings = &TARGOMAN_IO_SETTINGS.Info;
-//                color = TARGOMAN_COLOR_INFO;
-//                break;
+            case enuLogType::Normal:
+                OutputSettings = &TARGOMAN_IO_SETTINGS.Normal;
+                color = TARGOMAN_COLOR_INFO;
+                break;
             case enuLogType::Warning:
                 OutputSettings = &TARGOMAN_IO_SETTINGS.Warning;
                 color = TARGOMAN_COLOR_WARNING;

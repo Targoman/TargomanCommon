@@ -20,6 +20,7 @@
 ################################################################################*/
 /**
  * @author S. Mohammad M. Ziabary <ziabary@targoman.com>
+ * @author Kambiz Zandi <kambizzandi@gmail.com>
  */
 
 #ifndef TARGOMAN_COMMON_CMDIO_H_
@@ -197,11 +198,11 @@ public:
 
     /**
      * @brief setDefault, sets default level of details for debug and none debug output mode.
-     * @param _debugLevel level of output for debug mode.
+     * @param _level level of output for debug mode.
      * @param _otherLevel level of output for other modes.
      */
-    void setDefault(quint8 _debugLevel = 5, quint8 _otherLevel = 9) {
-        this->Debug     .set(_debugLevel, true, true, true);
+    void setDefault(quint8 _level = 5, quint8 _otherLevel = 9) {
+        this->Debug     .set(_level, true, true, true);
         this->Info      .set(_otherLevel, true);
         this->Warning   .set(_otherLevel, true);
         this->Happy     .set(_otherLevel, true);
@@ -265,189 +266,246 @@ static QString getPassword(const QString& _message, char _replacingChar = '*');
  * Output Macros
  ********************************************************************************************/
 /**
-* @def TargomanDebugLine, just prints function name, file name and line number in debug mode.
-* @def TargomanDebug, prints function name, file name, line number and a message in debug mode, if message is QString this macro calls
-* TargomanDebug_Single, and if message is char* and has a formating styles, calls TargomanDebug_Multi.
-* @def TargomanInlineDebug, prints details and message in debug mode but it doesn't print end line character.
-* @def TargomanFinishInlineDebug, prints a message in debug mode without details of function and file names and line number,
-* it also prints end line character.
-*/
+ * @def TargomanDebugLine, just prints function name, file name and line number in debug mode.
+ * @def TargomanDebug, prints function name, file name, line number and a message in debug mode, if message is QString this macro calls
+ * TargomanDebug_Single, and if message is char* and has a formating styles, calls TargomanDebug_Multi.
+ * @def TargomanInlineDebug, prints details and message in debug mode but it doesn't print end line character.
+ * @def TargomanFinishInlineDebug, prints a message in debug mode without details of function and file names and line number,
+ * it also prints end line character.
+ */
 #if TARGOMAN_SHOW_DEBUG
     #if TARGOMAN_DEBUG_PROCESS_LINE
-
-      #define TargomanDebugLine  {if (Targoman::Common::TARGOMAN_IO_SETTINGS.Debug.canBeShown(7)) \
-          {fprintf(stderr,"%s+++> %s[8] %sProcessed!\n", TARGOMAN_COLOR_DEBUG, \
-                Targoman::Common::TARGOMAN_IO_SETTINGS.Debug.details(Q_FUNC_INFO,__FILE__,__LINE__).toUtf8().constData(), \
-                TARGOMAN_COLOR_NORMAL);}}
+        #define TargomanDebugLine { \
+            if (Targoman::Common::TARGOMAN_IO_SETTINGS.Debug.canBeShown(7)) { \
+                fprintf(stderr, "%s+++> %s[8] %sProcessed!\n", TARGOMAN_COLOR_DEBUG, \
+                    Targoman::Common::TARGOMAN_IO_SETTINGS.Debug.details(Q_FUNC_INFO, __FILE__, __LINE__).toUtf8().constData(), \
+                    TARGOMAN_COLOR_NORMAL); \
+            } \
+        }
     #else
-      #define TargomanDebugLine {}
+        #define TargomanDebugLine {}
     #endif
 
-    #define TargomanDebug_Multi(_debugLevel,_newline,_fmt,...) \
-    {fprintf(stderr,"%s+++> %s[%d]: %s" _fmt _newline,TARGOMAN_COLOR_DEBUG, \
-        Targoman::Common::TARGOMAN_IO_SETTINGS.Debug.details(Q_FUNC_INFO,__FILE__,__LINE__).toUtf8().constData(), \
-        _debugLevel, TARGOMAN_COLOR_NORMAL, __VA_ARGS__);}
+    #define TargomanDebug_Multi(_level, _newline, _fmt, ...) \
+        if (Targoman::Common::TARGOMAN_IO_SETTINGS.Debug.canBeShown(_level)) { \
+            fprintf(stderr, "%s+++> %s[%d]: %s" _fmt _newline, TARGOMAN_COLOR_DEBUG, \
+                Targoman::Common::TARGOMAN_IO_SETTINGS.Debug.details(Q_FUNC_INFO, __FILE__, __LINE__).toUtf8().constData(), \
+                _level, TARGOMAN_COLOR_NORMAL, __VA_ARGS__); \
+        }
 
-    #define TargomanDebug_Single(_debugLevel,_newline,_stream) \
-    {QString Buffer; fprintf(stderr,"%s+++> %s[%d]: %s%s" _newline, TARGOMAN_COLOR_DEBUG, \
-        Targoman::Common::TARGOMAN_IO_SETTINGS.Debug.details(Q_FUNC_INFO,__FILE__,__LINE__).toUtf8().constData(), \
-         _debugLevel, \
-        ((QTextStream(&Buffer)<<_stream).string()->toUtf8().constData()) \
-        , TARGOMAN_COLOR_NORMAL);}
+    #define TargomanDebug_Single(_level, _newline, _stream) \
+        if (Targoman::Common::TARGOMAN_IO_SETTINGS.Debug.canBeShown(_level)) { \
+            QString Buffer; \
+            fprintf(stderr, "%s+++> %s[%d]: %s%s" _newline, TARGOMAN_COLOR_DEBUG, \
+                Targoman::Common::TARGOMAN_IO_SETTINGS.Debug.details(Q_FUNC_INFO, __FILE__, __LINE__).toUtf8().constData(), \
+                _level, \
+                ((QTextStream(&Buffer) << _stream).string()->toUtf8().constData()), \
+                TARGOMAN_COLOR_NORMAL); \
+        }
 
-    #define TargomanDebug(_debugLevel,...) { \
-        {if (Targoman::Common::TARGOMAN_IO_SETTINGS.Debug.canBeShown(_debugLevel)){ \
-        TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanDebug_,__VA_ARGS__)(_debugLevel, "\n",__VA_ARGS__)}}}
+    #define TargomanInlineDebug(_level, ...) \
+        TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanDebug_, __VA_ARGS__)(_level, "", __VA_ARGS__)
 
-    #define TargomanInlineDebug(_debugLevel,...) { \
-        {if (Targoman::Common::TARGOMAN_IO_SETTINGS.Debug.canBeShown(_debugLevel)){ \
-        TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanDebug_,__VA_ARGS__)(_debugLevel,"",__VA_ARGS__)}}}
-
-    #define TargomanFinishInlineDebug(_colorType, _stream) {\
-        QString Buffer;\
+    #define TargomanFinishInlineDebug(_colorType, _stream) { \
+        QString Buffer; \
         if (Targoman::Common::TARGOMAN_IO_SETTINGS.Debug.canBeShown(1)) \
-        fprintf(stderr,"%s[%s]%s\n", _colorType, \
-            ((QTextStream(&Buffer)<<_stream).string()->toUtf8().constData()) \
-            ,TARGOMAN_COLOR_NORMAL);}
+            fprintf(stderr, "%s[%s]%s\n", _colorType, \
+                ((QTextStream(&Buffer) << _stream).string()->toUtf8().constData()), \
+                TARGOMAN_COLOR_NORMAL); \
+    }
 
 #else
     #define TargomanDebugLine {}
-    #define TargomanDebug(_debugLevel, ...) {}
-    #define TargomanInlineDebug(_debugLevel, ...) {}
+    #define TargomanDebug_Multi(_level, _newline, _fmt, ...)
+    #define TargomanDebug_Single(_level, _newline, _stream)
+    #define TargomanInlineDebug(_level, ...) {}
     #define TargomanFinishInlineDebug(_color, _lbl) {}
 #endif
 
+#define TargomanDebug_Empty(_level, _newline, ...) \
+    INTERNAL_tLogLog(Debug, _level).noLog()
+
+#define TargomanDebug(_level, ...) \
+    TARGOMAN_MACRO_ARG_BASED_FUNC_WITH_EMPTY(TargomanDebug_, __VA_ARGS__)(_level, "\n", __VA_ARGS__)
+
 /**
-* @def TargomanError, prints function name, file name, line number and a message in Error mode, if message is QString this macro calls
-* TargomanError_Single, and if message is char* and has a formating styles, calls TargomanError_Multi.
-*/
+ * @def TargomanError, prints function name, file name, line number and a message in Error mode, if message is QString this macro calls
+ * TargomanError_Single, and if message is char* and has a formating styles, calls TargomanError_Multi.
+ */
+#define TargomanError_Multi(_fmt, ...) { \
+    fprintf(stderr, "%s%s[ERROR][-] %s" _fmt "\n", TARGOMAN_COLOR_ERROR, \
+        Targoman::Common::TARGOMAN_IO_SETTINGS.Error.details(Q_FUNC_INFO, __FILE__, __LINE__).toUtf8().constData(), \
+        TARGOMAN_COLOR_NORMAL, __VA_ARGS__); \
+}
 
-#define TargomanError_Multi(_fmt,...)\
-    {fprintf(stderr,"%s%s[ERROR][-] %s" _fmt "\n", TARGOMAN_COLOR_ERROR, \
-        Targoman::Common::TARGOMAN_IO_SETTINGS.Error.details(Q_FUNC_INFO,__FILE__,__LINE__).toUtf8().constData(), \
-        TARGOMAN_COLOR_NORMAL, __VA_ARGS__);}
-#define TargomanError_Single(_stream)\
-    {QString Buffer; fprintf(stderr,"%s%s[ERROR][-] %s%s\n", TARGOMAN_COLOR_ERROR, \
-        Targoman::Common::TARGOMAN_IO_SETTINGS.Error.details(Q_FUNC_INFO,__FILE__,__LINE__).toUtf8().constData(), \
-            ((QTextStream(&Buffer)<<_stream).string()->toUtf8().constData()) \
-            , TARGOMAN_COLOR_NORMAL);}
+#define TargomanError_Single(_stream) { \
+    QString Buffer; \
+    fprintf(stderr, "%s%s[ERROR][-] %s%s\n", TARGOMAN_COLOR_ERROR, \
+        Targoman::Common::TARGOMAN_IO_SETTINGS.Error.details(Q_FUNC_INFO, __FILE__, __LINE__).toUtf8().constData(), \
+            ((QTextStream(&Buffer) << _stream).string()->toUtf8().constData()), \
+            TARGOMAN_COLOR_NORMAL); \
+}
 
-#define TargomanError(...)  {TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanError_,__VA_ARGS__)(__VA_ARGS__)}
+#define TargomanError_Empty(...) \
+    INTERNAL_tLogLog(Error, 0).noLog()
+
+#define TargomanError(...) \
+    TARGOMAN_MACRO_ARG_BASED_FUNC_WITH_EMPTY(TargomanError_, __VA_ARGS__)(__VA_ARGS__)
 
 /**
 * @def TargomanWarn, prints function name, file name, line number and a message in Warn mode, if message is QString this macro calls
 * TargomanWarn_Single, and if message is char* and has a formating styles, calls TargomanWarn_Multi.
 */
-
 #if TARGOMAN_SHOW_WARNING
-    #define TargomanWarn_Multi(_warnLevel,_fmt,...)\
-        {fprintf(stderr,"%s%s[WARN][%d] %s" _fmt "\n", TARGOMAN_COLOR_WARNING, \
-            Targoman::Common::TARGOMAN_IO_SETTINGS.Warning.details(Q_FUNC_INFO,__FILE__,__LINE__).toUtf8().constData(), \
-            _warnLevel, TARGOMAN_COLOR_NORMAL, __VA_ARGS__);}
-    #define TargomanWarn_Single(_warnLevel,_stream)\
-        {QString Buffer;fprintf(stderr,"%s%s[WARN][%d] %s%s\n", TARGOMAN_COLOR_WARNING,  \
-            Targoman::Common::TARGOMAN_IO_SETTINGS.Warning.details(Q_FUNC_INFO,__FILE__,__LINE__).toUtf8().constData(), \
-            _warnLevel, TARGOMAN_COLOR_NORMAL, \
-            ((QTextStream(&Buffer)<<_stream).string()->toUtf8().constData()));}
+    #define TargomanWarn_Multi(_level, _fmt, ...) \
+        if (Targoman::Common::TARGOMAN_IO_SETTINGS.Warning.canBeShown(_level)) { \
+            fprintf(stderr,"%s%s[WARN][%d] %s" _fmt "\n", TARGOMAN_COLOR_WARNING, \
+                Targoman::Common::TARGOMAN_IO_SETTINGS.Warning.details(Q_FUNC_INFO, __FILE__, __LINE__).toUtf8().constData(), \
+                _level, TARGOMAN_COLOR_NORMAL, __VA_ARGS__); \
+        }
 
-    #define TargomanWarn(_warnLevel,...)  {if (Targoman::Common::TARGOMAN_IO_SETTINGS.Warning.canBeShown(_warnLevel)) {\
-        TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanWarn_,__VA_ARGS__)(_warnLevel, __VA_ARGS__)}}
+    #define TargomanWarn_Single(_level, _stream) \
+        if (Targoman::Common::TARGOMAN_IO_SETTINGS.Warning.canBeShown(_level)) { \
+            QString Buffer; \
+            fprintf(stderr, "%s%s[WARN][%d] %s%s\n", TARGOMAN_COLOR_WARNING, \
+                Targoman::Common::TARGOMAN_IO_SETTINGS.Warning.details(Q_FUNC_INFO, __FILE__, __LINE__).toUtf8().constData(), \
+                _level, TARGOMAN_COLOR_NORMAL, \
+                ((QTextStream(&Buffer)<<_stream).string()->toUtf8().constData())); \
+        }
 #else
-    #define TargomanWarn(_warnLevel,...) {}
+    #define TargomanWarn_Multi(_level, _fmt, ...)
+    #define TargomanWarn_Single(_level, _stream)
 #endif
 
+#define TargomanWarn_Empty(_level, ...) \
+    INTERNAL_tLogLog(Warning, _level).noLog()
+
+#define TargomanWarn(_level, ...) \
+    TARGOMAN_MACRO_ARG_BASED_FUNC_WITH_EMPTY(TargomanWarn_, __VA_ARGS__)(_level, __VA_ARGS__)
+
 /**
-* @def TargomanInfo, prints function name, file name, line number and a message in Info mode, if message is QString this macro calls
-* TargomanInfo_Single, and if message is char* and has a formating styles, calls TargomanInfo_Multi.
-* @def TargomanInlineInfo, prints details and message in Info mode but it doesn't print end line character.
-* @def TargomanFinishInlineInfo, prints a message in Info mode without details of function and file names and line number,
-* it also prints end line character.
-*/
-
+ * @def TargomanInfo, prints function name, file name, line number and a message in Info mode, if message is QString this macro calls
+ * TargomanInfo_Single, and if message is char* and has a formating styles, calls TargomanInfo_Multi.
+ * @def TargomanInlineInfo, prints details and message in Info mode but it doesn't print end line character.
+ * @def TargomanFinishInlineInfo, prints a message in Info mode without details of function and file names and line number,
+ * it also prints end line character.
+ */
 #if TARGOMAN_SHOW_INFO
-    #define TargomanInfo_Multi(_infoLevel,_newline,_fmt,...)\
-        {fprintf(stdout,"%s%s[INFO][%d] %s" _fmt _newline, TARGOMAN_COLOR_INFO, \
-            Targoman::Common::TARGOMAN_IO_SETTINGS.Info.details(Q_FUNC_INFO,__FILE__,__LINE__).toUtf8().constData(), \
-            _infoLevel, TARGOMAN_COLOR_NORMAL, __VA_ARGS__);}
-    #define TargomanInfo_Single(_infoLevel,_newline,_stream)\
-        {QString Buffer; fprintf(stdout,"%s%s[INFO][%d] %s%s" _newline, TARGOMAN_COLOR_INFO, \
-            Targoman::Common::TARGOMAN_IO_SETTINGS.Info.details(Q_FUNC_INFO,__FILE__,__LINE__).toUtf8().constData(), \
-            _infoLevel, TARGOMAN_COLOR_NORMAL, \
-           ((QTextStream(&Buffer)<<_stream).string()->toUtf8().constData()));}
+    #define TargomanInfo_Multi(_level, _newline, _fmt, ...) \
+        if (Targoman::Common::TARGOMAN_IO_SETTINGS.Info.canBeShown(_level)) { \
+            fprintf(stdout, "%s%s[INFO][%d] %s" _fmt _newline, TARGOMAN_COLOR_INFO, \
+                Targoman::Common::TARGOMAN_IO_SETTINGS.Info.details(Q_FUNC_INFO, __FILE__, __LINE__).toUtf8().constData(), \
+                _level, TARGOMAN_COLOR_NORMAL, __VA_ARGS__); \
+        }
 
-    #define TargomanInfo(_infoLevel,...)  {if (Targoman::Common::TARGOMAN_IO_SETTINGS.Info.canBeShown(_infoLevel)) {\
-        TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanInfo_,__VA_ARGS__)(_infoLevel, "\n",__VA_ARGS__)}}
-    #define TargomanInlineInfo(_infoLevel,...)  {if (Targoman::Common::TARGOMAN_IO_SETTINGS.Info.canBeShown(_infoLevel)) {\
-        TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanInfo_,__VA_ARGS__)(_infoLevel, "",__VA_ARGS__)}}
+    #define TargomanInfo_Single(_level,_newline,_stream) \
+        if (Targoman::Common::TARGOMAN_IO_SETTINGS.Info.canBeShown(_level)) { \
+            QString Buffer; \
+            fprintf(stdout, "%s%s[INFO][%d] %s%s" _newline, TARGOMAN_COLOR_INFO, \
+                Targoman::Common::TARGOMAN_IO_SETTINGS.Info.details(Q_FUNC_INFO, __FILE__, __LINE__).toUtf8().constData(), \
+                _level, TARGOMAN_COLOR_NORMAL, \
+                ((QTextStream(&Buffer)<<_stream).string()->toUtf8().constData())); \
+        }
 
-    #define TargomanFinishInlineInfo(_colorType, _stream) {\
-        QString Buffer;\
-        if (Targoman::Common::TARGOMAN_IO_SETTINGS.Info.canBeShown(1))   \
-            fprintf(stdout,"%s[%s]%s\n", _colorType, \
-                ((QTextStream(&Buffer)<<_stream).string()->toUtf8().constData()) \
-                ,TARGOMAN_COLOR_NORMAL);}
+    #define TargomanInlineInfo(_level, ...) \
+        TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanInfo_,__VA_ARGS__)(_level, "",__VA_ARGS__)
+
+    #define TargomanFinishInlineInfo(_colorType, _stream) { \
+        QString Buffer; \
+        if (Targoman::Common::TARGOMAN_IO_SETTINGS.Info.canBeShown(1)) \
+            fprintf(stdout, "%s[%s]%s\n", _colorType, \
+                ((QTextStream(&Buffer)<<_stream).string()->toUtf8().constData()), \
+                TARGOMAN_COLOR_NORMAL); \
+    }
+
 #else
-    #define TargomanInfo(_infoLevel,...) {}
-    #define TargomanInlineInfo(_infoLevel,...) {}
+    #define TargomanInfo_Multi(_level, _newline, _fmt, ...)
+    #define TargomanInfo_Single(_level, _newline, _stream)
+    #define TargomanInlineInfo(_level,...) {}
     #define TargomanFinishInlineInfo(_color, _lbl) {}
 #endif
 
+#define TargomanInfo_Empty(_level, _newline, ...) \
+    INTERNAL_tLogLog(Info, _level).noLog()
+
+#define TargomanInfo(_level, ...) \
+    TARGOMAN_MACRO_ARG_BASED_FUNC_WITH_EMPTY(TargomanInfo_, __VA_ARGS__)(_level, "\n", __VA_ARGS__)
+
 /**
-* @def TargomanOut, prints function name, file name, line number and a message in normal mode, if message is QString this macro calls
-* TargomanOut_Single, and if message is char* and has a formating styles, calls TargomanOut_Multi.
-* @def TargomanInlineOut, prints details and message in normal mode but it doesn't print end line character.
-* @def TargomanFinishInlineOut, prints a message in normal mode without details of function and file names and line number,
-* it also prints end line character.
-*/
-
+ * @def TargomanOut, prints function name, file name, line number and a message in normal mode, if message is QString this macro calls
+ * TargomanOut_Single, and if message is char* and has a formating styles, calls TargomanOut_Multi.
+ * @def TargomanInlineOut, prints details and message in normal mode but it doesn't print end line character.
+ * @def TargomanFinishInlineOut, prints a message in normal mode without details of function and file names and line number,
+ * it also prints end line character.
+ */
 #if TARGOMAN_SHOW_NORMAL
-    #define TargomanOut_Multi(_infoLevel,_newline,_fmt,...)\
-        {fprintf(stdout,"%s[NORMAL][%d] " _fmt _newline, \
-            Targoman::Common::TARGOMAN_IO_SETTINGS.Normal.details(Q_FUNC_INFO,__FILE__,__LINE__).toUtf8().constData(), \
-            _infoLevel,  __VA_ARGS__);}
-    #define TargomanOut_Single(_infoLevel,_newline,_stream)\
-        {QString Buffer;fprintf(stdout,"%s[NORMAL][%d] %s" _newline,  \
-            Targoman::Common::TARGOMAN_IO_SETTINGS.Normal.details(Q_FUNC_INFO,__FILE__,__LINE__).toUtf8().constData(), \
-            _infoLevel,  \
-            ((QTextStream(&Buffer)<<_stream).string()->toUtf8().constData()));}
+    #define TargomanOut_Multi(_level, _newline, _fmt, ...) \
+        if (Targoman::Common::TARGOMAN_IO_SETTINGS.Normal.canBeShown(_level)) { \
+            fprintf(stdout, "%s[NORMAL][%d] " _fmt _newline, \
+                Targoman::Common::TARGOMAN_IO_SETTINGS.Normal.details(Q_FUNC_INFO, __FILE__, __LINE__).toUtf8().constData(), \
+                _level, __VA_ARGS__); \
+        }
 
-    #define TargomanOut(_infoLevel,...)  {if (Targoman::Common::TARGOMAN_IO_SETTINGS.Normal.canBeShown(_infoLevel)) {\
-        TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanOut_,__VA_ARGS__)(_infoLevel, "\n",__VA_ARGS__)}}
-    #define TargomanInlineOut(_infoLevel,...)  {if (Targoman::Common::TARGOMAN_IO_SETTINGS.Normal.canBeShown(_infoLevel)) {\
-        TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanOut_,__VA_ARGS__)(_infoLevel, "",__VA_ARGS__)}}
+    #define TargomanOut_Single(_level, _newline, _stream) \
+        if (Targoman::Common::TARGOMAN_IO_SETTINGS.Normal.canBeShown(_level)) { \
+            QString Buffer; \
+            fprintf(stdout, "%s[NORMAL][%d] %s" _newline, \
+                Targoman::Common::TARGOMAN_IO_SETTINGS.Normal.details(Q_FUNC_INFO, __FILE__, __LINE__).toUtf8().constData(), \
+                _level, ((QTextStream(&Buffer) << _stream).string()->toUtf8().constData())); \
+        }
 
-    #define TargomanFinishInlineOut(_colorType, _stream) {\
+    #define TargomanInlineOut(_level, ...) \
+        TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanOut_,__VA_ARGS__)(_level, "",__VA_ARGS__)
+
+    #define TargomanFinishInlineOut(_colorType, _stream) { \
         QString Buffer; \
         if (Targoman::Common::TARGOMAN_IO_SETTINGS.Normal.canBeShown(1)) \
             fprintf(stdout,"%s[%s]%s\n", _colorType, \
-            ((QTextStream(&Buffer)<<_stream).string()->toUtf8().constData()) \
-            ,TARGOMAN_COLOR_NORMAL);}
+                ((QTextStream(&Buffer)<<_stream).string()->toUtf8().constData()), \
+                TARGOMAN_COLOR_NORMAL); \
+    }
+
 #else
-    #define TargomanOut(_infoLevel,...) {}
-    #define TargomanInlineOut(_infoLevel,...) {}
+    #define TargomanOut_Multi(_level, _newline, _fmt, ...)
+    #define TargomanOut_Single(_level, _newline, _stream)
+    #define TargomanInlineOut(_level, ...) {}
     #define TargomanFinishInlineOut(_color, _lbl) {}
 #endif
 
+#define TargomanOut_Empty(_level, _newline, ...) \
+    INTERNAL_tLogLog(Normal, _level).noLog()
+
+#define TargomanOut(_level, ...) \
+    TARGOMAN_MACRO_ARG_BASED_FUNC_WITH_EMPTY(TargomanOut_, __VA_ARGS__)(_level, "\n", __VA_ARGS__)
+
 /**
-* @def TargomanHappy, prints function name, file name, line number and a message in Happy mode, if message is QString this macro calls
-* TargomanHappy_Single, and if message is char* and has a formating styles, calls TargomanHappy_Multi.
-*/
-
+ * @def TargomanHappy, prints function name, file name, line number and a message in Happy mode, if message is QString this macro calls
+ * TargomanHappy_Single, and if message is char* and has a formating styles, calls TargomanHappy_Multi.
+ */
 #if TARGOMAN_SHOW_HAPPY
-    #define TargomanHappy_Multi(_happyLevel,_fmt,...)\
-        {fprintf(stdout,"%s%s[HAPPY][%d] %s" _fmt "\n", TARGOMAN_COLOR_HAPPY, \
-            Targoman::Common::TARGOMAN_IO_SETTINGS.Happy.details(Q_FUNC_INFO,__FILE__,__LINE__).toUtf8().constData(), \
-            _happyLevel, TARGOMAN_COLOR_NORMAL, __VA_ARGS__);}
-    #define TargomanHappy_Single(_happyLevel,_stream)\
-        {QString Buffer; fprintf(stdout,"%s%s[HAPPY][%d] %s%s\n", TARGOMAN_COLOR_HAPPY, \
-            Targoman::Common::TARGOMAN_IO_SETTINGS.Happy.details(Q_FUNC_INFO,__FILE__,__LINE__).toUtf8().constData(), \
-            _happyLevel, TARGOMAN_COLOR_NORMAL, \
-            ((QTextStream(&Buffer)<<_stream).string()->toUtf8().constData()));}
+    #define TargomanHappy_Multi(_level, _fmt, ...) \
+        if (Targoman::Common::TARGOMAN_IO_SETTINGS.Happy.canBeShown(_level)) { \
+            fprintf(stdout, "%s%s[HAPPY][%d] %s" _fmt "\n", TARGOMAN_COLOR_HAPPY, \
+                Targoman::Common::TARGOMAN_IO_SETTINGS.Happy.details(Q_FUNC_INFO, __FILE__, __LINE__).toUtf8().constData(), \
+                _level, TARGOMAN_COLOR_NORMAL, __VA_ARGS__); \
+        }
 
-    #define TargomanHappy(_happyLevel,...)  {if (Targoman::Common::TARGOMAN_IO_SETTINGS.Happy.canBeShown(_happyLevel)) {\
-        TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanHappy_,__VA_ARGS__)(_happyLevel, __VA_ARGS__)}}
+    #define TargomanHappy_Single(_level, _stream) \
+        if (Targoman::Common::TARGOMAN_IO_SETTINGS.Happy.canBeShown(_level)) { \
+            QString Buffer; fprintf(stdout, "%s%s[HAPPY][%d] %s%s\n", TARGOMAN_COLOR_HAPPY, \
+                Targoman::Common::TARGOMAN_IO_SETTINGS.Happy.details(Q_FUNC_INFO, __FILE__, __LINE__).toUtf8().constData(), \
+                _level, TARGOMAN_COLOR_NORMAL, \
+                ((QTextStream(&Buffer)<<_stream).string()->toUtf8().constData())); \
+        }
 #else
-    #define TargomanHappy(_happyLevel,...) {}
+    #define TargomanHappy_Multi(_level, _fmt, ...)
+    #define TargomanHappy_Single(_level, _stream)
 #endif
+
+#define TargomanHappy_Empty(_level, ...) \
+    INTERNAL_tLogLog(Happy, _level).noLog()
+
+#define TargomanHappy(_level, ...) \
+    TARGOMAN_MACRO_ARG_BASED_FUNC_WITH_EMPTY(TargomanHappy_, __VA_ARGS__)(_level, __VA_ARGS__)
 
 #endif /* TARGOMAN_COMMON_CMDIO_H_ */
