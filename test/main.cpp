@@ -319,6 +319,16 @@ int main(int argc, char *argv[])
                   << QVariant(11)
                      ;
 
+        qDebug() << "> nolabel";
+
+        tWarn(1).noLabel()  << "T1 Log Warn";
+        tInfo(2).noLabel()  << "T1 Log Info";
+        tHappy(3).noLabel() << "T1 Log Happy";
+        tError().noLabel()  << "T1 Log Error";
+        tDebug(5).noLabel() << "T1 Log Debug"
+                            << QVariant(11)
+                            ;
+
         qDebug() << "> 2";
 
         tWarnLog(1)  << "T2 Log File Warn";

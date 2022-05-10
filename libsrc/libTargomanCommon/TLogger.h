@@ -33,19 +33,19 @@
 #define INTERNAL_tLogLog(_type, _level)  TLog(Q_FUNC_INFO, __FILE__, __LINE__, Targoman::Common::enuLogType::_type, _level)
 
 #define tInfoLog(_level)    INTERNAL_tLogLog(Info, _level)
-#define tInfo(_level)       tInfoLog(_level).nolog()
+#define tInfo(_level)       tInfoLog(_level).noLog()
 
 #define tDebugLog(_level)   INTERNAL_tLogLog(Debug, _level)
-#define tDebug(_level)      tDebugLog(_level).nolog()
+#define tDebug(_level)      tDebugLog(_level).noLog()
 
 #define tWarnLog(_level)    INTERNAL_tLogLog(Warning, _level)
-#define tWarn(_level)       tWarnLog(_level).nolog()
+#define tWarn(_level)       tWarnLog(_level).noLog()
 
 #define tHappyLog(_level)   INTERNAL_tLogLog(Happy, _level)
-#define tHappy(_level)      tHappyLog(_level).nolog()
+#define tHappy(_level)      tHappyLog(_level).noLog()
 
 #define tErrorLog()         INTERNAL_tLogLog(Error, 0)
-#define tError()            tErrorLog().nolog()
+#define tError()            tErrorLog().noLog()
 
 namespace Targoman::Common {
 
@@ -70,7 +70,8 @@ public:
 */
     virtual ~TLog();
 
-    TLog& nolog();
+    TLog& noLog();
+    TLog& noLabel();
 
 protected:
     QString Function;
@@ -79,7 +80,9 @@ protected:
 
     enuLogType::Type Type;
     quint8 Level;
-    bool Log;
+    bool LogToFile;
+    bool ShowLabel;
+
     QString Buffer;
 };
 

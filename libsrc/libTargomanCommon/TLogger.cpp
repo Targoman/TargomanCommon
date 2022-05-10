@@ -39,7 +39,8 @@ TLog::TLog(const char *_function,
     Line(_line),
     Type(_type),
     Level(_level),
-    Log(true)
+    LogToFile(true),
+    ShowLabel(true)
 {
     this->quote().space();
 }
@@ -55,14 +56,15 @@ TLog::TLog(const char *_function,
     }
 */
 TLog::~TLog() {
-    if (this->Log) {
+    if (this->LogToFile) {
         Targoman::Common::Logger::instance().write(QString("%1 %2:%3").arg(this->Function).arg(this->File).arg(this->Line),
                                                    this->Type,
                                                    this->Level,
-                                                   this->Buffer);
+                                                   this->Buffer,
+                                                   this->ShowLabel);
     } else {
         clsOutputSettings *OutputSettings = &TARGOMAN_IO_SETTINGS.Info;
-        std::string color = TARGOMAN_COLOR_INFO;
+        QString color = TARGOMAN_COLOR_INFO;
 
         switch (this->Type) {
 //            case enuLogType::Info:
@@ -89,20 +91,29 @@ TLog::~TLog() {
                 break;
         }
 
-        fprintf(stderr,
-                "%s%s[%s][%d] %s%s\n",
-                color.c_str(),
-                OutputSettings->details(this->Function.toStdString().c_str(), this->File.toStdString().c_str(), this->Line).toStdString().c_str(),
-                enuLogType::toStr(this->Type),
-                this->Level,
-                this->Buffer.toStdString().c_str(),
-                TARGOMAN_COLOR_NORMAL
-                );
+        QString Out = color;
+
+        if (this->ShowLabel)
+            Out += QString("%1[%2][%3] ")
+                   .arg(OutputSettings->details(this->Function.toStdString().c_str(), this->File.toStdString().c_str(), this->Line))
+                   .arg(enuLogType::toStr(this->Type))
+                   .arg(this->Level);
+
+        Out += this->Buffer.trimmed();
+
+        Out += TARGOMAN_COLOR_NORMAL;
+
+        fprintf(stderr, "%s\n", Out.toStdString().c_str());
     }
 }
 
-TLog& TLog::nolog() {
-    this->Log = false;
+TLog& TLog::noLog() {
+    this->LogToFile = false;
+    return *this;
+}
+
+TLog& TLog::noLabel() {
+    this->ShowLabel = false;
     return *this;
 }
 
