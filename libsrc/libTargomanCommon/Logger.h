@@ -33,31 +33,9 @@
 
 #include "libTargomanCommon/exTargomanBase.h"
 
-//#include <stdarg.h>  // For va_start, etc.
-//#include <memory>    // For std::unique_ptr
-
-namespace Targoman {
-namespace Common {
+namespace Targoman::Common {
 
 TARGOMAN_ADD_EXCEPTION_HANDLER(exLogger, Targoman::Common::exTargomanBase);
-
-//inline std::string string_format(const std::string fmt_str, ...) {
-//    int final_n, n = ((int)fmt_str.size()) * 2; /* Reserve two times as much as the length of the fmt_str */
-//    std::unique_ptr<char[]> formatted;
-//    va_list ap;
-//    while(1) {
-//        formatted.reset(new char[n]); /* Wrap the plain char array into the unique_ptr */
-//        strcpy(&formatted[0], fmt_str.c_str());
-//        va_start(ap, fmt_str);
-//        final_n = vsnprintf(&formatted[0], n, fmt_str.c_str(), ap);
-//        va_end(ap);
-//        if (final_n < 0 || final_n >= n)
-//            n += abs(final_n - n + 1);
-//        else
-//            break;
-//    }
-//    return std::string(formatted.get());
-//}
 
 /**
  * Debug
@@ -68,7 +46,7 @@ TARGOMAN_ADD_EXCEPTION_HANDLER(exLogger, Targoman::Common::exTargomanBase);
         Buffer.sprintf(_fmt, __VA_ARGS__); \
         Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
                                                    Targoman::Common::enuLogType::Debug, \
-                                                   _level,\
+                                                   _level, \
                                                    Buffer); \
     }
 
@@ -76,8 +54,8 @@ TARGOMAN_ADD_EXCEPTION_HANDLER(exLogger, Targoman::Common::exTargomanBase);
         QString Buffer; \
         Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
                                                    Targoman::Common::enuLogType::Debug, \
-                                                   _level,\
-                                                   *(QTextStream(&Buffer) << _stream).string());\
+                                                   _level, \
+                                                   *(QTextStream(&Buffer) << _stream).string()); \
     }
 
 #else
@@ -85,11 +63,8 @@ TARGOMAN_ADD_EXCEPTION_HANDLER(exLogger, Targoman::Common::exTargomanBase);
     #define TargomanLogDebug_Single(_level, _stream)
 #endif //TARGOMAN_SHOW_DEBUG
 
-#define TargomanLogDebug_Empty(_level, ...) \
-    INTERNAL_tLogLog(Debug, _level)
-
 #define TargomanLogDebug(_level, ...) \
-    TARGOMAN_MACRO_ARG_BASED_FUNC_WITH_EMPTY(TargomanLogDebug_, __VA_ARGS__)(_level, __VA_ARGS__)
+    TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanLogDebug_, __VA_ARGS__)(_level, __VA_ARGS__)
 
 /**
  * Warning
@@ -99,7 +74,7 @@ TARGOMAN_ADD_EXCEPTION_HANDLER(exLogger, Targoman::Common::exTargomanBase);
     Buffer.sprintf(_fmt, __VA_ARGS__); \
     Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
                                                Targoman::Common::enuLogType::Warning, \
-                                               _level,\
+                                               _level, \
                                                Buffer); \
 }
 
@@ -107,15 +82,12 @@ TARGOMAN_ADD_EXCEPTION_HANDLER(exLogger, Targoman::Common::exTargomanBase);
     QString Buffer; \
     Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
                                                Targoman::Common::enuLogType::Warning, \
-                                               _level,\
-                                               *(QTextStream(&Buffer) << _stream).string());\
+                                               _level, \
+                                               *(QTextStream(&Buffer) << _stream).string()); \
 }
 
-#define TargomanLogWarn_Empty(_level, ...) \
-    INTERNAL_tLogLog(Warning, _level)
-
 #define TargomanLogWarn(_level, ...) \
-    TARGOMAN_MACRO_ARG_BASED_FUNC_WITH_EMPTY(TargomanLogWarn_, __VA_ARGS__)(_level, __VA_ARGS__)
+    TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanLogWarn_, __VA_ARGS__)(_level, __VA_ARGS__)
 
 /**
  * Info
@@ -125,7 +97,7 @@ TARGOMAN_ADD_EXCEPTION_HANDLER(exLogger, Targoman::Common::exTargomanBase);
     Buffer.sprintf(_fmt, __VA_ARGS__); \
     Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
                                                Targoman::Common::enuLogType::Info, \
-                                               _level,\
+                                               _level, \
                                                Buffer); \
 }
 
@@ -133,15 +105,12 @@ TARGOMAN_ADD_EXCEPTION_HANDLER(exLogger, Targoman::Common::exTargomanBase);
     QString Buffer; \
     Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
                                                Targoman::Common::enuLogType::Info, \
-                                               _level,\
-                                               *(QTextStream(&Buffer) << _stream).string());\
+                                               _level, \
+                                               *(QTextStream(&Buffer) << _stream).string()); \
 }
 
-#define TargomanLogInfo_Empty(_level, ...) \
-    INTERNAL_tLogLog(Info, _level)
-
 #define TargomanLogInfo(_level, ...) \
-    TARGOMAN_MACRO_ARG_BASED_FUNC_WITH_EMPTY(TargomanLogInfo_, __VA_ARGS__)(_level, __VA_ARGS__)
+    TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanLogInfo_, __VA_ARGS__)(_level, __VA_ARGS__)
 
 /**
  * Error
@@ -151,7 +120,7 @@ TARGOMAN_ADD_EXCEPTION_HANDLER(exLogger, Targoman::Common::exTargomanBase);
     Buffer.sprintf(_fmt, __VA_ARGS__); \
     Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
                                                Targoman::Common::enuLogType::Error, \
-                                               0,\
+                                               0, \
                                                Buffer); \
 }
 
@@ -159,15 +128,12 @@ TARGOMAN_ADD_EXCEPTION_HANDLER(exLogger, Targoman::Common::exTargomanBase);
     QString Buffer; \
     Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
                                                Targoman::Common::enuLogType::Error, \
-                                               0,\
-                                               *(QTextStream(&Buffer) << _stream).string());\
+                                               0, \
+                                               *(QTextStream(&Buffer) << _stream).string()); \
 }
 
-#define TargomanLogError_Empty(...) \
-    INTERNAL_tLogLog(Error, 0)
-
 #define TargomanLogError(...) \
-    TARGOMAN_MACRO_ARG_BASED_FUNC_WITH_EMPTY(TargomanLogError_, __VA_ARGS__)(__VA_ARGS__)
+    TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanLogError_, __VA_ARGS__)(__VA_ARGS__)
 
 /**
  * Happy
@@ -177,7 +143,7 @@ TARGOMAN_ADD_EXCEPTION_HANDLER(exLogger, Targoman::Common::exTargomanBase);
     Buffer.sprintf(_fmt, __VA_ARGS__); \
     Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
                                                Targoman::Common::enuLogType::Happy, \
-                                               _level,\
+                                               _level, \
                                                Buffer); \
 }
 
@@ -185,15 +151,12 @@ TARGOMAN_ADD_EXCEPTION_HANDLER(exLogger, Targoman::Common::exTargomanBase);
     QString Buffer; \
     Targoman::Common::Logger::instance().write(Q_FUNC_INFO, \
                                                Targoman::Common::enuLogType::Happy, \
-                                               _level,\
-                                               *(QTextStream(&Buffer) << _stream).string());\
+                                               _level, \
+                                               *(QTextStream(&Buffer) << _stream).string()); \
 }
 
-#define TargomanLogHappy_Empty(_level, ...) \
-    INTERNAL_tLogLog(Happy, _level)
-
 #define TargomanLogHappy(_level, ...) \
-    TARGOMAN_MACRO_ARG_BASED_FUNC_WITH_EMPTY(TargomanLogHappy_, __VA_ARGS__)(_level, __VA_ARGS__)
+    TARGOMAN_MACRO_ARG_BASED_FUNC(TargomanLogHappy_, __VA_ARGS__)(_level, __VA_ARGS__)
 
 namespace Private {
 class LoggerPrivate;
@@ -212,8 +175,7 @@ TARGOMAN_DEFINE_ENHANCED_ENUM(enuLogType,
                               Warning,
                               Error,
                               Debug,
-                              Happy,
-                              Normal
+                              Happy
                               );
 
 /**
@@ -409,8 +371,7 @@ private:
     friend class Targoman::Common::Private::LoggerPrivate;
 };
 
-}
-}
+} //namespace Targoman::Common
 
 /* Below line will register enuLogType as a MetaType to be used in signals and slots */
 Q_DECLARE_METATYPE(Targoman::Common::enuLogType::Type)

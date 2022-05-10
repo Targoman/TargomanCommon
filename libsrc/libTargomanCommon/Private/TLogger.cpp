@@ -24,13 +24,14 @@
  */
 
 #include "TLogger.h"
+#include "libTargomanCommon/Logger.h"
 
-namespace Targoman::Common {
+namespace Targoman::Common::Private {
 
 TLog::TLog(const char *_function,
            const char *_file,
            quint16 _line,
-           enuLogType::Type _type,
+           /*enuLogType::Type*/ quint8 _type,
            quint8 _level
 ) :
     QDebug(&this->Buffer),
@@ -42,7 +43,7 @@ TLog::TLog(const char *_function,
     LogToFile(true),
     ShowLabel(true)
 {
-    this->quote().space();
+//    this->quote().space();
 }
 /*
     inline TLog(TLog &_other) :
@@ -56,9 +57,14 @@ TLog::TLog(const char *_function,
     }
 */
 TLog::~TLog() {
+
+#ifndef TARGOMAN_SHOW_DEBUG
+if (this->Type != enuLogType::Debug) {
+#endif
+
     if (this->LogToFile) {
         Targoman::Common::Logger::instance().write(QString("%1 %2:%3").arg(this->Function).arg(this->File).arg(this->Line),
-                                                   this->Type,
+                                                   (enuLogType::Type)this->Type,
                                                    this->Level,
                                                    this->Buffer,
                                                    this->ShowLabel);
@@ -67,10 +73,10 @@ TLog::~TLog() {
         QString color = TARGOMAN_COLOR_INFO;
 
         switch (this->Type) {
-            case enuLogType::Normal:
-                OutputSettings = &TARGOMAN_IO_SETTINGS.Normal;
-                color = TARGOMAN_COLOR_INFO;
-                break;
+//            case enuLogType::Normal:
+//                OutputSettings = &TARGOMAN_IO_SETTINGS.Normal;
+//                color = TARGOMAN_COLOR_INFO;
+//                break;
             case enuLogType::Warning:
                 OutputSettings = &TARGOMAN_IO_SETTINGS.Warning;
                 color = TARGOMAN_COLOR_WARNING;
@@ -96,7 +102,7 @@ TLog::~TLog() {
         if (this->ShowLabel)
             Out += QString("%1[%2][%3] ")
                    .arg(OutputSettings->details(this->Function.toStdString().c_str(), this->File.toStdString().c_str(), this->Line))
-                   .arg(enuLogType::toStr(this->Type))
+                   .arg(enuLogType::toStr((enuLogType::Type)this->Type))
                    .arg(this->Level);
 
         Out += this->Buffer;
@@ -105,6 +111,11 @@ TLog::~TLog() {
 
         fprintf(stderr, "%s\n", Out.toStdString().c_str());
     }
+
+#ifndef TARGOMAN_SHOW_DEBUG
+}
+#endif
+
 }
 
 TLog& TLog::noLog() {
@@ -117,4 +128,4 @@ TLog& TLog::noLabel() {
     return *this;
 }
 
-} // namespace Targoman::Common
+} // namespace Targoman::Common::Private

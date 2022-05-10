@@ -32,6 +32,8 @@
 #include <termios.h>
 
 #include "libTargomanCommon/Macros.h"
+#include "libTargomanCommon/Private/TLogger.h"
+using namespace Targoman::Common::Private;
 
 /********************************************************************************************
  * Missing methods getch and getche on linux
@@ -45,8 +47,7 @@ extern char getche(void);
 /********************************************************************************************
  * Debugging Necessary Definitions and variables
  ********************************************************************************************/
-namespace Targoman {
-namespace Common {
+namespace Targoman::Common {
 
 class clsOutputSettings {
 public:
@@ -226,14 +227,14 @@ public:
 
 void printLoadedLibs();
 
-class CmdIO{
+class CmdIO {
 public:
-static inline QString moduleName(){ return "IO";}
-static QString getPassword(const QString& _message, char _replacingChar = '*');
+    static inline QString moduleName(){ return "IO";}
+    static QString getPassword(const QString& _message, char _replacingChar = '*');
 };
 
-}
-}
+} // namespace Targoman::Common
+
 /********************************************************************************************
  * Colorizing Macros
  ********************************************************************************************/
