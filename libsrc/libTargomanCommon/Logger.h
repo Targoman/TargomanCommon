@@ -250,10 +250,16 @@ public:
                  enuLogType::Type   _type,
                  quint8             _level,
                  const QString&     _message,
-                 bool _newLine = true,
-                 bool _showLabel = true
+                 bool _newLine,
+                 bool _showLabel
                  );
 
+    void   write(const QString&     _callerFuncName,
+                 enuLogType::Type   _type,
+                 quint8             _level,
+                 const QString&     _message,
+                 bool _newLine = true
+                 );
 
     /**
      * @brief setActive Activates and deactivates logging
