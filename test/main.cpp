@@ -41,7 +41,6 @@
 #include "libTargomanCommon/Configuration/tmplConfigurableArray.hpp"
 #include "libTargomanCommon/SimpleAuthentication.h"
 #include "libTargomanCommon/clsCountAndSpeed.h"
-#include "libTargomanCommon/TLogger.h"
 
 #include <iostream>
 #include <unistd.h>
@@ -309,7 +308,7 @@ int main(int argc, char *argv[])
 */
         TARGOMAN_IO_SETTINGS.setFull();
 
-        qDebug() << "> 1";
+        qDebug() << "> 1" << "B";
 
         TargomanWarn(1)  << "T1 Log Warn";
         TargomanInfo(2)  << "T1 Log Info";
@@ -325,31 +324,32 @@ int main(int argc, char *argv[])
         TargomanDebug(5, "%s:%s", "AAA", "BBB");
         TargomanDebug(5).noLabel() << "T1 Log Debug" << QVariant(11);
 
-        TargomanLogDebug(5, "AAA: " << "BBB");
-        TargomanLogDebug(5, "%s:%s", "AAA", "BBB");
-        TargomanLogDebug(5).noLabel() << "T1 Log Debug" << QVariant(11);
-
-        qDebug() << "> 2";
-
-        TargomanLogWarn(1)  << "T2 Log File Warn";
-        TargomanLogInfo(2)  << "T2 Log File Info";
-        TargomanLogHappy(3) << "T2 Log File Happy";
-        TargomanLogError()  << "T2 Log File Error";
-        TargomanLogDebug(5) << "T2 Log File Debug"
-                            << QVariant(22)
-                            ;
-
-        qDebug() << "> 3";
-
         Targoman::Common::Logger::instance().init("log.log");
 
-        TargomanLogWarn(1)  << "T3 Log File Warn";
-        TargomanLogInfo(2)  << "T3 Log File Info";
-        TargomanLogHappy(3) << "T3 Log File Happy";
-        TargomanLogError()  << "T3 Log File Error";
-        TargomanLogDebug(5) << "T3 Log File Debug"
-                            << QVariant(22)
-                            ;
+        TargomanLogDebug(5, "AAA: " << "BBB");
+        TargomanLogDebug(5, "%s:%s", "AAA", "BBB");
+//        TargomanLogDebug(5).noLabel() << "T1 Log Debug" << QVariant(11);
+
+//        qDebug() << "> 2";
+
+//        TargomanLogWarn(1)  << "T2 Log File Warn";
+//        TargomanLogInfo(2)  << "T2 Log File Info";
+//        TargomanLogHappy(3) << "T2 Log File Happy";
+//        TargomanLogError()  << "T2 Log File Error";
+//        TargomanLogDebug(5) << "T2 Log File Debug"
+//                            << QVariant(22)
+//                            ;
+
+//        qDebug() << "> 3";
+
+
+//        TargomanLogWarn(1)  << "T3 Log File Warn";
+//        TargomanLogInfo(2)  << "T3 Log File Info";
+//        TargomanLogHappy(3) << "T3 Log File Happy";
+//        TargomanLogError()  << "T3 Log File Error";
+//        TargomanLogDebug(5) << "T3 Log File Debug"
+//                            << QVariant(22)
+//                            ;
 
         qDebug() << "> 4";
 

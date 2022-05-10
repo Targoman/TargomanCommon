@@ -27,19 +27,19 @@
 #define TARGOMAN_COMMON_TLOGGER_H
 
 #include <QDebug>
-#include "Logger.h"
-#include "CmdIO.h"
+//#include "Logger.h"
+//#include "CmdIO.h"
 
 #define INTERNAL_tLogLog(_type, _level)  TLog(Q_FUNC_INFO, __FILE__, __LINE__, Targoman::Common::enuLogType::_type, _level)
 
-namespace Targoman::Common {
+namespace Targoman::Common::Private {
 
 class TLog : public QDebug {
 public:
     TLog(const char *_function,
          const char *_file,
          quint16 _line,
-         enuLogType::Type _type,
+         /*enuLogType::Type*/ quint8 _type,
          quint8 _level
          );
 /*
@@ -63,7 +63,7 @@ protected:
     QString File;
     quint16 Line;
 
-    enuLogType::Type Type;
+    /*enuLogType::Type*/ quint8 Type;
     quint8 Level;
     bool LogToFile;
     bool ShowLabel;
@@ -71,6 +71,6 @@ protected:
     QString Buffer;
 };
 
-} // namespace Targoman::Common
+} // namespace Targoman::Common::Private
 
 #endif // TARGOMAN_COMMON_TLOGGER_H

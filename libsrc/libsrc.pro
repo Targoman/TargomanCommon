@@ -12,7 +12,6 @@ DIST_HEADERS += \
     libTargomanCommon/clsSafeCoreApplication.h \
     libTargomanCommon/CmdIO.h \
     libTargomanCommon/Logger.h \
-    libTargomanCommon/TLogger.h \
     libTargomanCommon/FastOperations.hpp \
     libTargomanCommon/Constants.h \
     libTargomanCommon/Types.h \
@@ -57,10 +56,11 @@ PRIVATE_HEADERS += \
     libTargomanCommon/Private/Logger_p.h \
     libTargomanCommon/Private/RPCRegistry.hpp \
     libTargomanCommon/Private/clsConfigManager_p.h \
+    libTargomanCommon/Private/TLogger.h \
 
 # +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-#
 SOURCES += \
-    libTargomanCommon/TLogger.cpp \
+    libTargomanCommon/Private/TLogger.cpp \
     libTargomanCommon/exTargomanBase.cpp \
     libTargomanCommon/clsSafeCoreApplication.cpp \
     libTargomanCommon/CmdIO.cpp \
