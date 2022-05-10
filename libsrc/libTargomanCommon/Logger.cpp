@@ -289,28 +289,34 @@ bool Logger::init(const QString &_fileName,
     return this->pPrivate->open();
 }
 
-void Logger::write(const QString &_callerFuncName,
-                   enuLogType::Type _type,
-                   quint8 _level,
-                   const QString &_message,
-                   bool _newLine)
-{
+void Logger::write(
+    const QString &_callerFuncName,
+    enuLogType::Type _type,
+    quint8 _level,
+    const QString &_message,
+    bool _newLine,
+    bool _showLabel
+) {
     if (this->isActive() == false || LogSettings[_type].canBeShown(_level) == false)
         return;
 
-    QByteArray LogMessage = LogSettings[_type].details(_callerFuncName).toLatin1();
+    QByteArray LogMessage;
 
-    LogMessage += QString("[%1]").arg(enuLogType::toStr(_type));
+    if (_showLabel) {
+        LogMessage += LogSettings[_type].details(_callerFuncName).toLatin1();
 
-    LogMessage += "[" + QString::number(_level) + "]";
+        LogMessage += QString("[%1]").arg(enuLogType::toStr(_type));
 
-    if (Identifier.value().size())
-        LogMessage+= QString("[%1]").arg(Identifier.value());
+        LogMessage += "[" + QString::number(_level) + "]";
 
-    LogMessage += ": ";
+        if (Identifier.value().size())
+            LogMessage+= QString("[%1]").arg(Identifier.value());
+
+        LogMessage += ": ";
+    }
 
     if (_newLine)
-        LogMessage += _message + "\n";
+        LogMessage += _message.trimmed() + "\n";
 
     QMutexLocker Locker(&this->pPrivate->mxLog);
 

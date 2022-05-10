@@ -250,7 +250,9 @@ public:
                  enuLogType::Type   _type,
                  quint8             _level,
                  const QString&     _message,
-                 bool _newLine = true);
+                 bool _newLine = true,
+                 bool _showLabel = true
+                 );
 
 
     /**
