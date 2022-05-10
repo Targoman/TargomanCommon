@@ -333,7 +333,7 @@ void Logger::write(
     }
 
     if (_newLine)
-        LogMessage += _message.trimmed() + "\n";
+        LogMessage += _message + "\n";
 
     QMutexLocker Locker(&this->pPrivate->mxLog);
 
