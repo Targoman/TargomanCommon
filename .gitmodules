@@ -1,6 +1,6 @@
-[submodule "3rdParty/QBuildSystem"]
-	path = 3rdParty/QBuildSystem
-	url = https://github.com/Targoman/QBuildSystem.git
 [submodule "3rdParty/QJsonRPC"]
 	path = 3rdParty/QJsonRPC
 	url = https://github.com/Targoman/QJsonRPC
+[submodule "3rdParty/QBuildSystem"]
+	path = 3rdParty/QBuildSystem
+	url = git@github.com:Targoman/QBuildSystem.git
